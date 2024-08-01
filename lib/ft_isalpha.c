@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 15:11:08 by tkul              #+#    #+#             */
-/*   Updated: 2024/07/10 09:56:24 by tkul             ###   ########.fr       */
+/*   Created: 2023/10/09 10:44:46 by tkul              #+#    #+#             */
+/*   Updated: 2023/10/13 13:18:42 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(int ac, char **arg)
+int	ft_isalpha(int c)
 {
-	extern char	**environ;
-	int i = 0;
-
-	while(environ[i])
-		printf("%s\n", environ[i++]);
-		i++;
-
-	
-
-//	//t_node *node = ft_init();
-
-//	//printf("%s\n", ft_get_value("MallocNanoZone", node));
-//}
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}

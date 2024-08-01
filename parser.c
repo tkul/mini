@@ -3,42 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 15:11:15 by tkul              #+#    #+#             */
-/*   Updated: 2024/07/07 15:11:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/01 15:18:33 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*str;
-	int		len;
-	char	*temp;
-
-	len = ft_strlen(s1);
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (0);
-	temp = str;
-	while (*s1)
-		*str++ = *s1++;
-	*str = '\0';
-	return (temp);
-}
 
 void remove_index(char **str, int index)
 {
