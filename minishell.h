@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/01 22:29:02 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/03 20:24:07 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ typedef struct s_lexer
 	
 } t_lexer;
 
+typedef struct s_split
+{
+	char **cmds;
+    int quote;
+    int len;
+} t_split;
+
 
 typedef struct s_data
 {
@@ -95,7 +102,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *s1);
 void remove_index(char **str, int index);
 void check_parser_error(char *str);
-char *ft_remove_quote(char *str);
 char **ft_getenv(char **env);
 int ft_start_shell(t_data *data);
 int ft_init_data(t_data *data, char **env);
@@ -108,9 +114,9 @@ int  ft_init_tokens(t_data *data);
 int ft_count_pipes(char *str);
 void ft_free_tokens(t_token **tokens);
 int ft_lexer(t_data *data);
-int count_word(char *str, char c);
-char **ft_split_by_quote(char *str, char c);
-
+char	**ft_split_by_quote(char const *s, char c);
+// int count_word(char *str, char c);
+int count_word(const char *str, char c);
 
 
 #endif
