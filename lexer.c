@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/03 20:29:28 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:56:59 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int count_word(const char *str, char c)
 		else if (quote == str[i])
 			quote = -1;
         if (quote == -1 && str[i] == c)
+        {
             count++;
+            toggle = 0;
+        }
         else
             toggle = 1;
-        while (str[i] == c)
-            i++;
     }
     if (toggle)
         count++;
@@ -134,26 +135,25 @@ char **ft_split_by_quote(const char *str, char c)
 
 int ft_lexer(t_data *data)
 {
-    t_lexer *lexer;
     char **cmds;
     char **new;
     int i;
     
     i = -1;
-    lexer = malloc(sizeof(t_lexer));
-    if (!lexer)
+    data->lexer = malloc(sizeof(t_lexer));
+    if (!data->lexer)
         return (-1);
-    lexer->pipe_count = ft_count_pipes(data->cmd);
-    if (lexer->pipe_count == -1)
-        return (free(lexer), -1);
+    data->lexer->pipe_count = ft_count_pipes(data->cmd);
+    if (data->lexer->pipe_count == -1)
+        return (free(data->lexer), -1);
     cmds = ft_split_by_quote(data->cmd, '|');
     if (!cmds)
-        return (free(lexer), -1);
+        return (free(data->lexer), -1);
     while (cmds[++i])
     {
         new = ft_split_by_quote(cmds[i], ' ');
         if (!new)
-            return (free(lexer), -1);
+            return (free(data->lexer), -1);
         for (int j = 0; new[j]; j++)
             printf("%s\n", new[j]);
     }

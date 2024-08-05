@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/03 20:24:07 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 09:08:34 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,6 @@ typedef struct s_token
 	
 } t_token;
 
-typedef struct s_node
-{
-	char		*key;
-	char		*value;
-	struct node *next;
-} t_node;
 
 typedef struct s_lexer
 {
@@ -71,6 +65,8 @@ typedef struct s_lexer
 	int i;
 	int j;
 	int quote;
+	char *key;
+	char *value;
 	
 } t_lexer;
 
@@ -93,9 +89,7 @@ typedef struct s_data
 	int *exit_status;
 	int cmd_count;
 	int pipe_count;
-	
-	
-	
+	t_lexer *lexer;
 } t_data;
 
 size_t	ft_strlen(const char *str);
@@ -103,6 +97,7 @@ char	*ft_strdup(const char *s1);
 void remove_index(char **str, int index);
 void check_parser_error(char *str);
 char **ft_getenv(char **env);
+char *ft_getenv_by_key(char *key, char **env);
 int ft_start_shell(t_data *data);
 int ft_init_data(t_data *data, char **env);
 void	ft_signals(void);
@@ -117,6 +112,8 @@ int ft_lexer(t_data *data);
 char	**ft_split_by_quote(char const *s, char c);
 // int count_word(char *str, char c);
 int count_word(const char *str, char c);
-
+int handle_dollar(t_data *data, char *str);
+char	*ft_joinstr_index(char *s1, char *s2, int start_index);
+char *remove_by_index(char *str, int start, int end);
 
 #endif

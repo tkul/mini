@@ -6,16 +6,11 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/01 22:44:42 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 02:34:45 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int ft_lexer(t_data *data)
-// {
-	
-// }
 
 int ft_count_pipes(char *str)
 {
@@ -108,6 +103,8 @@ int ft_run(t_data *data)
 			free(data->tokens);
 			return (1);			
 		}
+		if (handle_dollar(data, data->cmd) == -1)
+			return (1);
 	}
 	return (0);
 }
