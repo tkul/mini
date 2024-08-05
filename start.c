@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/05 02:34:45 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:56:20 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int ft_run(t_data *data)
 		free(data->cmd);
 		data->cmd = temp;
 		if (ft_init_tokens(data) == -1)
-			return (free(data->tokens), 1);
+			return (1);
 		err = ft_lexer(data);
 		if (err)
 		{

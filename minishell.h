@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/05 09:08:34 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:18:22 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ typedef struct s_split
 	char **cmds;
     int quote;
     int len;
+	int i;
+	int j;
+	int k;
 } t_split;
 
 
@@ -83,11 +86,9 @@ typedef struct s_data
 	char *cmd;
 	char **env;
 	int status;
-	int is_pipe;
 	t_token **tokens;
 	char *cwd;
 	int *exit_status;
-	int cmd_count;
 	int pipe_count;
 	t_lexer *lexer;
 } t_data;
@@ -115,5 +116,6 @@ int count_word(const char *str, char c);
 int handle_dollar(t_data *data, char *str);
 char	*ft_joinstr_index(char *s1, char *s2, int start_index);
 char *remove_by_index(char *str, int start, int end);
+void ft_set_quote_type(int *quote, char c);
 
 #endif

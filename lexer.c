@@ -6,11 +6,19 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/05 09:56:59 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:39:52 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void ft_set_quote_type(int *quote, char c)
+{
+    if (*quote == -1 && (c == '\'' || c == '\"'))
+        *quote = (int)c;
+    else if (*quote == (int)(c))
+        *quote = -1;
+}
 
 int count_word(const char *str, char c)
 {
@@ -23,113 +31,58 @@ int count_word(const char *str, char c)
     count = 0;
     quote = -1;
     toggle = 0;
-    while(str[++i])
+    while (str[++i])
     {
-        if (quote == -1 && (str[i] == '\'' || str[i] == '\"'))
-			quote = str[i];
-		else if (quote == str[i])
-			quote = -1;
+        ft_set_quote_type(&quote, str[i]);
         if (quote == -1 && str[i] == c)
-        {
-            count++;
             toggle = 0;
-        }
-        else
+        else if (quote == -1 && toggle == 0)
+        {
             toggle = 1;
+            count++;
+        }
     }
-    if (toggle)
-        count++;
     return (count);
 }
 
-// char **ft_split_by_quote(const char *str, char c)
-// {
-//     char **cmds;
-//     int i;
-//     int j;
-//     int k;
-//     int quote;
-//     int len;
-    
-//     i = -1;
-//     j = 0;
-//     k = 0;
-//     quote = -1;
-//     len = count_word(str, c);
-//     cmds = (char **)malloc(sizeof(char *) * (len + 2));
-//     if (!cmds)
-//         return (NULL);
-//     while (str[++i])
-//     {
-//         if (quote == -1 && (str[i] == '\'' || str[i] == '\"'))
-//             quote = str[i];
-//         else if (quote == str[i])
-//             quote = -1;
-//         if (quote == -1 && str[i] == c)
-//         {
-//             cmds[j] = (char *)malloc(sizeof(char) * (i - k + 1));
-//             if (!cmds[j])
-//                 return (NULL);
-//             ft_strlcpy(cmds[j], str + k, i - k + 1);
-//             cmds[j++][i - k] = '\0';
-//             k = i + 1;
-//         }
-//     }
-//     cmds[j] = (char *)malloc(sizeof(char) * (i - k + 1));
-//     if (!cmds[j])
-//         return (NULL);
-//     ft_strlcpy(cmds[j], str + k, i - k + 1);
-//     cmds[j + 1] = NULL;
-//     return (cmds);
-// }
-
-
-
+static void init_split(t_split **s, const char *str, char c)
+{
+    *s = malloc(sizeof(t_split));
+    if (!*s)
+        return ;
+    (*s)->i = 0;
+    (*s)->j = 0;
+    (*s)->k = 0;
+    (*s)->quote = -1;
+    (*s)->cmds = malloc(sizeof(char *) * (count_word(str, c) + 1));
+    if (!(*s)->cmds)
+        return ;
+}
 char **ft_split_by_quote(const char *str, char c)
 {
-   t_split *s;
-   int i;
-   int j;
-   int k;
-    
-    i = -1;
-    j = 0;
-    k = 0;
-    s = malloc(sizeof(t_split));
+    t_split *s;
+  
+    init_split(&s, str, c);
     if (!s)
         return (NULL);
-    s->quote = -1;
-    s->len = count_word(str, c);
-    s->cmds = (char **)malloc(sizeof(char *) * (s->len + 2));
-    if (!s->cmds)
-        return (NULL);
-    while (str[++i])
+    while (str[s->i])
     {
-        if (s->quote == -1 && (str[i] == '\'' || str[i] == '\"'))
-            s->quote = str[i];
-        else if (s->quote == str[i])
-            s->quote = -1;
-        if (s->quote == -1 && str[i] == c)
+        s->k = s->i;
+        while (str[s->i] && (s->quote != -1 || str[s->i] != c))
         {
-            while (k < i && str[k] == ' ')
-                k++;
-            s->cmds[j] = (char *)malloc(sizeof(char) * (i - k + 1));
-            if (!s->cmds[j])
-                return (NULL);
-            ft_strlcpy(s->cmds[j], str + k, i - k + 1);
-            s->cmds[j++][i - k] = '\0';
-            while (str[i + 1] == ' ')
-                i++;
-            k = i + 1;
+            ft_set_quote_type(&s->quote, str[s->i]);
+            s->i++;
         }
+        if (s->i > s->k)
+        {
+            s->cmds[s->j] = ft_substr(str, s->k, s->i - s->k);
+            if (!s->cmds[s->j])
+                return (NULL);
+            s->j++;
+        }
+        s->i++;
     }
-    while (k < i && str[k] == ' ')
-        k++;
-    s->cmds[j] = (char *)malloc(sizeof(char) * (i - k + 1));
-    if (!s->cmds[j])
-        return (NULL);
-    ft_strlcpy(s->cmds[j], str + k, i - k + 1);
-    s->cmds[j + 1] = NULL;
+    s->cmds[s->j] = NULL;
     return (s->cmds);
 }
 
@@ -138,12 +91,13 @@ int ft_lexer(t_data *data)
     char **cmds;
     char **new;
     int i;
-    
+
     i = -1;
     data->lexer = malloc(sizeof(t_lexer));
     if (!data->lexer)
         return (-1);
     data->lexer->pipe_count = ft_count_pipes(data->cmd);
+    //printf("pipe count: %d\n", data->lexer->pipe_count);
     if (data->lexer->pipe_count == -1)
         return (free(data->lexer), -1);
     cmds = ft_split_by_quote(data->cmd, '|');
@@ -154,8 +108,8 @@ int ft_lexer(t_data *data)
         new = ft_split_by_quote(cmds[i], ' ');
         if (!new)
             return (free(data->lexer), -1);
-        for (int j = 0; new[j]; j++)
-            printf("%s\n", new[j]);
+        // for (int j = 0; new[j]; j++)
+        //     printf("%s\n", new[j]);
     }
-    return (0); 
+    return (0);
 }

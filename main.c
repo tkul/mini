@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:35:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/05 00:59:06 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:18:19 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,10 @@ int ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
 	data->status = 0;
-	data->is_pipe = 0;
 	data->env = ft_getenv(env);
 	data->tokens = NULL;
 	data->cwd = getcwd(NULL, 0);
 	data->exit_status = NULL;
-	data->cmd_count = 0;
 	data->pipe_count = 0;
 	return (0);
 }
