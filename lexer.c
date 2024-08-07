@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 04:26:13 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:51:17 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ char **ft_split_by_quote(const char *str, char c)
                 return (NULL);
             s->j++;
         }
-        s->i++;
+        if (str[s->i] != '\0')
+            s->i++;
     }
     s->cmds[s->j] = NULL;
     return (s->cmds);
@@ -88,7 +89,7 @@ char **ft_split_by_quote(const char *str, char c)
 
 int ft_lexer(t_data *data)
 {
-    char **cmds;
+    char **cmds;    
     char **new;
     int i;
     int j;
@@ -100,8 +101,10 @@ int ft_lexer(t_data *data)
     data->lexer->pipe_count = ft_count_pipes(data->cmd);
     if (data->lexer->pipe_count == -1)
         return (free(data->lexer), -1);
+    if (ft_control_quotes(data->cmd) == -1)
+        return (-1);
     if (ft_init_redirections(data->cmd)	== -1)
-        return (1);
+        return (-1);
     cmds = ft_split_by_quote(data->cmd, '|');
     if (!cmds)
         return (free(data->lexer), -1);
@@ -110,13 +113,14 @@ int ft_lexer(t_data *data)
         new = ft_split_by_quote(cmds[i], ' ');
         if (!new)
             return (free(data->lexer), -1);
-		j = 0;
-        while (new[j])
+		j = -1;
+        while (new[++j])
         {
             if (handle_dollar(data, &(new[j])) == -1)
+                return (-1);
+            if (ft_remove_quotes(&(new[j])) == -1)
                 return (1);
-            printf("%s\n", new[j]);
-            j++;
+            printf("%s\n",new[j]);
         }
     }
     return (0);

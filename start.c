@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 04:12:42 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 15:48:47 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,34 +53,34 @@ int  ft_init_tokens(t_data *data)
 	data->tokens[data->pipe_count + 1] = NULL;
 	return (0);
 }
-void ft_free_tokens(t_token **tokens)
-{
-	t_token	**tmp;
-	t_token	*next;
-	t_token	*tmp2;
-	int		i;
+// void ft_free_tokens(t_token **tokens)
+// {
+// 	t_token	**tmp;
+// 	t_token	*next;
+// 	t_token	*tmp2;
+// 	int		i;
 
-	if (!tokens || !*tokens)
-		return ;
-	tmp = tokens;
-	i = 0;
-	while (tmp[i])
-	{
-		next = tmp[i];
-		while (next)
-		{
-			tmp2 = next;
-			next = next->next;
-			free(tmp2->value);
-			free(tmp2);
-		}
-		i++;
-	}
-}
+// 	if (!tokens || !*tokens)
+// 		return ;
+// 	tmp = tokens;
+// 	i = 0;
+// 	while (tmp[i])
+// 	{
+// 		next = tmp[i];
+// 		while (next)
+// 		{
+// 			tmp2 = next;
+// 			next = next->next;
+// 			free(tmp2->value);
+// 			free(tmp2);
+// 		}
+// 		i++;
+// 	}
+// }
 
 int ft_run(t_data *data)
 {
-	int err;
+	//int err;
 	char *temp;
 	
 	if (ft_strlen(data->cmd) > 0 && data->cmd[0] != '\n')
@@ -93,12 +93,13 @@ int ft_run(t_data *data)
 		data->cmd = temp;
 		if (ft_init_tokens(data) == -1)
 			return (1);
-		err = ft_lexer(data);
-		if (err == -1)
-		{
-			ft_free_tokens(data->tokens);
-			return (1);
-		}
+		if (ft_lexer(data) == -1)
+			return (-1);
+		// if (err == -1)
+		// {
+		// 	ft_free_tokens(data->tokens);
+		// 	return (1);
+		// }
 	}
 	return (0);
 }

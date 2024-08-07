@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/07 04:25:44 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:47:33 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define OUT_RED 2
 # define APP_RED 3
 # define HER_DOC 4
+# define CMD 5
 
 #define  BHWHT "\e[1;97m"
 #define COLOR_RESET "\e[0m"
@@ -98,8 +99,6 @@ typedef struct s_data
 
 size_t	ft_strlen(const char *str);
 char	*ft_strdup(const char *s1);
-void remove_index(char **str, int index);
-void check_parser_error(char *str);
 char **ft_getenv(char **env);
 char *ft_getenv_by_key(char *key, char **env);
 int ft_start_shell(t_data *data);
@@ -121,6 +120,8 @@ char	*ft_joinstr_index(char *s1, char *s2, int start_index);
 char *remove_by_index(char *str, int start, int end);
 void ft_set_quote_type(int *quote, char c);
 int ft_init_redirections(char *str);
-
+int ft_remove_quotes(char **s);
+int ft_control_quotes(char *s);
+int	ft_strcmp(char *s1, char *s2);
 
 #endif

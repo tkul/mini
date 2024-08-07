@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 00:13:08 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 02:04:01 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 18:19:05 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,7 @@ int process_dollar_variable(t_data *data, char **str, int i)
     }
     else
     {
-        printf("%d\n", i); 
-        printf("%d\n", j); 
-        printf("İNDEX ÖNCESİ : %s\n", *str);
         *str = remove_by_index(*str, i, j - i - 1);
-        printf("İNDEX SONRASI : %s\n", *str);
         *str = ft_joinstr_index(*str, data->lexer->value, i);
         printf("JOIN SONRASI : %s\n", *str);
         free(data->lexer->key);
