@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:26:00 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 18:16:31 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/08 01:24:30 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,8 @@ void add_by_index(char **str, char c, int start)
     free(*str);
     *str = new_str;
 }
-static int control_error(char **str, int quote, int i)
-{
-    ft_set_quote_type(&quote, (*str)[i]);
-    if (((*str)[i] == '>' || (*str)[i + 1] == '<' || (*str)[i + 1] == '<') && quote == -1)
-        return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    if (((*str)[i] == '<' || (*str)[i + 1] == '>' || (*str)[i + 1] == '>') && quote == -1)
-        return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    if ((*str)[i] == '>' && (*str)[i + 1] == '>' && (*str)[i + 2] == '>' && quote == -1)
-        return (printf("Error: syntax error near unexpected token `>>>'\n"), -1);
-    if ((*str)[i] == '<' && (*str)[i + 1] == '<' && (*str)[i + 2] == '<' && quote == -1)
-        return (printf("Error: syntax error near unexpected token `<<<'\n"), -1);
-    if ((*str)[i] == '>' && (*str)[i + 1] == '>' && (*str)[i + 2] == '\0' && quote == -1)
-       return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    if ((*str)[i] == '<' && (*str)[i + 1] == '<' && (*str)[i + 2] == '\0' && quote == -1)
-        return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    if ((*str)[i] == '>' && (*str)[i + 1] == '\0' && quote == -1)
-        return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    if ((*str)[i] == '<' && (*str)[i + 1] == '\0' && quote == -1)
-        return (printf("Error: syntax error near unexpected token `newline'\n"), -1);
-    return (0);
-}
+
+//control_error yazmam gerek eskisi hatalı
 
 int ft_init_redirections(char *str)
 {
@@ -68,10 +49,10 @@ int ft_init_redirections(char *str)
 
     i = -1;
     quote = -1;
+    // if (control_error(&str, &quote, i) == -1)
+    //     return (-1);
     while (str[++i])
     {
-        if (control_error(&str, quote, i) == -1)
-            return (-1);
         ft_set_quote_type(&quote, str[i]);
         if (str[i] == '<' && str[i + 1] == '<' && quote == -1)
         {
