@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 15:48:47 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:16:42 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,9 @@ int ft_count_pipes(char *str)
 		if (quote == -1 && str[i] == '|')
 		{
 			if(str[i] == '|' && str[i+1] == '|')
-			{
-				printf("Error: syntax error near unexpected token `||'\n");
-				return (-1);
-			}
+				return (printf("Error: syntax error near unexpected token `||'\n"), -1);
 			if (str[i + 1] == '\0')
-			{
-				printf("Error: syntax error near unexpected token `|'\n");
-				return (-1);
-			}
+				return (printf("Error: syntax error near unexpected token `|'\n"), -1);
 			result++;
 		}
 	}

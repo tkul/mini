@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 00:13:08 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 18:19:05 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:35:25 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,22 @@ char *remove_by_index(char *str, int start, int end)
     int i;
     int j;
 
-    i = 0;
+    i = -1;
     j = 0;
     new_str = malloc(sizeof(char) * (ft_strlen(str) - end + 1));
-    while (str[i])
+    while (str[++i])
     {
         if (i < start || i > start + end)
         {
             new_str[j] = str[i];
             j++;
         }
-        i++;
     }
     new_str[j] = '\0';
     return (new_str);
 }
+
+
 int process_dollar_variable(t_data *data, char **str, int i)
 {
     int j;
@@ -45,15 +46,11 @@ int process_dollar_variable(t_data *data, char **str, int i)
         return (-1);
     data->lexer->value = ft_getenv_by_key(data->lexer->key, data->env);
     if (!data->lexer->value)
-    {
         *str = remove_by_index(*str, i, j - i - 1);
-        printf("BULUNAMAZSA : %s\n", *str);
-    }
     else
     {
         *str = remove_by_index(*str, i, j - i - 1);
         *str = ft_joinstr_index(*str, data->lexer->value, i);
-        printf("JOIN SONRASI : %s\n", *str);
         free(data->lexer->key);
         free(data->lexer->value);
     }  
@@ -65,7 +62,7 @@ int process_dollar_variable(t_data *data, char **str, int i)
 int handle_dollar(t_data *data, char **str)
 {
     int i;
-    int quote;
+    int quote; 
 
     i = -1;
     quote = -1;
@@ -75,7 +72,14 @@ int handle_dollar(t_data *data, char **str)
         if (quote != '\'' && (*str)[i] == '$')
         {
             if ((*str)[i] == '$' && (*str)[i + 1] == '?')
-                printf("%s\n", ft_itoa(data->status));
+            {
+                printf("status: %s\n", ft_itoa(data->status));
+                if (data->status == 0)
+                {
+                    *str = remove_by_index(*str, i, 1);
+                    *str = ft_joinstr_index(*str, "0", i);
+                }
+            }
             else if ((*str)[i] == '$' && ft_isalpha((*str)[i + 1]))
             {
                 if (process_dollar_variable(data, str, i) == -1)

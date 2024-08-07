@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 12:02:42 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 18:22:04 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:38:30 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,16 @@ int ft_control_quotes(char *s)
     while (s[++i])
     {
         if (quote == 0 && (s[i] == '\"' || s[i] == '\''))
-        {
             quote = s[i];
-        }
         else if (s[i] == quote)
-        {
             quote = 0;
-        }
         if (quote2 == 0 && (s[i] == '\"' || s[i] == '\''))
-        {
             quote2 = s[i];
-        }
         else if (s[i] == quote2)
-        {
             quote2 = 0;
-        }
     }
     if (quote != 0 || quote2 != 0)
-    {
-        printf("Error: unclosed quotes\n");
-        return (-1);
-    }
+        return (printf("Error: unclosed quotes\n"), -1);
     return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/07 17:47:33 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:37:09 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@
 # define OUT_RED 2
 # define APP_RED 3
 # define HER_DOC 4
-# define CMD 5
 
 #define  BHWHT "\e[1;97m"
 #define COLOR_RESET "\e[0m"
