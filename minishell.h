@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/05 18:18:22 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 04:25:44 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,26 @@
 # include <termios.h>
 # include "./lib/libft.h"
 
-//#define HBLK "\e[0;90m"
-//#define  BWHT "\e[1;37m"
+
+// < (Input Redirection): Bir dosyadan giriş almak için kullanılır.
+// > (Output Redirection): Çıktıyı bir dosyaya yönlendirmek için kullanılır (dosyayı oluşturur veya üzerine yazar).
+// >> (Append Redirection): Çıktıyı bir dosyaya ekler (dosyayı oluşturur veya sonuna ekler).
+// << (Here Document): Çok satırlı giriş sağlamak için kullanılır.
+
+# define INT_RED 1
+# define OUT_RED 2
+# define APP_RED 3
+# define HER_DOC 4
+
 #define  BHWHT "\e[1;97m"
 #define COLOR_RESET "\e[0m"
 
-typedef struct s_count
-{
-	int rm1;
-	int rm2;
-	int quote;
-} t_count;
 
-typedef struct s_env
-{
-	char *value;
-	struct s_en *next;
-} t_env;
+// typedef struct s_env
+// {
+// 	char *value;
+// 	struct s_en *next;
+// } t_env;
 
 typedef struct s_token
 {
@@ -113,9 +116,11 @@ int ft_lexer(t_data *data);
 char	**ft_split_by_quote(char const *s, char c);
 // int count_word(char *str, char c);
 int count_word(const char *str, char c);
-int handle_dollar(t_data *data, char *str);
+int handle_dollar(t_data *data, char **str);
 char	*ft_joinstr_index(char *s1, char *s2, int start_index);
 char *remove_by_index(char *str, int start, int end);
 void ft_set_quote_type(int *quote, char c);
+int ft_init_redirections(char *str);
+
 
 #endif

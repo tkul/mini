@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/05 15:56:20 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 04:12:42 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int ft_count_pipes(char *str)
 	result = 0;
 	while (str[++i])
 	{
-		if (quote == -1 && (str[i] == '\'' || str[i] == '\"'))
-			quote = str[i];
-		else if (quote == str[i])
-			quote = -1;
+		ft_set_quote_type(&quote, str[i]);
 		if (quote == -1 && str[i] == '|')
 		{
 			if(str[i] == '|' && str[i+1] == '|')
@@ -97,14 +94,11 @@ int ft_run(t_data *data)
 		if (ft_init_tokens(data) == -1)
 			return (1);
 		err = ft_lexer(data);
-		if (err)
+		if (err == -1)
 		{
 			ft_free_tokens(data->tokens);
-			free(data->tokens);
-			return (1);			
-		}
-		if (handle_dollar(data, data->cmd) == -1)
 			return (1);
+		}
 	}
 	return (0);
 }

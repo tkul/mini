@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/05 19:39:52 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/07 04:26:13 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,17 @@ int ft_lexer(t_data *data)
     char **cmds;
     char **new;
     int i;
+    int j;
 
     i = -1;
     data->lexer = malloc(sizeof(t_lexer));
     if (!data->lexer)
         return (-1);
     data->lexer->pipe_count = ft_count_pipes(data->cmd);
-    //printf("pipe count: %d\n", data->lexer->pipe_count);
     if (data->lexer->pipe_count == -1)
         return (free(data->lexer), -1);
+    if (ft_init_redirections(data->cmd)	== -1)
+        return (1);
     cmds = ft_split_by_quote(data->cmd, '|');
     if (!cmds)
         return (free(data->lexer), -1);
@@ -108,8 +110,14 @@ int ft_lexer(t_data *data)
         new = ft_split_by_quote(cmds[i], ' ');
         if (!new)
             return (free(data->lexer), -1);
-        // for (int j = 0; new[j]; j++)
-        //     printf("%s\n", new[j]);
+		j = 0;
+        while (new[j])
+        {
+            if (handle_dollar(data, &(new[j])) == -1)
+                return (1);
+            printf("%s\n", new[j]);
+            j++;
+        }
     }
     return (0);
 }
