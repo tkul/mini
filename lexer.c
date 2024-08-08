@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 20:32:57 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/09 00:47:59 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,9 @@ int ft_lexer(t_data *data)
         return (free(data->lexer), -1);
     if (ft_control_quotes(data->cmd) == -1)
         return (-1);
-    if (ft_init_redirections(data->cmd)	== -1)
+    if (ft_init_redirections(data)	== -1)
         return (-1);
+    printf("data->cmd: %s\n", data->cmd);
     cmds = ft_split_by_quote(data->cmd, '|');
     if (!cmds)
         return (free(data->lexer), -1);

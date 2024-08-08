@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/08 01:23:45 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/09 00:49:01 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int handle_dollar(t_data *data, char **str);
 char	*ft_joinstr_index(char *s1, char *s2, int start_index);
 char *remove_by_index(char *str, int start, int end);
 void ft_set_quote_type(int *quote, char c);
-int ft_init_redirections(char *str);
+int ft_init_redirections(t_data *data);
 int ft_remove_quotes(char **s);
 int ft_control_quotes(char *s);
 int	ft_strcmp(char *s1, char *s2);
