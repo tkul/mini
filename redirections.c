@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 22:26:00 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/09 00:48:39 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/09 02:56:56 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,3 +108,14 @@ int ft_init_redirections(t_data *data)
     }
     return (0);
 }
+
+// int is_redirection(char *str)
+// {
+//     int i;
+
+//     i = -1;
+//     while (str[++i])
+//     {
+        
+//     }
+// }

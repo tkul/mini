@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 00:49:01 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/09 02:57:37 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,14 @@
 # include <termios.h>
 # include "./lib/libft.h"
 
-
-// < (Input Redirection): Bir dosyadan giriş almak için kullanılır.
-// > (Output Redirection): Çıktıyı bir dosyaya yönlendirmek için kullanılır (dosyayı oluşturur veya üzerine yazar).
-// >> (Append Redirection): Çıktıyı bir dosyaya ekler (dosyayı oluşturur veya sonuna ekler).
-// << (Here Document): Çok satırlı giriş sağlamak için kullanılır.
+extern int g_qsignal;
 
 # define INT_RED 1
 # define OUT_RED 2
 # define APP_RED 3
 # define HER_DOC 4
+# define CMD 5
+# define ARG 6
 
 #define  BHWHT "\e[1;97m"
 #define COLOR_RESET "\e[0m"

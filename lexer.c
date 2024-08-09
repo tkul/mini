@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:51:11 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/09 00:47:59 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/09 02:58:33 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,8 +120,9 @@ int ft_lexer(t_data *data)
             if (handle_dollar(data, &(new[j])) == -1)
                 return (-1);
             if (ft_remove_quotes(&(new[j])) == -1)
-                return (1);
-            printf("%s\n",new[j]);
+                return (-1);
+            printf("new[%d]: %s\n", j, new[j]);
+            //ft_create_token(data, new[j], j);
         }
     }
     return (0);
