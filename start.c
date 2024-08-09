@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/31 18:11:25 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/07 20:16:42 by tugcekul         ###   ########.fr       */
+/*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/09 21:52:21 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_count_pipes(char *str)
+int	ft_count_pipes(char *str)
 {
 	int	quote;
 	int	i;
@@ -26,25 +26,33 @@ int ft_count_pipes(char *str)
 		ft_set_quote_type(&quote, str[i]);
 		if (quote == -1 && str[i] == '|')
 		{
-			if(str[i] == '|' && str[i+1] == '|')
-				return (printf("Error: syntax error near unexpected token `||'\n"), -1);
+			if (str[i] == '|' && str[i + 1] == '|')
+				return (printf("Error: syntax error near unexpected token `||'\n"),
+					-1);
 			if (str[i + 1] == '\0')
-				return (printf("Error: syntax error near unexpected token `|'\n"), -1);
+				return (printf("Error: syntax error near unexpected token `|'\n"),
+					-1);
 			result++;
 		}
 	}
 	return (result);
 }
 
-int  ft_init_tokens(t_data *data)
+int	ft_init_tokens(t_data *data)
 {
 	data->pipe_count = ft_count_pipes(data->cmd);
 	if (data->pipe_count == -1)
 		return (-1);
-	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count + 2));
+	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count
+				+ 2));
 	if (!data->tokens)
 		return (-1);
 	data->tokens[data->pipe_count + 1] = NULL;
+	while (data->pipe_count >= 0)
+	{
+		data->tokens[data->pipe_count] = NULL;
+		data->pipe_count--;
+	}
 	return (0);
 }
 // void ft_free_tokens(t_token **tokens)
@@ -72,11 +80,11 @@ int  ft_init_tokens(t_data *data)
 // 	}
 // }
 
-int ft_run(t_data *data)
+int	ft_run(t_data *data)
 {
-	//int err;
-	char *temp;
-	
+	char	*temp;
+
+	// int err;
 	if (ft_strlen(data->cmd) > 0 && data->cmd[0] != '\n')
 	{
 		add_history(data->cmd);
@@ -89,6 +97,7 @@ int ft_run(t_data *data)
 			return (1);
 		if (ft_lexer(data) == -1)
 			return (-1);
+		ft_print_tokens(data->tokens);
 		// if (err == -1)
 		// {
 		// 	ft_free_tokens(data->tokens);
@@ -98,17 +107,17 @@ int ft_run(t_data *data)
 	return (0);
 }
 
-int ft_start_shell(t_data *data)
-{	
-    while (1)
+int	ft_start_shell(t_data *data)
+{
+	while (1)
 	{
-		if(data->cmd)
+		if (data->cmd)
 			free(data->cmd);
-		data->cmd = readline(BHWHT"⭐ MINISHELL> "COLOR_RESET);
+		data->cmd = readline(BHWHT "⭐ MINISHELL> " COLOR_RESET);
 		if (!data->cmd)
-			break;
+			break ;
 		if (ft_run(data) == 1)
-			continue;
+			continue ;
 	}
-    return (0);
+	return (0);
 }

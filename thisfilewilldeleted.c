@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   thisfilewilldeleted.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 19:50:27 by tkul             ###   ########.fr       */
+/*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/09 21:46:25 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	ft_print_tokens(t_token **token)
 {
-	int	i;
+	t_token	**tmp;
+	t_token	*next;
+	int		i;
 
+	if (!token || !*token)
+		return ;
+	tmp = token;
 	i = 0;
-	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+	while (tmp[i])
+	{
+		next = tmp[i];
+		while (next)
+		{
+			printf("Token %d: type:%d, %s$\n", i, next->type, next->value);
+			next = next->next;
+		}
 		i++;
-	return (s1[i] - s2[i]);
+	}
 }

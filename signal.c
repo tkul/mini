@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/31 18:21:35 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/07/31 22:52:25 by tugcekul         ###   ########.fr       */
+/*   Created: 2024/08/09 19:49:27 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/09 21:01:49 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_qsignal = 0;
+int		g_qsignal = 0;
 
 void	coix(int sig)
 {
@@ -29,7 +29,6 @@ void	ctrl_c(int sig)
 	if (!g_qsignal)
 	{
 		printf("\n");
-		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}

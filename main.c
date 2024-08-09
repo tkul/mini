@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 12:35:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 02:57:27 by tugcekul         ###   ########.fr       */
+/*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/09 21:39:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ft_getenv_by_key(char *key, char **env)
+char	*ft_getenv_by_key(char *key, char **env)
 {
-	int i;
-	int j;
-	int k;
-	char *result;
+	int		i;
+	int		j;
+	int		k;
+	char	*result;
 
 	i = 0;
 	while (env[i])
@@ -39,10 +39,10 @@ char *ft_getenv_by_key(char *key, char **env)
 	return (NULL);
 }
 
-char **ft_getenv(char **env)
+char	**ft_getenv(char **env)
 {
-	int i;
-	char **result;
+	int		i;
+	char	**result;
 
 	i = 0;
 	while (env[i])
@@ -59,7 +59,7 @@ char **ft_getenv(char **env)
 	result[i] = NULL;
 	return (result);
 }
-int ft_init_data(t_data *data, char **env)
+int	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
 	data->status = 0;
@@ -71,11 +71,11 @@ int ft_init_data(t_data *data, char **env)
 	return (0);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_data *data;
 	int exit_status;
-	
+
 	if (ac != 1 || !av)
 		return (0);
 	data = malloc(sizeof(t_data));

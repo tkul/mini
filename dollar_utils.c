@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/05 02:42:03 by tugcekul          #+#    #+#             */
-/*   Updated: 2024/08/05 18:07:00 by tugcekul         ###   ########.fr       */
+/*   Created: 2024/08/09 19:48:23 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/09 19:48:29 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_joinstr_index_creation(char *s1, char *s2, \
-	int start_index, char *new)
+static void	ft_joinstr_index_creation(char *s1, char *s2, int start_index,
+		char *new)
 {
 	int	i;
 	int	j;
