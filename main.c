@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 21:39:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/10 12:51:11 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**ft_getenv(char **env)
 int	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
-	data->status = 0;
+	data->status = 10;
 	data->env = ft_getenv(env);
 	data->tokens = NULL;
 	data->cwd = getcwd(NULL, 0);

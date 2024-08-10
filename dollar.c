@@ -6,13 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 22:31:23 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/10 12:56:44 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*remove_by_index(char *str, int start, int end)
+char	*remove_by_index(char *str, int start, int len)
 {
 	char	*new_str;
 	int		i;
@@ -20,10 +20,10 @@ char	*remove_by_index(char *str, int start, int end)
 
 	i = -1;
 	j = 0;
-	new_str = malloc(sizeof(char) * (ft_strlen(str) - end + 1));
+	new_str = malloc(sizeof(char) * (ft_strlen(str) - len + 1));
 	while (str[++i])
 	{
-		if (i < start || i > start + end)
+		if (i < start || i > start + len)
 		{
 			new_str[j] = str[i];
 			j++;
@@ -60,8 +60,9 @@ int	process_dollar_variable(t_data *data, char **str, int i)
 
 int	handle_dollar(t_data *data, char **str)
 {
-	int	i;
-	int	quote;
+	int		i;
+	int		quote;
+	char	*status;
 
 	i = -1;
 	quote = -1;
@@ -72,12 +73,9 @@ int	handle_dollar(t_data *data, char **str)
 		{
 			if ((*str)[i] == '$' && (*str)[i + 1] == '?')
 			{
-				printf("status: %s\n", ft_itoa(data->status));
-				if (data->status == 0)
-				{
-					*str = remove_by_index(*str, i, 1);
-					*str = ft_joinstr_index(*str, "0", i);
-				}
+				status = ft_itoa(data->status);
+				*str = remove_by_index(*str, i, 1);
+				*str = ft_joinstr_index(*str, status, i);
 			}
 			else if ((*str)[i] == '$' && ft_isalpha((*str)[i + 1]))
 			{
