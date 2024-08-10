@@ -9,6 +9,7 @@ READLINE = -L./lib/readline/lib -I./lib/readline/include/readline -lreadline #-l
 DIR     = $(shell echo $(PWD))
 RM = rm -rf
 RL = ./lib/readline/lib/libreadline.a
+LIB = lib/libft.a
 
 all: $(NAME)
 
@@ -33,7 +34,7 @@ clean:
 		$(RM) $(OBJ)
 
 fclean: clean
-		make -C lib fclean
+		$(RM) $(LIB)
 		$(RM) $(NAME)
 
 re: fclean all
