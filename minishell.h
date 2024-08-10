@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 22:36:24 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/10 15:23:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ extern int			g_qsignal;
 # define HER_DOC 4
 # define CMD 5
 # define ARG 6
+# define FILE 7
+# define DELIMETER 8
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -119,5 +121,8 @@ int					ft_strcmp(char *s1, char *s2);
 int					is_redirection(char *str);
 void				ft_create_token(t_data *data, char *str, int i, int j);
 void				ft_print_tokens(t_token **token);
+t_token				*get_last_token(t_token *token);
+t_token				*new_token(char *value, int type);
+void				token_add_back(t_token **token, t_token *new);
 
 #endif

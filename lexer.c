@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 22:47:14 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/10 15:41:54 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int	ft_lexer(t_data *data)
 		return (-1);
 	if (ft_init_redirections(data) == -1)
 		return (-1);
-	printf("data->cmd: %s\n", data->cmd);
 	cmds = ft_split_by_quote(data->cmd, '|');
 	if (!cmds)
 		return (free(data->lexer), -1);
@@ -138,7 +137,6 @@ int	ft_lexer(t_data *data)
 				return (-1);
 			if (ft_remove_quotes(&(new[j])) == -1)
 				return (-1);
-			printf("new[%d]: %s\n", j, new[j]);
 			ft_create_token(data, new[j], i, j);
 		}
 		ft_free_array(new);
