@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/10 12:56:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/11 15:11:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	process_dollar_variable(t_data *data, char **str, int i)
 		j++;
 	data->lexer->key = ft_substr(*str, i + 1, j - i - 1);
 	if (!data->lexer->key)
-		return (-1);
+		return (ERROR);
 	data->lexer->value = ft_getenv_by_key(data->lexer->key, data->env);
 	if (!data->lexer->value)
 		*str = remove_by_index(*str, i, j - i - 1);
@@ -54,8 +54,8 @@ int	process_dollar_variable(t_data *data, char **str, int i)
 		free(data->lexer->value);
 	}
 	if (!*str)
-		return (-1);
-	return (0);
+		return (ERROR);
+	return (SUCCESS);
 }
 
 int	handle_dollar(t_data *data, char **str)
@@ -79,12 +79,12 @@ int	handle_dollar(t_data *data, char **str)
 			}
 			else if ((*str)[i] == '$' && ft_isalpha((*str)[i + 1]))
 			{
-				if (process_dollar_variable(data, str, i) == -1)
-					return (-1);
+				if (process_dollar_variable(data, str, i) == ERROR)
+					return (ERROR);
 			}
 			if ((*str)[i] == 0)
 				break ;
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }

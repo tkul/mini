@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/10 15:32:11 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/11 15:09:30 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,8 @@ int	ft_count_pipes(char *str)
 		ft_set_quote_type(&quote, str[i]);
 		if (quote == -1 && str[i] == '|')
 		{
-			if (str[i] == '|' && str[i + 1] == '|')
-				return (printf("Error: syntax error near unexpected token `||'\n"),
-					-1);
-			if (str[i + 1] == '\0')
-				return (printf("Error: syntax error near unexpected token `|'\n"),
-					-1);
+			if (is_valid(str) == ERROR)
+				return (ft_error(SYNTAX_ERROR), ERROR);
 			result++;
 		}
 	}
@@ -42,36 +38,36 @@ int	ft_init_tokens(t_data *data)
 {
 	data->pipe_count = ft_count_pipes(data->cmd);
 	if (data->pipe_count == -1)
-		return (-1);
+		return (ERROR);
 	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count
 				+ 2));
 	if (!data->tokens)
-		return (-1);
+		return (ft_error(EXIT_ERROR), ERROR);
 	data->tokens[data->pipe_count + 1] = NULL;
 	while (data->pipe_count >= 0)
 	{
 		data->tokens[data->pipe_count] = NULL;
 		data->pipe_count--;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	ft_run(t_data *data)
 {
 	char	*temp;
-	// int		err;
 
+	// int		err;
 	if (ft_strlen(data->cmd) > 0 && data->cmd[0] != '\n')
 	{
 		add_history(data->cmd);
 		temp = ft_strtrim(data->cmd, " ");
 		if (!temp)
-			return (1);
+			return (ft_error(EXIT_ERROR), 1);
 		free(data->cmd);
 		data->cmd = temp;
-		if (ft_init_tokens(data) == -1)
-			return (1);
-		if (ft_lexer(data) == -1)
+		if (ft_init_tokens(data) == ERROR)
+			return (ERROR);
+		if (ft_lexer(data) == ERROR)
 			return (-1);
 		printf("------------\n");
 		ft_print_tokens(data->tokens);
@@ -81,7 +77,7 @@ int	ft_run(t_data *data)
 		// 	return (1);
 		// }
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	ft_start_shell(t_data *data)
@@ -93,8 +89,8 @@ int	ft_start_shell(t_data *data)
 		data->cmd = readline(BHWHT "⭐ MINISHELL> " COLOR_RESET);
 		if (!data->cmd)
 			break ;
-		if (ft_run(data) == 1)
+		if (ft_run(data) == SUCCESS)
 			continue ;
 	}
-	return (0);
+	return (SUCCESS);
 }

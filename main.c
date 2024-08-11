@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/10 12:51:11 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/11 11:26:25 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_init_data(t_data *data, char **env)
 	data->cwd = getcwd(NULL, 0);
 	data->exit_status = NULL;
 	data->pipe_count = 0;
-	return (0);
+	return (SUCCESS);
 }
 
 int	main(int ac, char **av, char **env)

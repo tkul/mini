@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 19:49:23 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/11 15:11:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	ft_control_quotes(char *s)
 			quote2 = 0;
 	}
 	if (quote != 0 || quote2 != 0)
-		return (printf("Error: unclosed quotes\n"), -1);
-	return (0);
+		return (printf("Error: unclosed quotes\n"), ERROR);
+	return (SUCCESS);
 }
 
 int	ft_remove_quotes(char **s)
@@ -75,8 +75,8 @@ int	ft_remove_quotes(char **s)
 	quote = 0;
 	rm1 = -1;
 	rm2 = -1;
-	if (ft_control_quotes(*s) == -1)
-		return (-1);
+	if (ft_control_quotes(*s) == ERROR)
+		return (ERROR);
 	while ((*s)[++i])
 	{
 		if (quote == 0 && ((*s)[i] == '\"' || (*s)[i] == '\''))
@@ -98,5 +98,5 @@ int	ft_remove_quotes(char **s)
 			i = i - 2;
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }

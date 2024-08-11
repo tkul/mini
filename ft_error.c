@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 15:28:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 15:58:01 by tkul             ###   ########.fr       */
+/*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
+/*   Updated: 2024/08/11 11:36:41 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_tokens(t_token **tokens)
+void	ft_error(int error)
 {
-	t_token	**tmp;
-	t_token	*next;
-	t_token	*tmp2;
-	int		i;
-
-	if (!tokens || !*tokens)
-		return ;
-	tmp = tokens;
-	i = 0;
-	while (tmp[i])
-	{
-		next = tmp[i];
-		while (next)
-		{
-			tmp2 = next;
-			next = next->next;
-			free(tmp2->value);
-			free(tmp2);
-		}
-		i++;
-	}
+	if (error == CMD_NOT_FOUND)
+		printf("Error: command not found\n");
+	if (error == SYNTAX_ERROR)
+		printf("Error: syntax error near unexpected token\n");
 }
+

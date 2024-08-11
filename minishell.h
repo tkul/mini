@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/10 15:23:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/11 15:11:48 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ extern int			g_qsignal;
 # define ARG 6
 # define FILE 7
 # define DELIMETER 8
+
+# define CMD_NOT_FOUND 127
+# define INVALID_ARG 128
+# define SUCCESS 0
+# define ERROR -1
+# define EXIT_ERROR 255
+# define SYNTAX_ERROR 258
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -90,6 +97,8 @@ typedef struct s_data
 	int				*exit_status;
 	int				pipe_count;
 	t_lexer			*lexer;
+	char			**cmds;
+	char			**new;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -124,5 +133,8 @@ void				ft_print_tokens(t_token **token);
 t_token				*get_last_token(t_token *token);
 t_token				*new_token(char *value, int type);
 void				token_add_back(t_token **token, t_token *new);
+void				ft_error(int error);
+int					is_valid(char *str);
+int					ft_control_red(char *str);
 
 #endif
