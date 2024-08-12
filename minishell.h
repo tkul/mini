@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/12 21:44:26 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/13 01:57:21 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ extern int			g_qsignal;
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
-
-// typedef struct s_env
-// {
-// 	char *value;
-// 	struct s_en *next;
-// } t_env;
 
 typedef struct s_token
 {
@@ -117,7 +111,6 @@ int					ft_count_pipes(char *str);
 void				ft_free_tokens(t_token **tokens);
 int					ft_lexer(t_data *data);
 char				**ft_split_by_quote(char const *s, char c);
-// int count_word(char *str, char c);
 int					count_word(const char *str, char c);
 int					handle_dollar(t_data *data, char **str);
 char				*ft_joinstr_index(char *s1, char *s2, int start_index);
@@ -137,5 +130,10 @@ void				ft_error(int error);
 int					is_valid(char *str);
 int					ft_control_token(t_token **token);
 char				*remove_space(char *str);
+int					ft_is_builtins(char *cmd);
+int					ft_pwd(t_data *data);
+int					ft_echo(t_data *data);
+int					ft_env(t_data *data);
+void				ft_execute(t_data *data);
 
 #endif

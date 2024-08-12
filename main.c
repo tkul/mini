@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/12 21:46:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 23:55:46 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	**ft_getenv(char **env)
 	result[i] = NULL;
 	return (result);
 }
+
 int	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
@@ -74,7 +75,7 @@ int	ft_init_data(t_data *data, char **env)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-	int		exit_status;
+	int	exit_status;
 
 	if (ac != 1 || !av)
 		return (0);
