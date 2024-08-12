@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 15:11:48 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:44:26 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,13 +128,14 @@ int					ft_remove_quotes(char **s);
 int					ft_control_quotes(char *s);
 int					ft_strcmp(char *s1, char *s2);
 int					is_redirection(char *str);
-void				ft_create_token(t_data *data, char *str, int i, int j);
+int					ft_create_token(t_data *data, char *str, int i, int j);
 void				ft_print_tokens(t_token **token);
 t_token				*get_last_token(t_token *token);
 t_token				*new_token(char *value, int type);
 void				token_add_back(t_token **token, t_token *new);
 void				ft_error(int error);
 int					is_valid(char *str);
-int					ft_control_red(char *str);
+int					ft_control_token(t_token **token);
+char				*remove_space(char *str);
 
 #endif

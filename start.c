@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 15:09:30 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:42:59 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ int	ft_start_shell(t_data *data)
 			free(data->cmd);
 		data->cmd = readline(BHWHT "⭐ MINISHELL> " COLOR_RESET);
 		if (!data->cmd)
+		{
+			write(1, "exit\n", 5);
 			break ;
+		}
 		if (ft_run(data) == SUCCESS)
 			continue ;
 	}

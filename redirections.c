@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:17 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 16:17:56 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:46:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	ft_init_redirections(t_data *data)
 
 	i = 0;
 	quote = -1;
-	// if (ft_control_red(data->cmd) == ERROR)
-	// 	return (ft_error(SYNTAX_ERROR), ERROR);
 	while ((data->cmd)[i])
 	{
 		ft_set_quote_type(&quote, (data->cmd)[i]);
@@ -101,5 +99,5 @@ int	is_redirection(char *str)
 		if (quote == -1 && ft_strcmp(str, ">") == 0)
 			return (OUT_RED);
 	}
-	return (SUCCESS);
+	return (-1);
 }

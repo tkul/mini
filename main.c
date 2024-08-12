@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 11:26:25 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:46:16 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	ft_init_data(t_data *data, char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	t_data *data;
-	int exit_status;
+	t_data	*data;
+	int		exit_status;
 
 	if (ac != 1 || !av)
 		return (0);

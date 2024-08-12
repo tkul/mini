@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/10 20:35:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:36:30 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_token	*get_last_token(t_token *token)
 	return (current);
 }
 
-void	ft_create_token(t_data *data, char *str, int i, int j)
+int	ft_create_token(t_data *data, char *str, int i, int j)
 {
 	t_token	*new;
 	t_token	*last;
@@ -67,6 +67,8 @@ void	ft_create_token(t_data *data, char *str, int i, int j)
 	if (last && (last->type == IN_RED || last->type == OUT_RED
 			|| last->type == APP_RED || last->type == HER_DOC))
 	{
+		if (red > 0 && red < 5)
+			return (ft_error(SYNTAX_ERROR), ERROR);
 		if (last->type == HER_DOC)
 			new = new_token(ft_strdup(str), DELIMETER);
 		else
@@ -85,4 +87,5 @@ void	ft_create_token(t_data *data, char *str, int i, int j)
 	else
 		new = new_token(ft_strdup(str), ARG);
 	token_add_back(&(data->tokens[i]), new);
+	return (SUCCESS);
 }

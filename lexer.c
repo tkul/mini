@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 15:12:13 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/12 21:43:30 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,14 @@ int	ft_lexer(t_data *data)
 		{
 			if (ft_remove_quotes(&(new[j])) == ERROR)
 				return (ERROR);
-			ft_create_token(data, new[j], i, j);
+			if (ft_create_token(data, new[j], i, j) == ERROR)
+				return (ERROR);
 		}
 		ft_free_array(new);
 	}
 	ft_free_array(cmds);
+	if (ft_control_token(data->tokens) == ERROR)
+		return (ERROR);
 	return (SUCCESS);
 }
+
