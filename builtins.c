@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 01:58:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/13 18:21:04 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,28 @@ int	ft_pwd(t_data *data)
 	return (SUCCESS);
 }
 
-//şimdilik basit echo 
+int	n_control(char *str)
+{
+	int	i;
+
+	i = 1;
+	if (str[0] == '-')
+	{
+		while (str[i])
+		{
+			if (str[i] != 'n')
+				return (ERROR);
+			i++;
+		}
+	}
+	return (SUCCESS);
+}
+
 int	ft_echo(t_data *data)
 {
 	t_token	*token;
 
-	token = data->tokens[0];
+	token = data->tokens[0]; // şimdilik execve olmadığı için ilk tokenı alıyoruz
 	while (token)
 	{
 		if (token->type == ARG)
