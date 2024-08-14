@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/12 21:36:30 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:15:34 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 			|| last->type == APP_RED || last->type == HER_DOC))
 	{
 		if (red > 0 && red < 5)
-			return (ft_error(SYNTAX_ERROR), ERROR);
+			return (ft_error(data, SYNTAX_ERROR), ERROR);
 		if (last->type == HER_DOC)
 			new = new_token(ft_strdup(str), DELIMETER);
 		else
