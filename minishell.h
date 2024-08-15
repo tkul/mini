@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/14 11:16:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 18:43:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_data
 	int				status;
 	t_token			**tokens;
 	char			*cwd;
-	int				*exit_status;
 	int				pipe_count;
 	t_lexer			*lexer;
 	char			**cmds;
@@ -131,10 +130,12 @@ int					is_valid(char *str);
 int					ft_control_token(t_data *data, t_token **token);
 char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
-int					ft_pwd(t_data *data);
-int					ft_echo(t_data *data);
-int					ft_env(t_data *data);
+void				ft_pwd(t_data *data);
+void				ft_echo(t_token *t);
+void				ft_env(t_data *data);
 void				ft_execute(t_data *data);
 void				ft_free_array(char **array);
+void				ft_exit(t_data *data);
+void				ft_redirect_arrange(t_token **tokens);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 21:41:16 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:32:52 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,10 @@ char	**ft_getenv(char **env)
 int	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
-	data->status = 10;
+	data->status = 0;
 	data->env = ft_getenv(env);
 	data->tokens = NULL;
 	data->cwd = getcwd(NULL, 0);
-	data->exit_status = NULL;
 	data->pipe_count = 0;
 	return (SUCCESS);
 }
