@@ -6,13 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 16:43:05 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:14:50 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_count_pipes(char *str)
+int	ft_count_pipes(t_data *data, char *str)
 {
 	int	quote;
 	int	i;
@@ -27,7 +27,7 @@ int	ft_count_pipes(char *str)
 		if (quote == -1 && str[i] == '|')
 		{
 			if (is_valid(str) == ERROR)
-				return (ft_error(SYNTAX_ERROR), ERROR);
+				return (ft_error(data, SYNTAX_ERROR), ERROR);
 			result++;
 		}
 	}
@@ -36,13 +36,13 @@ int	ft_count_pipes(char *str)
 
 int	ft_init_tokens(t_data *data)
 {
-	data->pipe_count = ft_count_pipes(data->cmd);
+	data->pipe_count = ft_count_pipes(data, data->cmd);
 	if (data->pipe_count == -1)
 		return (ERROR);
 	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count
 				+ 2));
 	if (!data->tokens)
-		return (ft_error(EXIT_ERROR), ERROR);
+		return (ft_error(data, EXIT_ERROR), ERROR);
 	data->tokens[data->pipe_count + 1] = NULL;
 	while (data->pipe_count >= 0)
 	{
@@ -62,7 +62,7 @@ int	ft_run(t_data *data)
 		add_history(data->cmd);
 		temp = ft_strtrim(data->cmd, " ");
 		if (!temp)
-			return (ft_error(EXIT_ERROR), 1);
+			return (ERROR);
 		free(data->cmd);
 		data->cmd = temp;
 		if (ft_init_tokens(data) == ERROR)

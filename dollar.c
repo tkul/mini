@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 18:16:12 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 22:18:54 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	handle_dollar(t_data *data, char **str)
 			}
 			else
 				*str = remove_by_index(*str, i, 0);
-			if ((*str)[i] == 0)
-				break ;
+			// if ((*str)[i] == 0)
+			// 	break ;
 		}
 		i++;
 	}

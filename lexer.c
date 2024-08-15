@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/12 21:43:30 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 18:37:55 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,6 @@ int	count_word(const char *str, char c)
 	return (count);
 }
 
-void	ft_free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
 int	ft_lexer(t_data *data)
 {
 	char	**cmds;
@@ -69,7 +56,7 @@ int	ft_lexer(t_data *data)
 	data->lexer = malloc(sizeof(t_lexer));
 	if (!data->lexer)
 		return (-1);
-	data->lexer->pipe_count = ft_count_pipes(data->cmd);
+	data->lexer->pipe_count = ft_count_pipes(data, data->cmd);
 	if (data->lexer->pipe_count == ERROR)
 		return (free(data->lexer), -1);
 	if (ft_control_quotes(data->cmd) == ERROR)
@@ -96,9 +83,9 @@ int	ft_lexer(t_data *data)
 		}
 		ft_free_array(new);
 	}
+	ft_redirect_arrange(data->tokens);
 	ft_free_array(cmds);
-	if (ft_control_token(data->tokens) == ERROR)
+	if (ft_control_token(data, data->tokens) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
 }
-

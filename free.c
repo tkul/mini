@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:28:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/11 15:58:01 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:09:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,17 @@ void	ft_free_tokens(t_token **tokens)
 		}
 		i++;
 	}
+}
+
+void	ft_free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }

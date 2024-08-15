@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 12:22:51 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 18:43:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_data
 	int				status;
 	t_token			**tokens;
 	char			*cwd;
-	int				*exit_status;
 	int				pipe_count;
 	t_lexer			*lexer;
 	char			**cmds;
@@ -107,7 +106,7 @@ void				ctrl_c(int sig);
 void				coix(int sig);
 int					ft_run(t_data *data);
 int					ft_init_tokens(t_data *data);
-int					ft_count_pipes(char *str);
+int					ft_count_pipes(t_data *data, char *str);
 void				ft_free_tokens(t_token **tokens);
 int					ft_lexer(t_data *data);
 char				**ft_split_by_quote(char const *s, char c);
@@ -126,14 +125,17 @@ void				ft_print_tokens(t_token **token);
 t_token				*get_last_token(t_token *token);
 t_token				*new_token(char *value, int type);
 void				token_add_back(t_token **token, t_token *new);
-void				ft_error(int error);
+void				ft_error(t_data *data, int error);
 int					is_valid(char *str);
-int					ft_control_token(t_token **token);
+int					ft_control_token(t_data *data, t_token **token);
 char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
-int					ft_pwd(t_data *data);
-int					ft_echo(t_data *data);
-int					ft_env(t_data *data);
+void				ft_pwd(t_data *data);
+void				ft_echo(t_token *t);
+void				ft_env(t_data *data);
 void				ft_execute(t_data *data);
+void				ft_free_array(char **array);
+void				ft_exit(t_data *data);
+void				ft_redirect_arrange(t_token **tokens);
 
 #endif

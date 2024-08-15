@@ -6,51 +6,71 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/13 18:21:04 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 22:20:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_pwd(t_data *data)
+void	ft_pwd(t_data *data)
 {
 	printf("%s\n", data->cwd);
-	return (SUCCESS);
 }
 
 int	n_control(char *str)
 {
 	int	i;
 
-	i = 1;
-	if (str[0] == '-')
+	i = 2;
+	if (str[0] != '-' || str[1] != 'n')
+		return (ERROR);
+	while (str[i])
 	{
-		while (str[i])
-		{
-			if (str[i] != 'n')
-				return (ERROR);
-			i++;
-		}
+		if (str[i] != 'n')
+			return (ERROR);
+		i++;
 	}
 	return (SUCCESS);
 }
 
-int	ft_echo(t_data *data)
+void	ft_echo(t_token *t)
 {
 	t_token	*token;
+	int		n_flag;
+	int		control;
 
-	token = data->tokens[0]; // şimdilik execve olmadığı için ilk tokenı alıyoruz
+	n_flag = 1;
+	token = t;
+	control = 0;
+	if (!token->next)
+	{
+		printf("\n");
+		return ;
+	}
+	token = token->next;
 	while (token)
 	{
+		if (n_flag == 1 && n_control(token->value) == SUCCESS)
+		{
+			token = token->next;
+			control = 1;
+			continue ;
+		}
+		else
+			n_flag = 0;
 		if (token->type == ARG)
-			printf("%s ", token->value);
+		{
+			printf("%s", token->value);
+			if (token->next)
+				printf(" ");
+		}
 		token = token->next;
 	}
-	printf("\n");
-	return (SUCCESS);
+	if (!control)
+		printf("\n");
 }
 
-int	ft_env(t_data *data)
+void	ft_env(t_data *data)
 {
 	int	i;
 
@@ -60,5 +80,5 @@ int	ft_env(t_data *data)
 		printf("%s\n", data->env[i]);
 		i++;
 	}
-	return (SUCCESS);
 }
+

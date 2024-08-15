@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/12 21:42:08 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/14 11:09:20 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	is_valid(char *str)
 	return (SUCCESS);
 }
 
-int	ft_control_token(t_token **token)
+int	ft_control_token(t_data *data, t_token **token)
 {
 	t_token	*current;
 
@@ -51,7 +51,7 @@ int	ft_control_token(t_token **token)
 			|| current->type == APP_RED || current->type == HER_DOC)
 		{
 			if (current->next == NULL)
-				return (ft_error(SYNTAX_ERROR), ERROR);
+				return (ft_error(data, SYNTAX_ERROR), ERROR);
 		}
 		current = current->next;
 	}
