@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thisfilewilldeleted.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 02:36:49 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/16 19:11:06 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_print_tokens(t_token **token)
 
 void	ft_execute(t_data *data)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (data->tokens[i])
@@ -51,6 +51,10 @@ void	ft_execute(t_data *data)
 				ft_env(data);
 			else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
 				ft_exit(data);
+			else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
+				ft_cd(data);
+			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
+				ft_export(data);
 		}
 		i++;
 	}

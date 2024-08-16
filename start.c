@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/14 11:14:50 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/16 21:29:50 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_count_pipes(t_data *data, char *str)
 		if (quote == -1 && str[i] == '|')
 		{
 			if (is_valid(str) == ERROR)
-				return (ft_error(data, SYNTAX_ERROR), ERROR);
+				return (ft_error(data, SYNTAX_ERROR), -1);
 			result++;
 		}
 	}
@@ -68,7 +68,7 @@ int	ft_run(t_data *data)
 		if (ft_init_tokens(data) == ERROR)
 			return (ERROR);
 		if (ft_lexer(data) == ERROR)
-			return (-1);
+			return (ERROR);
 		ft_print_tokens(data->tokens);
 		ft_execute(data);
 		// if (err == -1)
@@ -86,7 +86,7 @@ int	ft_start_shell(t_data *data)
 	{
 		if (data->cmd)
 			free(data->cmd);
-		data->cmd = readline(BHWHT "⭐ MINISHELL> " COLOR_RESET);
+		data->cmd = readline(BHWHT "⭐MINISHELL> " COLOR_RESET);
 		if (!data->cmd)
 		{
 			write(1, "exit\n", 5);

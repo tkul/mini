@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 02:36:40 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/16 21:55:45 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,55 +121,188 @@ void	ft_env(t_data *data)
 // 	exit(exit_code);
 // }
 
-
-
-
-int validate_exit_value(const char *value)
+int	validate_exit_value(const char *value)
 {
-    int i = 0;
-    if (value[i] == '-')
+	int	i;
+
+	i = 0;
+	if (value[i] == '-')
 		i++;
-    while (value[i])
+	while (value[i])
 	{
-        if (!ft_isdigit(value[i]))
+		if (!ft_isdigit(value[i]))
 			return (EXIT_ERROR);
 		i++;
-    }
-    return (0);
+	}
+	return (0);
 }
 
-void process_exit_code(const char *value, int *exit_code)
+void	process_exit_code(const char *value, int *exit_code)
 {
-    *exit_code = ft_atoi(value);
-    if (*exit_code < 0)
-        *exit_code = 256 + (*exit_code % 256);
+	*exit_code = ft_atoi(value);
+	if (*exit_code < 0)
+		*exit_code = 256 + (*exit_code % 256);
 }
 
 void	ft_exit(t_data *data)
 {
-    t_token *token;
-    int exit_code;
-	int validation_code;
-	
+	t_token	*token;
+	int		exit_code;
+	int		validation_code;
+
 	exit_code = 0;
 	token = *data->tokens;
-    printf("exit\n");
-    if (token && token->next && token->next->next)
-	{	
-        write(2, "exit: too many arguments\n", 26);
-        exit_code = 1;
-    }
+	printf("exit\n");
+	if (token && token->next && token->next->next)
+	{
+		write(2, "exit: too many arguments\n", 26);
+		exit_code = 1;
+	}
 	else if (token && token->next)
 	{
-        validation_code = validate_exit_value(token->next->value);
-        if (validation_code != 0)
+		validation_code = validate_exit_value(token->next->value);
+		if (validation_code != 0)
 		{
-            ft_error(data, EXIT_ERROR);
-            exit_code = validation_code;
-        } 
+			ft_error(data, EXIT_ERROR);
+			exit_code = validation_code;
+		}
 		else
-            process_exit_code(token->next->value, &exit_code);
-    }
-    data->status = exit_code;
-    exit(exit_code);
+			process_exit_code(token->next->value, &exit_code);
+	}
+	data->status = exit_code;
+	exit(exit_code);
+}
+char	**ft_realloc(char **env, int size)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = malloc(sizeof(char *) * (size + 1));
+	if (!new)
+		return (NULL);
+	while (env[i])
+	{
+		new[i] = ft_strdup(env[i]);
+		i++;
+	}
+	new[i] = NULL;
+	free(env);
+	return (new);
+}
+
+void	ft_setenv(t_data *data, char *key, char *value)
+{
+	int		i;
+	char	*new;
+	char	*tmp;
+
+	i = 0;
+	while (data->env[i])
+	{
+		if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0)
+		{
+			free(data->env[i]);
+			tmp = ft_strjoin(key, "=");
+			new = ft_strjoin(tmp, value);
+			free(tmp);
+			data->env[i] = new;
+			return ;
+		}
+		i++;
+	}
+	data->env = ft_realloc(data->env, i + 1);
+	printf("key: %s\n", key);
+	printf("value: %s\n", value);
+	if (!value)
+	{
+		tmp = ft_strjoin(key, "=");
+		new = ft_strjoin(tmp, value);
+	}
+	else
+	{
+		tmp = ft_strjoin(key, "");
+		new = ft_strjoin(tmp, value);
+	}
+	free(tmp);
+	data->env[i - 1] = new;
+}
+
+void	ft_cd(t_data *data)
+{
+	struct stat	buf;
+	t_token		*token;
+
+	data->old_pwd = getcwd(NULL, 0);
+	token = *data->tokens;
+	if (!token->next)
+	{
+		data->path = ft_getenv_by_key("HOME", data->env);
+		if (!data->path)
+		{
+			write(2, "cd: HOME not set\n", 17);
+			data->status = ERROR;
+			return ;
+		}
+	}
+	else
+		data->path = token->next->value;
+	data->ret = stat(data->path, &buf);
+	if (data->ret == -1)
+	{
+		write(2, "cd: no such file or directory: ", 31);
+		write(2, data->path, ft_strlen(data->path));
+		write(2, "\n", 1);
+		data->status = ERROR;
+		return ;
+	}
+	if (!S_ISDIR(buf.st_mode))
+	{
+		write(2, "cd: not a directory: ", 21);
+		write(2, data->path, ft_strlen(data->path));
+		write(2, "\n", 1);
+		data->status = ERROR;
+		return ;
+	}
+	if (chdir(data->path) == -1)
+	{
+		write(2, "cd: error\n", 10);
+		data->status = ERROR;
+		return ;
+	}
+	ft_setenv(data, "OLDPWD", data->old_pwd);
+	data->cwd = getcwd(NULL, 0);
+	data->status = SUCCESS;
+}
+
+void	ft_export(t_data *data)
+{
+	t_token	*token;
+	char	*key;
+	char	*value;
+	int		i;
+
+	token = *data->tokens;
+	i = 0;
+	if (!token->next)
+	{
+		while (data->env[i])
+			printf("declare -x %s\n", data->env[i++]);
+		return ;
+	}
+	token = token->next;
+	while (token)
+	{
+		if (ft_strchr(token->value, '='))
+		{
+			key = ft_substr(token->value, 0, ft_strchr(token->value, '=')
+					- token->value);
+			value = ft_strchr(token->value, '=') + 1;
+			ft_setenv(data, key, value);
+			free(key);
+		}
+		else
+			ft_setenv(data, token->value, "");
+		token = token->next;
+	}
 }
