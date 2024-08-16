@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/15 18:43:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/16 02:36:29 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,5 +137,6 @@ void				ft_execute(t_data *data);
 void				ft_free_array(char **array);
 void				ft_exit(t_data *data);
 void				ft_redirect_arrange(t_token **tokens);
+void				ft_cd(t_data *data);
 
 #endif

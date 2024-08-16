@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/15 18:57:12 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/15 22:52:19 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 	t_token	*new;
 	t_token	*last;
 	int		red;
-	int		k;
 
-	k = 0;
 	red = is_redirection(str);
 	last = get_last_token(data->tokens[i]);
 	if (last && (last->type == IN_RED || last->type == OUT_RED
