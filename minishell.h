@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 20:34:51 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/17 23:56:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 {
 	char			*cmd;
 	char			**env;
+	char			**export;
 	int				status;
 	t_token			**tokens;
 	char			*cwd;
@@ -137,13 +138,16 @@ int					ft_control_token(t_data *data, t_token **token);
 char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
 void				ft_pwd(t_data *data);
-void				ft_echo(t_token *t);
+void				ft_echo(t_data *data, int index);
 void				ft_env(t_data *data);
 void				ft_execute(t_data *data);
 void				ft_free_array(char **array);
-void				ft_exit(t_data *data);
+void				ft_exit(t_data *data, int index);
 void				ft_redirect_arrange(t_token **tokens);
-void				ft_cd(t_data *data);
-void				ft_export(t_data *data);
+void				ft_cd(t_data *data, int index);
+void				ft_export(t_data *data, int index);
+void				ft_setenv(t_data *data, char *key, char *value);
+void				ft_set_export(t_data *data, char *key, char *value);
+char				**ft_realloc(char **env, int size);
 
 #endif

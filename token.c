@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/15 22:52:19 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/17 22:34:28 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	ft_redirect_arrange(t_token **tokens)
 		{
 			if (tmp2->type == CMD)
 				break ;
-			if (is_redirection(tmp2->value) && tmp2->next
-				&& tmp2->next->next && is_redirection(tmp2->next->next->value))
+			if (is_redirection(tmp2->value) && tmp2->next && tmp2->next->next
+				&& is_redirection(tmp2->next->next->value))
 				tmp2->next->next->type = CMD;
 			tmp2 = tmp2->next;
 		}
@@ -85,8 +85,10 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 	t_token	*last;
 	int		red;
 
+	last = NULL;
 	red = is_redirection(str);
-	last = get_last_token(data->tokens[i]);
+	if (data->tokens)
+		last = get_last_token(data->tokens[i]);
 	if (last && (last->type == IN_RED || last->type == OUT_RED
 			|| last->type == APP_RED || last->type == HER_DOC))
 	{

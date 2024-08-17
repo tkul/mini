@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 20:34:40 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/17 22:24:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	ft_init_data(t_data *data, char **env)
 	data->cmd = NULL;
 	data->status = 0;
 	data->env = ft_getenv(env);
+	data->export = ft_getenv(env);
 	data->tokens = NULL;
 	data->cwd = getcwd(NULL, 0);
 	data->pipe_count = 0;
@@ -74,7 +75,7 @@ int	ft_init_data(t_data *data, char **env)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-	int	exit_status;
+	int		exit_status;
 
 	if (ac != 1 || !av)
 		return (0);
