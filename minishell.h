@@ -6,7 +6,7 @@
 /*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 02:36:29 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/18 04:45:23 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <termios.h>
@@ -43,9 +44,10 @@ extern int			g_qsignal;
 # define CMD_NOT_FOUND 127
 # define INVALID_ARG 128
 # define SUCCESS 0
-# define ERROR -1
+# define ERROR 1
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
+# define ERR_NOT_VALID_IDFR 11
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -85,6 +87,7 @@ typedef struct s_data
 {
 	char			*cmd;
 	char			**env;
+	char			**export;
 	int				status;
 	t_token			**tokens;
 	char			*cwd;
@@ -92,6 +95,11 @@ typedef struct s_data
 	t_lexer			*lexer;
 	char			**cmds;
 	char			**new;
+	char			*path;
+	int				ret;
+	char			*old_pwd;
+	int				i;
+	int				j;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -131,12 +139,17 @@ int					ft_control_token(t_data *data, t_token **token);
 char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
 void				ft_pwd(t_data *data);
-void				ft_echo(t_token *t);
+void				ft_echo(t_data *data, int index);
 void				ft_env(t_data *data);
 void				ft_execute(t_data *data);
 void				ft_free_array(char **array);
-void				ft_exit(t_data *data);
+void				ft_exit(t_data *data, int index);
 void				ft_redirect_arrange(t_token **tokens);
-void				ft_cd(t_data *data);
+void				ft_cd(t_data *data, int index);
+void				ft_export(t_data *data, int index);
+void				ft_setenv(t_data *data, char *key, char *value);
+void				ft_set_export(t_data *data, char *key, char *value);
+char				**ft_realloc(char **env, int size);
+int	    			ft_unset(t_data *data, int index);
 
 #endif

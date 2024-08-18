@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/15 18:37:55 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/18 01:16:44 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,44 +47,40 @@ int	count_word(const char *str, char c)
 
 int	ft_lexer(t_data *data)
 {
-	char	**cmds;
-	char	**new;
-	int		i;
-	int		j;
-
-	i = -1;
+	data->i = -1;
 	data->lexer = malloc(sizeof(t_lexer));
 	if (!data->lexer)
 		return (-1);
 	data->lexer->pipe_count = ft_count_pipes(data, data->cmd);
-	if (data->lexer->pipe_count == ERROR)
-		return (free(data->lexer), -1);
+	if (ft_count_pipes(data, data->cmd) == -1)
+		return (free(data->lexer), ERROR);
 	if (ft_control_quotes(data->cmd) == ERROR)
 		return (ERROR);
 	if (ft_init_redirections(data) == ERROR)
 		return (ERROR);
-	cmds = ft_split_by_quote(data->cmd, '|');
-	if (!cmds)
+	data->cmds = ft_split_by_quote(data->cmd, '|');
+	if (!data->cmds)
 		return (free(data->lexer), ERROR);
-	if (handle_dollar(data, cmds) == ERROR)
+	if (handle_dollar(data, data->cmds) == ERROR)
 		return (ERROR);
-	while (cmds[++i])
+	while (data->cmds[++data->i])
 	{
-		new = ft_split_by_quote(cmds[i], ' ');
-		if (!new)
+		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
+		if (!data->new)
 			return (free(data->lexer), ERROR);
-		j = -1;
-		while (new[++j])
+		data->j = -1;
+		while (data->new[++data->j])
 		{
-			if (ft_remove_quotes(&(new[j])) == ERROR)
+			if (ft_remove_quotes(&(data->new[data->j])) == ERROR)
 				return (ERROR);
-			if (ft_create_token(data, new[j], i, j) == ERROR)
+			if (ft_create_token(data, data->new[data->j], data->i,
+					data->j) == ERROR)
 				return (ERROR);
 		}
-		ft_free_array(new);
+		ft_free_array(data->new);
 	}
 	ft_redirect_arrange(data->tokens);
-	ft_free_array(cmds);
+	ft_free_array(data->cmds);
 	if (ft_control_token(data, data->tokens) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
