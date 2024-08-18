@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 23:56:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/18 04:45:23 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ extern int			g_qsignal;
 # define ERROR 1
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
+# define ERR_NOT_VALID_IDFR 11
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -149,5 +150,6 @@ void				ft_export(t_data *data, int index);
 void				ft_setenv(t_data *data, char *key, char *value);
 void				ft_set_export(t_data *data, char *key, char *value);
 char				**ft_realloc(char **env, int size);
+int	    			ft_unset(t_data *data, int index);
 
 #endif

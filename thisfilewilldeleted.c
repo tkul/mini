@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thisfilewilldeleted.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 22:27:54 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/18 02:37:29 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	ft_execute(t_data *data)
 				ft_cd(data, i);
 			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
 				ft_export(data, i);
+			else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
+				ft_unset(data, i);
 		}
 		i++;
 	}

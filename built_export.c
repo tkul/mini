@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 01:29:05 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/18 02:07:06 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ void	ft_set_export(t_data *data, char *key, char *value)
 	char	*tmp;
 
 	i = 0;
-	printf("key:%s\n", key);
-	printf("value:%s\n", value);
 	while (data->export[i])
 	{
-		printf("export:%s\n", data->export[i]);
 		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0)
 		{
 			free(data->export[i]);
