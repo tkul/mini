@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:53:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 23:55:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/19 00:36:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	process_exit_code(const char *value, int *exit_code)
 		*exit_code = 256 + (*exit_code % 256);
 }
 
-void	ft_exit(t_data *data, int index)
+void	ft_exit(t_data *data, int *index)
 {
 	t_token	*token;
 	int		exit_code;
 	int		validation_code;
 
 	exit_code = 0;
-	token = data->tokens[index];
+	token = data->tokens[*index];
 	printf("exit\n");
 	if (token && token->next && token->next->next)
 	{

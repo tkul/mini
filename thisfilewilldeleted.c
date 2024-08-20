@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   thisfilewilldeleted.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 02:37:29 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:25:21 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,24 @@ void	ft_print_tokens(t_token **token)
 		next = tmp[i];
 		while (next)
 		{
-			printf("Token %d: type:%d, %s$\n", i, next->type, next->value);
+			printf("Token %d: type:%d, %s\n", i, next->type, next->value);
 			next = next->next;
 		}
 		i++;
+	}
+}
+
+void	ft_print_token_buffer(t_token *token)
+{
+	t_token	*tmp;
+
+	if (!token)
+		return ;
+	tmp = token;
+	while (tmp)
+	{
+		printf("type:%d, %s, index: %d\n", tmp->type, tmp->value, tmp->index);
+		tmp = tmp->next;
 	}
 }
 
@@ -46,17 +60,17 @@ void	ft_execute(t_data *data)
 			if (ft_strcmp(data->tokens[i]->value, "pwd") == 0)
 				ft_pwd(data);
 			else if (ft_strcmp(data->tokens[i]->value, "echo") == 0)
-				ft_echo(data, i);
+				ft_echo(data, &i);
 			else if (ft_strcmp(data->tokens[i]->value, "env") == 0)
 				ft_env(data);
 			else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
-				ft_exit(data, i);
+				ft_exit(data, &i);
 			else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
-				ft_cd(data, i);
+				ft_cd(data, &i);
 			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
-				ft_export(data, i);
+				ft_export(data, &i);
 			else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
-				ft_unset(data, i);
+				ft_unset(data, &i);
 		}
 		i++;
 	}

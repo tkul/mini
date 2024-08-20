@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 00:44:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/19 00:36:47 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	ft_setenv(t_data *data, char *key, char *value)
 	data->env[i + 1] = NULL;
 }
 
-void	ft_cd(t_data *data, int index)
+void	ft_cd(t_data *data, int *index)
 {
 	struct stat	buf;
 	t_token		*token;
 
 	data->old_pwd = getcwd(NULL, 0);
-	token = data->tokens[index];
+	token = data->tokens[*index];
 	if (!token->next)
 	{
 		data->path = ft_getenv_by_key("HOME", data->env);

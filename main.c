@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 22:24:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/19 01:07:56 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_init_data(t_data *data, char **env)
 	data->tokens = NULL;
 	data->cwd = getcwd(NULL, 0);
 	data->pipe_count = 0;
+	data->token_buffer = NULL;
 	return (SUCCESS);
 }
 

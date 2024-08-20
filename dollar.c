@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 01:17:47 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/20 21:40:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,65 +33,60 @@ char	*remove_by_index(char *str, int start, int len)
 	return (new_str);
 }
 
-int	process_dollar_variable(t_data *data, char **str, int i)
+void	add_to_token_buffer(t_data *data, char *value, int index)
+{
+	char	**arr;
+	t_token	*token;
+	int		i;
+
+	i = 0;
+	arr = ft_split_by_quote(value, ' ');
+	if (!arr)
+		return ;
+	while (arr[i])
+	{
+		if (value[0] == ' ')
+			index = -1;
+		token = new_token(ft_strdup(arr[i]), ARG, index);
+		if (!token)
+			return ;
+		token_add_back(&data->token_buffer, token);
+		i++;
+	}
+}
+
+int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 {
 	int	j;
+	int	index;
 
-	j = i + 1;
+	j = (*i) + 1;
 	while (ft_isalpha((*str)[j]))
 		j++;
-	data->lexer->key = ft_substr(*str, i + 1, j - i - 1);
+	data->lexer->key = ft_substr(*str, (*i) + 1, j - (*i) - 1);
 	if (!data->lexer->key)
 		return (ERROR);
 	data->lexer->value = ft_getenv_by_key(data->lexer->key, data->env);
 	if (!data->lexer->value)
 	{
-		*str = remove_by_index(*str, i, j - i - 1);
-		*str = ft_joinstr_index(*str, "", i);
+		*str = remove_by_index(*str, (*i), j - (*i) - 1);
+		(*i)--;
 		if (!*str)
 			return (ERROR);
 	}
 	else
 	{
-		*str = remove_by_index(*str, i, j - i - 1);
-		*str = ft_joinstr_index(*str, data->lexer->value, i);
+		index = (*i);
+		if (quote != 0)
+			index--;
+		*str = remove_by_index(*str, (*i), j - (*i) - 1);
+		// (*i) -= ft_strlen(data->lexer->key) - 1;
+		add_to_token_buffer(data, data->lexer->value, index);
+		(*i)--;
 		free(data->lexer->key);
 		free(data->lexer->value);
 	}
 	if (!*str)
 		return (ERROR);
-	return (SUCCESS);
-}
-
-int	handle_dollar(t_data *data, char **str)
-{
-	int		i;
-	int		quote;
-	char	*status;
-
-	i = 0;
-	quote = -1;
-	while ((*str)[i])
-	{
-		ft_set_quote_type(&quote, (*str)[i]);
-		if (quote != '\'' && (*str)[i] == '$')
-		{
-			if ((*str)[i] == '$' && (*str)[i + 1] == '?')
-			{
-				status = ft_itoa(data->status);
-				*str = remove_by_index(*str, i, 1);
-				*str = ft_joinstr_index(*str, status, i);
-			}
-			else if ((*str)[i] == '$' && ft_isalpha((*str)[i + 1]))
-			{
-				if (process_dollar_variable(data, str, i) == ERROR)
-					return (ERROR);
-				i--;
-			}
-			else
-				*str = remove_by_index(*str, i, 0);
-		}
-		i++;
-	}
 	return (SUCCESS);
 }

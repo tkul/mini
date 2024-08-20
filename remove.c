@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/14 11:08:30 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/20 22:37:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,21 @@ int	ft_control_quotes(char *s)
 	return (SUCCESS);
 }
 
-int	ft_remove_quotes(char **s)
+int	ft_remove_quotes(t_data *data, char **s)
 {
-	int	i;
-	int	quote;
-	int	rm1;
-	int	rm2;
+	int		i;
+	int		quote;
+	int		rm1;
+	int		rm2;
+	char	*status;
 
-	i = -1;
+	i = 0;
 	quote = 0;
 	rm1 = -1;
 	rm2 = -1;
 	if (ft_control_quotes(*s) == ERROR)
 		return (ERROR);
-	while ((*s)[++i])
+	while ((*s)[i])
 	{
 		if (quote == 0 && ((*s)[i] == '\"' || (*s)[i] == '\''))
 		{
@@ -89,6 +90,20 @@ int	ft_remove_quotes(char **s)
 			quote = 0;
 			rm2 = i;
 		}
+		if (quote != '\'' && (*s)[i] == '$')
+		{
+			if ((*s)[i] == '$' && (*s)[i + 1] == '?')
+			{
+				status = ft_itoa(data->status);
+				*s = remove_by_index(*s, i, 1);
+				*s = ft_joinstr_index(*s, status, i);
+			}
+			else if ((*s)[i] == '$' && ft_isalpha((*s)[i + 1]))
+			{
+				if (process_dollar_variable(data, s, &i, quote) == ERROR)
+					return (ERROR);
+			}
+		}
 		if (rm1 != -1 && rm2 != -1)
 		{
 			remove_index(s, rm1);
@@ -97,6 +112,9 @@ int	ft_remove_quotes(char **s)
 			rm2 = -1;
 			i = i - 2;
 		}
+		i++;
+		if (!*s)
+			break ;
 	}
 	return (SUCCESS);
 }

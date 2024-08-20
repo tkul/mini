@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:52:47 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 23:53:18 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/20 19:03:54 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int	n_control(char *str)
 	return (SUCCESS);
 }
 
-void	ft_echo(t_data *data, int index)
+void	ft_echo(t_data *data, int *index)
 {
 	t_token	*token;
 	int		n_flag;
 	int		control;
 
 	n_flag = 1;
-	token = data->tokens[index];
+	token = data->tokens[*index];
 	control = 0;
 	if (!token->next)
 	{

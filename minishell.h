@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 04:45:23 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/20 21:24:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
+	int				index;
 	struct s_token	*next;
 	struct s_token	*prev;
-
 }					t_token;
 
 typedef struct s_lexer
@@ -100,6 +100,7 @@ typedef struct s_data
 	char			*old_pwd;
 	int				i;
 	int				j;
+	t_token			*token_buffer;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -119,19 +120,19 @@ void				ft_free_tokens(t_token **tokens);
 int					ft_lexer(t_data *data);
 char				**ft_split_by_quote(char const *s, char c);
 int					count_word(const char *str, char c);
-int					handle_dollar(t_data *data, char **str);
+// int					handle_dollar(t_data *data, char **str, int *envflag);
 char				*ft_joinstr_index(char *s1, char *s2, int start_index);
 char				*remove_by_index(char *str, int start, int end);
 void				ft_set_quote_type(int *quote, char c);
 int					ft_init_redirections(t_data *data);
-int					ft_remove_quotes(char **s);
+int					ft_remove_quotes(t_data *data, char **s);
 int					ft_control_quotes(char *s);
 int					ft_strcmp(char *s1, char *s2);
 int					is_redirection(char *str);
 int					ft_create_token(t_data *data, char *str, int i, int j);
 void				ft_print_tokens(t_token **token);
 t_token				*get_last_token(t_token *token);
-t_token				*new_token(char *value, int type);
+t_token				*new_token(char *value, int type, int index);
 void				token_add_back(t_token **token, t_token *new);
 void				ft_error(t_data *data, int error);
 int					is_valid(char *str);
@@ -139,17 +140,21 @@ int					ft_control_token(t_data *data, t_token **token);
 char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
 void				ft_pwd(t_data *data);
-void				ft_echo(t_data *data, int index);
+void				ft_echo(t_data *data, int *index);
 void				ft_env(t_data *data);
 void				ft_execute(t_data *data);
 void				ft_free_array(char **array);
-void				ft_exit(t_data *data, int index);
+void				ft_exit(t_data *data, int *index);
 void				ft_redirect_arrange(t_token **tokens);
-void				ft_cd(t_data *data, int index);
-void				ft_export(t_data *data, int index);
+void				ft_cd(t_data *data, int *index);
+void				ft_export(t_data *data, int *index);
 void				ft_setenv(t_data *data, char *key, char *value);
 void				ft_set_export(t_data *data, char *key, char *value);
 char				**ft_realloc(char **env, int size);
-int	    			ft_unset(t_data *data, int index);
+int					ft_unset(t_data *data, int *index);
+int					my_isalpha(int c);
+int					process_dollar_variable(t_data *data, char **str, int *i,
+						int quote);
+void				ft_print_token_buffer(t_token *token);
 
 #endif

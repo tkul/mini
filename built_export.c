@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 02:07:06 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:19:59 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ void	ft_set_export(t_data *data, char *key, char *value)
 	data->export[i + 1] = NULL;
 }
 
-void	ft_export(t_data *data, int index)
+void	ft_export(t_data *data, int *index)
 {
 	t_token	*token;
 	char	*key;
 	char	*value;
 	int		i;
 
-	token = data->tokens[index];
+	token = data->tokens[*index];
 	i = 0;
 	if (!token->next)
 	{
@@ -85,6 +85,15 @@ void	ft_export(t_data *data, int index)
 	token = token->next;
 	while (token)
 	{
+		if (!(my_isalpha(token->value[i])))
+		{
+			write(2, "⭐MINISHELL> ", 14);
+			write(2, "export: \'", 10);
+			write(2, token->value, strlen(token->value));
+			write(2, "\' not a valid identifier\n", 26);
+			token = token->next;
+			break ;
+		}
 		if (ft_strchr(token->value, '='))
 		{
 			key = ft_substr(token->value, 0, ft_strchr(token->value, '=')

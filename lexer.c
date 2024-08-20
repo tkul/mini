@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 01:16:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/19 07:47:05 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	ft_lexer(t_data *data)
 	data->cmds = ft_split_by_quote(data->cmd, '|');
 	if (!data->cmds)
 		return (free(data->lexer), ERROR);
-	if (handle_dollar(data, data->cmds) == ERROR)
-		return (ERROR);
+	// if (handle_dollar(data, data->cmds, &envflag) == ERROR)
+	// 	return (ERROR);
 	while (data->cmds[++data->i])
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
@@ -71,8 +71,8 @@ int	ft_lexer(t_data *data)
 		data->j = -1;
 		while (data->new[++data->j])
 		{
-			if (ft_remove_quotes(&(data->new[data->j])) == ERROR)
-				return (ERROR);
+			if (ft_remove_quotes(data, &(data->new[data->j])) == ERROR)
+					return (ERROR);
 			if (ft_create_token(data, data->new[data->j], data->i,
 					data->j) == ERROR)
 				return (ERROR);
