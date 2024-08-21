@@ -6,11 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/19 07:53:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 14:37:10 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+//unset tekrar konrol et, tam doğru çalışmıyor
 
 void	ft_unset_unsetter(t_data *data, char *key)
 {
@@ -84,7 +86,7 @@ int	ft_unset(t_data *data, int *index)
 	i = 0;
 	flag = 0;
 	if (index < 0 || !data->tokens || !data->tokens[*index])
-		return (1);
+		return (ERROR);
 	token = data->tokens[*index];
 	while (token)
 	{

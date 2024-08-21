@@ -6,76 +6,44 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 03:22:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 14:35:14 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_realloc(char **env, int size)
+void	ft_handle_export_error(char *value)
 {
-	char	**new;
-	int		i;
-
-	i = 0;
-	new = malloc(sizeof(char *) * (size + 1));
-	if (!new)
-		return (NULL);
-	while (env[i])
-	{
-		new[i] = ft_strdup(env[i]);
-		i++;
-	}
-	new[i] = NULL;
-	free(env);
-	return (new);
+	write(2, "⭐MINISHELL> export: \'", 23);
+	write(2, value, strlen(value));
+	write(2, "\' not a valid identifier\n", 26);
 }
 
-void	ft_set_export(t_data *data, char *key, char *value)
+void	ft_process_export_token(t_data *data, t_token *token)
 {
-	int		i;
-	char	*new;
-	char	*tmp;
+	char	*key;
+	char	*value;
 
-	i = 0;
-	while (data->export[i])
+	if (ft_strchr(token->value, '='))
 	{
-		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0)
-		{
-			free(data->export[i]);
-			tmp = ft_strjoin(key, "=");
-			new = ft_strjoin(tmp, value);
-			free(tmp);
-			data->export[i] = new;
-			return ;
-		}
-		i++;
-	}
-	data->export = ft_realloc(data->export, i + 1);
-	if (value && *value)
-	{
-		tmp = ft_strjoin(key, "=");
-		new = ft_strjoin(tmp, value);
+		key = ft_substr(token->value, 0, ft_strchr(token->value, '=')
+				- token->value);
+		value = ft_strchr(token->value, '=') + 1;
+		ft_setenv(data, key, value);
+		ft_update_export_entry(data, key, value);
+		free(key);
 	}
 	else
-	{
-		tmp = ft_strdup(key);
-		new = ft_strjoin(tmp, value);
-	}
-	free(tmp);
-	data->export[i] = new;
-	data->export[i + 1] = NULL;
+		ft_update_export_entry(data, token->value, "");
 }
 
 void	ft_export(t_data *data, int *index)
 {
 	t_token	*token;
-	char	*key;
-	char	*value;
 	int		i;
 
-	token = data->tokens[*index];
 	i = 0;
+	token = data->tokens[*index];
 	if (!token->next)
 	{
 		while (data->export[i])
@@ -87,24 +55,11 @@ void	ft_export(t_data *data, int *index)
 	{
 		if (!(my_isalpha(token->value[i])))
 		{
-			write(2, "⭐MINISHELL> ", 14);
-			write(2, "export: \'", 10);
-			write(2, token->value, strlen(token->value));
-			write(2, "\' not a valid identifier\n", 26);
+			ft_handle_export_error(token->value);
 			token = token->next;
 			break ;
 		}
-		if (ft_strchr(token->value, '='))
-		{
-			key = ft_substr(token->value, 0, ft_strchr(token->value, '=')
-					- token->value);
-			value = ft_strchr(token->value, '=') + 1;
-			ft_setenv(data, key, value);
-			ft_set_export(data, key, value);
-			free(key);
-		}
-		else
-			ft_set_export(data, token->value, "");
+		ft_process_export_token(data, token);
 		token = token->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 03:21:22 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 11:12:48 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,11 @@ int					my_isalpha(int c);
 int					process_dollar_variable(t_data *data, char **str, int *i,
 						int quote);
 void				ft_print_token_buffer(t_token *token);
+
+void				ft_update_export_entry(t_data *data, char *key,
+						char *value);
+void				ft_update_or_add_export_entry(t_data *data, char *key,
+						char *value);
+char				*ft_create_export_entry(const char *key, const char *value);
 
 #endif
