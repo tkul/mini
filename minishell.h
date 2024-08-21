@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 11:12:48 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/22 01:09:42 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ extern int			g_qsignal;
 # define ERROR 1
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
-# define ERR_NOT_VALID_IDFR 11
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"

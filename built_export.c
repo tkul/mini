@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 14:35:14 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/22 01:00:22 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,16 @@ void	ft_export(t_data *data, int *index)
 	int		i;
 
 	i = 0;
-	token = data->tokens[*index];
-	if (!token->next)
+	token = data->tokens[*index]->next;
+	if (!token)
 	{
 		while (data->export[i])
 			printf("declare -x %s\n", data->export[i++]);
 		return ;
 	}
-	token = token->next;
 	while (token)
 	{
-		if (!(my_isalpha(token->value[i])))
+		if (!(my_isalpha(token->value[0])))
 		{
 			ft_handle_export_error(token->value);
 			token = token->next;

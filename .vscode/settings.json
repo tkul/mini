@@ -28,7 +28,10 @@
         "stdlib.h": "c",
         "atomic": "c",
         "locale": "c",
-        "string": "c"
+        "string": "c",
+        "array": "c",
+        "string_view": "c",
+        "*.tcc": "c"
     },
     "editor.fontSize": 12,
     "files.exclude": {
