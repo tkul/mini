@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/20 23:12:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 02:51:16 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	ft_apply_token_buffer(t_data *data, int i, int is_created_token_is_null)
 	t_token	*ntoken;
 	int		offset;
 	char	*new;
+	char	*tmp_value;
 
 	tmp = data->token_buffer;
 	offset = 0;
@@ -130,7 +131,9 @@ void	ft_apply_token_buffer(t_data *data, int i, int is_created_token_is_null)
 			tmp = tmp->next;
 			continue ;
 		}
+		tmp_value = new;
 		new = ft_joinstr_index(new, tmp->value, tmp->index + offset);
+		free(tmp_value);
 		offset += ft_strlen(tmp->value);
 		tmp = tmp->next;
 	}

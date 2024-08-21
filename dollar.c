@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/20 21:40:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 03:05:36 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,14 @@ void	add_to_token_buffer(t_data *data, char *value, int index)
 		token_add_back(&data->token_buffer, token);
 		i++;
 	}
+	ft_free_array(arr);
 }
 
 int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 {
-	int	j;
-	int	index;
+	int		j;
+	int		index;
+	char	*tmp;
 
 	j = (*i) + 1;
 	while (ft_isalpha((*str)[j]))
@@ -69,7 +71,11 @@ int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 	data->lexer->value = ft_getenv_by_key(data->lexer->key, data->env);
 	if (!data->lexer->value)
 	{
+		tmp = *str;
 		*str = remove_by_index(*str, (*i), j - (*i) - 1);
+		free(tmp);
+		free(data->lexer->key);
+		data->lexer->key = NULL;
 		(*i)--;
 		if (!*str)
 			return (ERROR);
@@ -79,12 +85,15 @@ int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 		index = (*i);
 		if (quote != 0)
 			index--;
+		tmp = *str;
 		*str = remove_by_index(*str, (*i), j - (*i) - 1);
-		// (*i) -= ft_strlen(data->lexer->key) - 1;
+		free(tmp);
 		add_to_token_buffer(data, data->lexer->value, index);
 		(*i)--;
 		free(data->lexer->key);
 		free(data->lexer->value);
+		data->lexer->key = NULL;
+		data->lexer->value = NULL;
 	}
 	if (!*str)
 		return (ERROR);

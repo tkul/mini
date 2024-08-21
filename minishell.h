@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/20 21:24:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 03:21:22 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_lexer
 	int				quote;
 	char			*key;
 	char			*value;
-
 }					t_lexer;
 
 typedef struct s_split
@@ -120,7 +119,6 @@ void				ft_free_tokens(t_token **tokens);
 int					ft_lexer(t_data *data);
 char				**ft_split_by_quote(char const *s, char c);
 int					count_word(const char *str, char c);
-// int					handle_dollar(t_data *data, char **str, int *envflag);
 char				*ft_joinstr_index(char *s1, char *s2, int start_index);
 char				*remove_by_index(char *str, int start, int end);
 void				ft_set_quote_type(int *quote, char c);
