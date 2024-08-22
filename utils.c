@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/14 11:04:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/22 00:59:37 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,11 @@ char	**ft_split_by_quote(const char *str, char c)
 	tmp = s->cmds;
 	free(s);
 	return (tmp);
+}
+
+int	my_isalpha(int c)
+{
+	if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }

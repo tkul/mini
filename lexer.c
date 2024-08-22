@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 01:16:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 03:09:25 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ int	ft_lexer(t_data *data)
 	data->lexer = malloc(sizeof(t_lexer));
 	if (!data->lexer)
 		return (-1);
+	data->lexer->key = NULL;
+	data->lexer->value = NULL;
 	data->lexer->pipe_count = ft_count_pipes(data, data->cmd);
 	if (ft_count_pipes(data, data->cmd) == -1)
 		return (free(data->lexer), ERROR);
 	if (ft_control_quotes(data->cmd) == ERROR)
-		return (ERROR);
+		return (free(data->lexer), ERROR);
 	if (ft_init_redirections(data) == ERROR)
-		return (ERROR);
+		return (free(data->lexer), ERROR);
 	data->cmds = ft_split_by_quote(data->cmd, '|');
 	if (!data->cmds)
 		return (free(data->lexer), ERROR);
-	if (handle_dollar(data, data->cmds) == ERROR)
-		return (ERROR);
 	while (data->cmds[++data->i])
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
@@ -71,17 +71,22 @@ int	ft_lexer(t_data *data)
 		data->j = -1;
 		while (data->new[++data->j])
 		{
-			if (ft_remove_quotes(&(data->new[data->j])) == ERROR)
-				return (ERROR);
+			if (ft_remove_quotes(data, &(data->new[data->j])) == ERROR)
+				return (free(data->lexer), ERROR);
 			if (ft_create_token(data, data->new[data->j], data->i,
 					data->j) == ERROR)
-				return (ERROR);
+				return (free(data->lexer), ERROR);
 		}
 		ft_free_array(data->new);
 	}
 	ft_redirect_arrange(data->tokens);
 	ft_free_array(data->cmds);
 	if (ft_control_token(data, data->tokens) == ERROR)
-		return (ERROR);
+		return (free(data->lexer), ERROR);
+	if (data->lexer->value)
+		free(data->lexer->value);
+	if (data->lexer->key)
+		free(data->lexer->key);
+	free(data->lexer);
 	return (SUCCESS);
 }

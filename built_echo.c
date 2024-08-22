@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:52:47 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/17 23:53:18 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 10:41:43 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,23 @@ int	n_control(char *str)
 	return (SUCCESS);
 }
 
-void	ft_echo(t_data *data, int index)
+int	ft_echo_handle_n_flag(t_token *token, int n_flag)
 {
-	t_token	*token;
-	int		n_flag;
-	int		control;
+	if (n_flag && n_control(token->value) == SUCCESS)
+		return (1);
+	return (0);
+}
+
+void	ft_echo_print_tokens(t_token *token)
+{
+	int	control;
+	int	n_flag;
 
 	n_flag = 1;
-	token = data->tokens[index];
 	control = 0;
-	if (!token->next)
-	{
-		printf("\n");
-		return ;
-	}
-	token = token->next;
 	while (token)
 	{
-		if (n_flag == 1 && n_control(token->value) == SUCCESS)
+		if (n_flag && ft_echo_handle_n_flag(token, n_flag))
 		{
 			token = token->next;
 			control = 1;
@@ -63,4 +62,18 @@ void	ft_echo(t_data *data, int index)
 	}
 	if (!control)
 		printf("\n");
+}
+
+void	ft_echo(t_data *data, int *index)
+{
+	t_token	*token;
+
+	token = data->tokens[*index];
+	if (!token->next)
+	{
+		printf("\n");
+		return ;
+	}
+	token = token->next;
+	ft_echo_print_tokens(token);
 }

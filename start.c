@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 00:57:04 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 03:12:50 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	ft_run(t_data *data)
 {
 	char	*temp;
 
-	// int		err;
 	if (ft_strlen(data->cmd) > 0 && data->cmd[0] != '\n')
 	{
 		add_history(data->cmd);
@@ -66,16 +65,13 @@ int	ft_run(t_data *data)
 		free(data->cmd);
 		data->cmd = temp;
 		if (ft_init_tokens(data) == ERROR)
-			return (ERROR);
+			return (free(data->tokens), ERROR);
 		if (ft_lexer(data) == ERROR)
-			return (ERROR);
+			return (free(data->tokens), ERROR);
 		ft_print_tokens(data->tokens);
 		ft_execute(data);
-		// if (err == -1)
-		// {
-		// 	ft_free_tokens(data->tokens);
-		// 	return (1);
-		// }
+		ft_free_tokens(data->tokens);
+		free(data->tokens);
 	}
 	return (SUCCESS);
 }

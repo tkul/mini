@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/18 00:44:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/21 10:23:47 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,56 @@ void	ft_setenv(t_data *data, char *key, char *value)
 	data->env[i + 1] = NULL;
 }
 
-void	ft_cd(t_data *data, int index)
+void	ft_print_error(const char *path, const char *msg)
+{
+	write(2, "⭐MINISHELL> ", 14);
+	write(2, msg, ft_strlen(msg));
+	if (path)
+	{
+		write(2, path, ft_strlen(path));
+		write(2, "\n", 1);
+	}
+}
+
+int	ft_check_directory(t_data *data)
 {
 	struct stat	buf;
-	t_token		*token;
+
+	data->ret = stat(data->path, &buf);
+	if (data->ret == -1)
+	{
+		ft_print_error(data->path, "cd: no such file or directory: ");
+		data->status = ERROR;
+		return (0);
+	}
+	if (!S_ISDIR(buf.st_mode))
+	{
+		ft_print_error(data->path, "cd: not a directory: ");
+		data->status = ERROR;
+		return (0);
+	}
+	return (1);
+}
+
+void	ft_cd_change_directory(t_data *data)
+{
+	if (chdir(data->path) == -1)
+	{
+		write(2, "cd: error\n", 10);
+		data->status = ERROR;
+		return ;
+	}
+	ft_setenv(data, "OLDPWD", data->old_pwd);
+	data->cwd = getcwd(NULL, 0);
+	data->status = SUCCESS;
+}
+
+void	ft_cd(t_data *data, int *index)
+{
+	t_token	*token;
 
 	data->old_pwd = getcwd(NULL, 0);
-	token = data->tokens[index];
+	token = data->tokens[*index];
 	if (!token->next)
 	{
 		data->path = ft_getenv_by_key("HOME", data->env);
@@ -59,30 +102,7 @@ void	ft_cd(t_data *data, int index)
 	}
 	else
 		data->path = token->next->value;
-	data->ret = stat(data->path, &buf);
-	if (data->ret == -1)
-	{
-		write(2, "cd: no such file or directory: ", 31);
-		write(2, data->path, ft_strlen(data->path));
-		write(2, "\n", 1);
-		data->status = ERROR;
+	if (!ft_check_directory(data))
 		return ;
-	}
-	if (!S_ISDIR(buf.st_mode))
-	{
-		write(2, "cd: not a directory: ", 21);
-		write(2, data->path, ft_strlen(data->path));
-		write(2, "\n", 1);
-		data->status = ERROR;
-		return ;
-	}
-	if (chdir(data->path) == -1)
-	{
-		write(2, "cd: error\n", 10);
-		data->status = ERROR;
-		return ;
-	}
-	ft_setenv(data, "OLDPWD", data->old_pwd);
-	data->cwd = getcwd(NULL, 0);
-	data->status = SUCCESS;
+	ft_cd_change_directory(data);
 }
