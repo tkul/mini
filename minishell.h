@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/22 01:09:42 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/23 02:16:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,9 @@ typedef struct s_split
 	int				k;
 }					t_split;
 
+typedef struct s_exec
+{
+}					t_exec;
 typedef struct s_data
 {
 	char			*cmd;
@@ -99,6 +102,8 @@ typedef struct s_data
 	int				i;
 	int				j;
 	t_token			*token_buffer;
+	int				cmd_amount;
+	int				check;
 }					t_data;
 
 size_t				ft_strlen(const char *str);

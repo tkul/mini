@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/20 21:25:21 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/22 23:47:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,33 +45,5 @@ void	ft_print_token_buffer(t_token *token)
 	{
 		printf("type:%d, %s, index: %d\n", tmp->type, tmp->value, tmp->index);
 		tmp = tmp->next;
-	}
-}
-
-void	ft_execute(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->tokens[i])
-	{
-		if (ft_is_builtins(data->tokens[i]->value) == 1)
-		{
-			if (ft_strcmp(data->tokens[i]->value, "pwd") == 0)
-				ft_pwd(data);
-			else if (ft_strcmp(data->tokens[i]->value, "echo") == 0)
-				ft_echo(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "env") == 0)
-				ft_env(data);
-			else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
-				ft_exit(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
-				ft_cd(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
-				ft_export(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
-				ft_unset(data, &i);
-		}
-		i++;
 	}
 }
