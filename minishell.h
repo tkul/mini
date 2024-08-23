@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 17:34:37 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 18:54:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ char				*ft_joinstr_index(char *s1, char *s2, int start_index);
 char				*remove_by_index(char *str, int start, int end);
 void				ft_set_quote_type(int *quote, char c);
 int					ft_init_redirections(t_data *data);
-int					ft_remove_quotes(t_data *data, char **s);
+int					ft_set_env_varibles(t_data *data, char **s);
 int					ft_control_quotes(char *s);
 int					ft_strcmp(char *s1, char *s2);
 int					is_redirection(char *str);
