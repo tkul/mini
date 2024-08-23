@@ -150,3 +150,19 @@ void	ft_execute(t_data *data)
 	if (data->cmd_amount == 1)
 		ft_run_single_cmd(data, i);
 }
+
+void	ft_execute(t_data *data)
+{
+	t_exec	**exec;
+	int		i;
+
+	i = 0;
+	data->cmd_amount = ft_count_cmds(data->tokens);
+	if (data->cmd_amount < 0)
+		return ;
+	data->check = ft_is_builtins(data->tokens[i]->value);
+	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
+	exec[data->cmd_amount] = NULL;
+	if (data->cmd_amount == 1)
+		ft_run_single_cmd(data, i);
+}

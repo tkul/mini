@@ -77,6 +77,11 @@ int	ft_set_env_varibles(t_data *data, char **s)
 				if (process_dollar_variable(data, s, &i, quote) == ERROR)
 					return (ERROR);
 			}
+			else if ((*s)[i] == '$' && ((*s)[i + 1] == '"' || (*s)[i + 1] == '\''))
+			{
+            	*s = remove_by_index(*s, i, i);
+				i--;
+			}
 		}
 		// if (rm1 != -1 && rm2 != -1)
 		// {
