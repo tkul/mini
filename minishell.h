@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 22:48:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/24 01:22:07 by ayirmili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_token
 
 typedef struct s_lexer
 {
-	int				pipe_count;
 	int				token_count;
 	int				i;
 	int				j;
@@ -124,7 +123,13 @@ typedef struct s_data
 	t_token			*token_buffer;
 	int				cmd_amount;
 	int				check;
+	// asim oluşturulanlar
+	int				*pid;
+	char			*cleaned_cmd;
+	t_exec			*exec;
+	int				*pipe_fd;
 }					t_data;
+
 
 size_t				ft_strlen(const char *str);
 char				*ft_strdup(const char *s1);
@@ -185,5 +190,13 @@ void				ft_update_or_add_export_entry(t_data *data, char *key,
 char				*ft_create_export_entry(const char *key, const char *value);
 void				t_run_single_cmd(t_data *data, int i);
 int					ft_remove_quotes(t_data *data, char **s);
+void    			ft_run_multiple_command(t_data *data);
+char				*clear_quotes(char *cmd);
+int					ft_pipe(t_data *data, t_token **tokens);
+int					ft_create_pipe(t_data *data);
+void				pipe_fork(t_data *data, int i, t_token **tokens);
+void				handle_pipe_dup(t_data *data, int i);
+int					check_direct(t_data *mini, t_token **tokens);
+int					close_fd(t_data *data);
 
 #endif

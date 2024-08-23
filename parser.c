@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 22:47:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/24 01:21:52 by ayirmili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_parser_init(t_data *data)
 		return (ERROR);
 	data->lexer->key = NULL;
 	data->lexer->value = NULL;
-	data->lexer->pipe_count = ft_count_pipes(data, data->cmd);
+	data->pipe_count = ft_count_pipes(data, data->cmd);
 	if (ft_count_pipes(data, data->cmd) == -1)
 		return (free(data->lexer), ERROR);
 	if (ft_control_quotes(data->cmd) == ERROR)
