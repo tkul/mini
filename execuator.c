@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 02:17:29 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 03:22:48 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	ft_execve(t_data *data, int i)
 	char	*path;
 	char	**args;
 	int		status;
-	pid_t		pid;
+	pid_t	pid;
 	int		args_len;
 	int		j;
 	t_token	*tokens;
@@ -66,8 +66,8 @@ void	ft_execve(t_data *data, int i)
 	if (path == NULL)
 	{
 		write(2, "⭐MINISHELL> ", 13);
-        write(2, data->tokens[i]->value, ft_strlen(data->tokens[i]->value));
-        write(2, ": command not found\n", 21);
+		write(2, data->tokens[i]->value, ft_strlen(data->tokens[i]->value));
+		write(2, ": command not found\n", 21);
 		data->status = CMD_NOT_FOUND;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 02:16:38 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 03:24:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int					ft_run(t_data *data);
 int					ft_init_tokens(t_data *data);
 int					ft_count_pipes(t_data *data, char *str);
 void				ft_free_tokens(t_token **tokens);
-int					ft_lexer(t_data *data);
+int					ft_parser(t_data *data);
 char				**ft_split_by_quote(char const *s, char c);
 int					count_word(const char *str, char c);
 char				*ft_joinstr_index(char *s1, char *s2, int start_index);
