@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 02:31:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 17:58:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static void	remove_entry(char **array, char *key)
 	i = 0;
 	while (array[i])
 	{
-		if (strncmp(array[i], key, strlen(key)) == 0
-			&& array[i][strlen(key)] == '=')
+		if (strncmp(array[i], key, strlen(key)) == 0)
 		{
 			free(array[i]);
 			while (array[i + 1])

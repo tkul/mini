@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 03:24:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 17:34:37 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ extern int			g_qsignal;
 # define ERROR 1
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
+# define ERR_NOT_VALID_IDFR 1
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -83,6 +84,25 @@ typedef struct s_split
 
 typedef struct s_exec
 {
+	t_token	**t_ptr1;
+	t_token	*t_ptr2;
+	char	*cmd_path;
+	char	**cmd_args;
+	char	**heredocs;
+	int		err_no;
+	char	*err_value;
+	int		is_without_cmd;
+	int		count_heredocs;
+	int		here_doc_idx;
+	int		out_type;
+	char	*out_file;
+	char	*in_file;
+	int		in_type;
+	int		should_run;
+	char	*is_here_doc;
+	int		in_fd;
+	int		out_fd;
+	int		type;
 }					t_exec;
 typedef struct s_data
 {
@@ -164,5 +184,6 @@ void				ft_update_export_entry(t_data *data, char *key,
 void				ft_update_or_add_export_entry(t_data *data, char *key,
 						char *value);
 char				*ft_create_export_entry(const char *key, const char *value);
+void	ft_run_single_cmd(t_data *data, int i);
 
 #endif
