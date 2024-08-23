@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 19:17:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 22:38:14 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,22 +133,6 @@ void	ft_run_single_cmd(t_data *data, int i)
 		i++;
 	}
 	
-}
-
-void	ft_execute(t_data *data)
-{
-	t_exec	**exec;
-	int		i;
-
-	i = 0;
-	data->cmd_amount = ft_count_cmds(data->tokens);
-	if (data->cmd_amount < 0)
-		return ;
-	data->check = ft_is_builtins(data->tokens[i]->value);
-	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
-	exec[data->cmd_amount] = NULL;
-	if (data->cmd_amount == 1)
-		ft_run_single_cmd(data, i);
 }
 
 void	ft_execute(t_data *data)

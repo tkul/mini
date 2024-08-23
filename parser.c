@@ -6,39 +6,14 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 19:14:33 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 22:47:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-static void	remove_index(char **s, int index)
-{
-	char	*new_str;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
-	new_str = malloc(sizeof(char) * (ft_strlen(*s)));
-	if (!new_str)
-		return ;
-	while ((*s)[i])
-	{
-		if (i == index)
-		{
-			i++;
-			continue ;
-		}
-		new_str[j] = (*s)[i];
-		i++;
-		j++;
-	}
-	new_str[j] = '\0';
-	free(*s);
-	*s = new_str;
-}
 
 void	ft_set_quote_type(int *quote, char c)
 {
@@ -107,62 +82,6 @@ int	ft_parser_free(t_data *data)
 	return (SUCCESS);
 }
 
-static void ft_remove_quotes(t_data *data)
-{
-	int		i;
-	int		quote;
-	int		rm1;
-	int		rm2;
-	char	*s;
-	t_token	*tmp;
-	int		j;
-
-	i = 0;
-	j = 0;
-	quote = 0;
-	rm1 = -1;
-	rm2 = -1;
-	while (data->tokens[j])
-	{
-		tmp = data->tokens[j];
-		while (tmp)
-		{
-			s = ft_strdup(tmp->value);
-			i = 0;
-			rm1 = -1;
-			rm2 = -1;
-			while (s[i])
-			{
-				if (quote == 0 && (s[i] == '\"' || s[i] == '\''))
-				{
-					quote = s[i];
-					rm1 = i;
-				}
-				else if (s[i] == quote)
-				{
-					quote = 0;
-					rm2 = i;
-				}
-				if (rm1 != -1 && rm2 != -1)
-				{
-					remove_index(&s, rm1);
-					remove_index(&s, rm2 - 1);
-					rm1 = -1;
-					rm2 = -1;
-					i = i - 2;
-				}
-				i++;
-				if (!s)
-					break ;
-			}
-			free(tmp->value);
-			tmp->value = s;
-			tmp = tmp->next;
-		}
-		j++;
-	}
-}
-
 int	ft_parser(t_data *data)
 {
 	if (ft_parser_init(data) == ERROR)
@@ -175,7 +94,7 @@ int	ft_parser(t_data *data)
 		data->j = -1;
 		while (data->new[++data->j])
 		{
-			if (ft_set_env_varibles(data, &(data->new[data->j])) == ERROR)
+			if (ft_remove_quotes(data, &(data->new[data->j])) == ERROR)
 				return (free(data->lexer), ERROR);
 			if (ft_create_token(data, data->new[data->j], data->i,
 					data->j) == ERROR)
@@ -183,7 +102,6 @@ int	ft_parser(t_data *data)
 		}
 		ft_free_array(data->new);
 	}
-	ft_remove_quotes(data);
 	ft_redirect_arrange(data->tokens);
 	if (ft_parser_free(data) == ERROR)
 		return (ERROR);
