@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 03:09:25 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 03:35:25 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	count_word(const char *str, char c)
 	return (count);
 }
 
-int	ft_lexer(t_data *data)
+int	ft_parser_init(t_data *data)
 {
 	data->i = -1;
 	data->lexer = malloc(sizeof(t_lexer));
 	if (!data->lexer)
-		return (-1);
+		return (ERROR);
 	data->lexer->key = NULL;
 	data->lexer->value = NULL;
 	data->lexer->pipe_count = ft_count_pipes(data, data->cmd);
@@ -63,6 +63,26 @@ int	ft_lexer(t_data *data)
 	data->cmds = ft_split_by_quote(data->cmd, '|');
 	if (!data->cmds)
 		return (free(data->lexer), ERROR);
+	return (SUCCESS);
+}
+
+int	ft_parser_free(t_data *data)
+{
+	ft_free_array(data->cmds);
+	if (ft_control_token(data, data->tokens) == ERROR)
+		return (free(data->lexer), ERROR);
+	if (data->lexer->value)
+		free(data->lexer->value);
+	if (data->lexer->key)
+		free(data->lexer->key);
+	free(data->lexer);
+	return (SUCCESS);
+}
+
+int	ft_parser(t_data *data)
+{
+	if (ft_parser_init(data) == ERROR)
+		return (ERROR);
 	while (data->cmds[++data->i])
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
@@ -80,13 +100,7 @@ int	ft_lexer(t_data *data)
 		ft_free_array(data->new);
 	}
 	ft_redirect_arrange(data->tokens);
-	ft_free_array(data->cmds);
-	if (ft_control_token(data, data->tokens) == ERROR)
-		return (free(data->lexer), ERROR);
-	if (data->lexer->value)
-		free(data->lexer->value);
-	if (data->lexer->key)
-		free(data->lexer->key);
-	free(data->lexer);
+	if (ft_parser_free(data) == ERROR)
+		return (ERROR);
 	return (SUCCESS);
 }

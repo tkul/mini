@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 03:05:36 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 03:21:46 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,46 +56,58 @@ void	add_to_token_buffer(t_data *data, char *value, int index)
 	ft_free_array(arr);
 }
 
-int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
+int	handle_dollar_variable_not_found(t_data *data, char **str, int *i)
 {
-	int		j;
-	int		index;
 	char	*tmp;
 
-	j = (*i) + 1;
-	while (ft_isalpha((*str)[j]))
-		j++;
-	data->lexer->key = ft_substr(*str, (*i) + 1, j - (*i) - 1);
+	tmp = *str;
+	*str = remove_by_index(*str, (*i), data->lexer->j - (*i) - 1);
+	free(tmp);
+	free(data->lexer->key);
+	data->lexer->key = NULL;
+	(*i)--;
+	if (!*str)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int	handle_existing_dollar_variable(t_data *data, char **str, int *i,
+		int index)
+{
+	char	*tmp;
+
+	tmp = *str;
+	*str = remove_by_index(*str, (*i), data->lexer->j - (*i) - 1);
+	free(tmp);
+	add_to_token_buffer(data, data->lexer->value, index);
+	(*i)--;
+	free(data->lexer->key);
+	free(data->lexer->value);
+	data->lexer->key = NULL;
+	data->lexer->value = NULL;
+	if (!*str)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
+{
+	int		index;
+
+	data->lexer->j = (*i) + 1;
+	while (ft_isalpha((*str)[data->lexer->j]))
+		data->lexer->j++;
+	data->lexer->key = ft_substr(*str, (*i) + 1, data->lexer->j - (*i) - 1);
 	if (!data->lexer->key)
 		return (ERROR);
 	data->lexer->value = ft_getenv_by_key(data->lexer->key, data->env);
 	if (!data->lexer->value)
-	{
-		tmp = *str;
-		*str = remove_by_index(*str, (*i), j - (*i) - 1);
-		free(tmp);
-		free(data->lexer->key);
-		data->lexer->key = NULL;
-		(*i)--;
-		if (!*str)
-			return (ERROR);
-	}
+		return (handle_dollar_variable_not_found(data, str, i));
 	else
 	{
 		index = (*i);
 		if (quote != 0)
 			index--;
-		tmp = *str;
-		*str = remove_by_index(*str, (*i), j - (*i) - 1);
-		free(tmp);
-		add_to_token_buffer(data, data->lexer->value, index);
-		(*i)--;
-		free(data->lexer->key);
-		free(data->lexer->value);
-		data->lexer->key = NULL;
-		data->lexer->value = NULL;
+		return (handle_existing_dollar_variable(data, str, i, index));
 	}
-	if (!*str)
-		return (ERROR);
-	return (SUCCESS);
 }

@@ -3,49 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   built_unset.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/22 01:19:35 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/23 02:31:44 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void remove_entry(char **array, char *key)
+static void	remove_entry(char **array, char *key)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (array[i])
-    {
-        if (strncmp(array[i], key, strlen(key)) == 0
-            && array[i][strlen(key)] == '=')
-        {
-            free(array[i]);
-            while (array[i + 1])
-            {
-                array[i] = array[i + 1];
-                i++;
-            }
-            array[i] = NULL;
-            return ;
-        }
-        i++;
-    }
+	i = 0;
+	while (array[i])
+	{
+		if (strncmp(array[i], key, strlen(key)) == 0
+			&& array[i][strlen(key)] == '=')
+		{
+			free(array[i]);
+			while (array[i + 1])
+			{
+				array[i] = array[i + 1];
+				i++;
+			}
+			array[i] = NULL;
+			return ;
+		}
+		i++;
+	}
 }
 
-void ft_unset_unsetter(t_data *data, char *key)
+void	ft_unset_unsetter(t_data *data, char *key)
 {
-    remove_entry(data->env, key);
-    remove_entry(data->export, key);
+	remove_entry(data->env, key);
+	remove_entry(data->export, key);
 }
 
 int	ft_unset(t_data *data, int *index)
 {
 	t_token	*token;
 
-    token = data->tokens[*index]->next;
+	token = data->tokens[*index]->next;
 	while (token)
 	{
 		if (ft_strchr(token->value, '=') || !(my_isalpha(token->value[0])))
