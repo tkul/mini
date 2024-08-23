@@ -6,7 +6,7 @@
 /*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:43:39 by ayirmili          #+#    #+#             */
-/*   Updated: 2024/08/24 01:22:34 by ayirmili         ###   ########.fr       */
+/*   Updated: 2024/08/24 01:26:43 by ayirmili         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	fork_exec(t_data *data, t_token **tokens, int i)
 {
     // printf("tokens[i] %s\n", tokens[i]->value);
 
+    (void)i;
+    (void)tokens;
     (void)data;
 	// data->path = find_path(data, tokens[i]);
 	
