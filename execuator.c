@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 18:01:55 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/23 19:17:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,4 @@ void	ft_execute(t_data *data)
 	exec[data->cmd_amount] = NULL;
 	if (data->cmd_amount == 1)
 		ft_run_single_cmd(data, i);
-	
 }
