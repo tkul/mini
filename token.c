@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 22:39:31 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/26 00:47:16 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ft_redirect_arrange(t_token **tokens)
 		{
 			if (tmp2->type == CMD)
 				break ;
-			if (is_redirection(tmp2->value) && tmp2->next && tmp2->next->next
-				&& is_redirection(tmp2->next->next->value))
-				tmp2->next->next->type = CMD;
+			if (ft_is_redirection_single(tmp2) && tmp2->next && tmp2->next->next
+				&& !ft_is_redirection_single(tmp2->next->next))
+					tmp2->next->next->type = CMD;
 			tmp2 = tmp2->next;
 		}
 	}

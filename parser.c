@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/24 01:21:52 by ayirmili         ###   ########.fr       */
+/*   Updated: 2024/08/26 23:57:01 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ int	ft_parser_init(t_data *data)
 	if (ft_init_redirections(data) == ERROR)
 		return (free(data->lexer), ERROR);
 	data->cmds = ft_split_by_quote(data->cmd, '|');
-	if (!data->cmds)
-		return (free(data->lexer), ERROR);
 	return (SUCCESS);
 }
 
@@ -89,6 +87,8 @@ int	ft_parser(t_data *data)
 	while (data->cmds[++data->i])
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
+		if (!data->new)
+			return (free(data->lexer), ERROR);
 		if (!data->new)
 			return (free(data->lexer), ERROR);
 		data->j = -1;

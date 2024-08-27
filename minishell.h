@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/24 01:22:07 by ayirmili         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:27:42 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ extern int			g_qsignal;
 # define FILE 7
 # define DELIMETER 8
 
+# define IN_HEREDOC 2
+# define AFTER_HEREDOC 3
+# define IN_CMD 4
+# define AFTER_CMD 5
+
+# define CMD_ARG 18
+# define CMD_PATH 19
+# define CMD_BUILTIN 20
+# define CMD_WITHOUT_CMD 21
+
 # define CMD_NOT_FOUND 127
 # define INVALID_ARG 128
 # define SUCCESS 0
@@ -48,6 +58,9 @@ extern int			g_qsignal;
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
 # define ERR_NOT_VALID_IDFR 1
+# define ERR_PIPE_INIT 124
+# define ERR_PERMISSION_DENIED 1261
+# define ERR_NO_FILE_OR_DIR 1
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -83,16 +96,11 @@ typedef struct s_split
 
 typedef struct s_exec
 {
-	t_token	**t_ptr1;
-	t_token	*t_ptr2;
-	char	*cmd_path;
 	char	**cmd_args;
 	char	**heredocs;
 	int		err_no;
 	char	*err_value;
 	int		is_without_cmd;
-	int		count_heredocs;
-	int		here_doc_idx;
 	int		out_type;
 	char	*out_file;
 	char	*in_file;
@@ -101,7 +109,12 @@ typedef struct s_exec
 	char	*is_here_doc;
 	int		in_fd;
 	int		out_fd;
+	int		count_heredocs;
 	int		type;
+	char	*path;
+	int	    **std_fd;
+	char	*cmd_path;
+	int		here_doc_idx;
 }					t_exec;
 typedef struct s_data
 {
@@ -123,11 +136,12 @@ typedef struct s_data
 	t_token			*token_buffer;
 	int				cmd_amount;
 	int				check;
-	// asim oluşturulanlar
-	int				*pid;
-	char			*cleaned_cmd;
-	t_exec			*exec;
-	int				*pipe_fd;
+	int 			is_red;
+	int 			*forks;
+	int 			*pipes;
+	char			**args;
+	int 			control;
+	t_exec			**exec;
 }					t_data;
 
 
@@ -198,5 +212,30 @@ void				pipe_fork(t_data *data, int i, t_token **tokens);
 void				handle_pipe_dup(t_data *data, int i);
 int					check_direct(t_data *mini, t_token **tokens);
 int					close_fd(t_data *data);
-
+void				ft_execve(t_data *data,t_exec **exec, int i);
+char				*find_in_path(char *path, char *cmd);
+int					ft_count_cmds(t_token **tokens);
+void				ft_run_builtin(t_data *data, int i);
+void    			ft_init_exec(t_data *data, t_exec **exec,t_token *token);
+int					ft_is_redirection(t_token *token);
+void				ft_init_here_docs(t_data *data, t_exec **exec, int i);
+int					ft_count_heredocs(t_token *token);
+char	* ft_is_here_doc2(t_exec *exec,t_token *token);
+char	* ft_is_here_doc(t_token *token);
+int	ft_count_heredocs(t_token *token);
+int	isredwocmd(t_token *tokens, int cmd_amount, int j);
+void	ft_run_heredoc_without_cmd(t_token *token,t_exec **exec, int i);
+int	ft_is_redirection_single(t_token *token);
+void    ft_set_args(t_data *data, t_exec **exec, t_token *token);
+void	ft_init_pipes(t_data *data);
+void    ft_set_path(t_data *data, t_exec **exec, t_token *token);
+void	ft_print_exec_errors(t_data *data, t_exec **exec);
+void	ft_set_exec_err(t_exec *exec, int err, char *value);
+void	ft_init_dupes(t_data *data, t_exec *exec, int i);
+void	close_redir_fd(t_data *data, t_exec *exec, int fd1, int fd2);
+int	close_redir_pipe_fd(t_data *data, t_exec *exec, int i);
+void	mother_close_pipes_all(t_data *data);
+void	close_pipes_all(int *pipes, int cmd_amount, int i);
+void	ft_is_without_cmd(t_exec *exec, t_data *data);
+int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
 #endif

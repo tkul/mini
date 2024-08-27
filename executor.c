@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/24 01:11:24 by ayirmili         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:02:18 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_count_cmds(t_token **tokens)
+int	ft_dup_redictions(t_exec *exec, t_data *data)
 {
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (tokens[i])
-	{
-		if (tokens[i]->type == CMD)
-			count++;
-		i++;
-	}
-	return (count);
+	if (data->cmd_amount == 1 && exec->in_file && exec->type == CMD_BUILTIN \
+		&& exec->in_type != APP_RED)
+		return (close(exec->in_fd), 0);
+	if (exec->in_file && exec->in_type == IN_RED && !exec->is_here_doc)
+		dup2(exec->in_fd, 0);
+	else if (exec->in_file && !exec->is_here_doc)
+		dup2(exec->in_fd, 0);
+	if (exec->out_file)
+		dup2(exec->out_fd, 1);
+	if (exec->in_fd && exec->is_here_doc)
+		dup2(exec->in_fd, 0);
+	return (0);
 }
 
 char	*find_in_path(char *path, char *cmd)
@@ -36,6 +36,8 @@ char	*find_in_path(char *path, char *cmd)
 
 	i = 0;
 	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);	
 	while (dirs[i])
 	{
 		tmp = ft_strjoin(dirs[i], "/");
@@ -51,104 +53,333 @@ char	*find_in_path(char *path, char *cmd)
 	return (NULL);
 }
 
-void	ft_execve(t_data *data, int i)
+void	ft_execve(t_data *data, t_exec **exec, int i)
 {
-	char	*path;
-	char	**args;
 	int		status;
 	pid_t	pid;
-	int		args_len;
-	int		j;
-	t_token	*tokens;
-
-	path = find_in_path(ft_getenv_by_key("PATH", data->env),
-			data->tokens[i]->value);
-	if (path == NULL)
-	{
-		write(2, "⭐MINISHELL> ", 13);
-		write(2, data->tokens[i]->value, ft_strlen(data->tokens[i]->value));
-		write(2, ": command not found\n", 21);
-		data->status = CMD_NOT_FOUND;
+	t_token	*token;
+	
+	token = data->tokens[i];
+	(void)exec;
+	
+	if (data->control != 0)
+		ft_set_path(data, exec, token);
+	if (data->path == NULL)
 		return ;
-	}
-	tokens = data->tokens[i];
-	args_len = 0;
-	while (tokens)
-	{
-		if (tokens->type == ARG)
-			args_len++;
-		tokens = tokens->next;
-	}
-	args = malloc(sizeof(char *) * (args_len + 2));
-	args[args_len + 1] = NULL;
-	j = 1;
-	args[0] = ft_strdup(path);
-	tokens = data->tokens[i];
-	while (tokens)
-	{
-		if (tokens->type == ARG)
-		{
-			args[j] = ft_strdup(tokens->value);
-			j++;
-		}
-		tokens = tokens->next;
-	}
+	ft_set_args(data, exec, token);
 	pid = fork();
-	if (pid == 0)
+	if (!pid)
 	{
-		execve(path, args, data->env);
+		if (exec[i]->is_without_cmd)
+			mother_close_pipes_all(data);
+		ft_dup_redictions(exec[i], data);
+		execve(data->path, data->args, data->env);
 		exit(0);
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			data->status = WEXITSTATUS(status);
 	}
+	waitpid(pid, &status, 0);
+}
+void	close_pipes_all(int *pipes, int cmd_amount, int i)
+{
+	int	j;
+
+	j = -1;
+	while (++j < cmd_amount * 2)
+	{
+		if ((i == 0 && j != i * 2 + 1)
+			|| (i == cmd_amount - 1 && j != (i - 1) * 2)
+			|| (i != 0 && i != cmd_amount - 1 && j != (i - 1) * 2 \
+				&& j != i * 2 + 1))
+		{
+			close(pipes[j]);
+		}
+	}
 }
 
-void	ft_run_single_cmd(t_data *data, int i)
+
+void	mother_close_pipes_all(t_data *data)
 {
-	while (data->tokens[i])
+	int	j;
+
+	j = 0;
+	while (j < data->cmd_amount * 2)
 	{
-		if (data->check > 0 && data->cmd_amount == 1)
-		{
-			if (ft_strcmp(data->tokens[i]->value, "pwd") == 0)
-				ft_pwd(data);
-			else if (ft_strcmp(data->tokens[i]->value, "echo") == 0)
-				ft_echo(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "env") == 0)
-				ft_env(data);
-			else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
-				ft_exit(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
-				ft_cd(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
-				ft_export(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
-				ft_unset(data, &i);
-		}
-		else
-			ft_execve(data, i);
-		i++;
+		close(data->pipes[j]);
+		j++;
 	}
-	
+}
+static void	ft_run_exec(t_data *data, int cmd_amount, int i)
+{
+	close_pipes_all(data->pipes, cmd_amount, i);
+	if (data->check > 0)
+	{
+		ft_run_builtin(data, i);
+		exit(data->status);
+	}
+	if (execve(data->path, data->args, data->env) == -1)
+		exit(1);
+}
+
+void	ft_run_commands(t_data *data, int i)
+{
+	if (i == 0)
+	{
+		dup2(data->pipes[i * 2 + 1], 1);
+		ft_run_exec(data,data->cmd_amount, i);
+	}
+	else if (i == data->cmd_amount - 1)
+	{
+		dup2(data->pipes[(i - 1) * 2], 0);
+		ft_run_exec(data, data->cmd_amount, i);
+	}
+	else
+	{
+		dup2(data->pipes[(i - 1) * 2], 0);
+		dup2(data->pipes[i * 2 + 1], 1);
+		ft_run_exec(data, data->cmd_amount, i);
+	}
+}
+
+void	ft_run_redirects(t_data *data, t_exec **exec, int i)
+{
+	if (exec[i]->should_run && !exec[i]->is_here_doc)
+		ft_run_commands(data, i);
+	ft_dup_redictions(exec[i], data);
+	ft_init_dupes(data, exec[i], i);
+	if (data->check > 0)
+	{
+		ft_run_builtin(data, i);
+		exit(data->status);
+	}
+	close_redir_pipe_fd(data, exec[i], i);
+	if (exec[i]->should_run && exec[i]->is_here_doc)
+		ft_error(data,ERR_NO_FILE_OR_DIR);
+	execve(data->path,data->args, data->env);
+}
+
+static void	ft_run_pipes(t_data *data, t_exec **exec, int i, t_token *token)
+{
+	ft_set_path(data, exec, token);
+	ft_set_args(data, exec, token);
+	if (exec[i]->type == CMD_WITHOUT_CMD)
+	{
+		mother_close_pipes_all(data);
+		exit(0);
+	}
+	else if (exec[i]->should_run)
+	{
+		mother_close_pipes_all(data);
+		exit(1);
+	}
+	else if (!data->path && exec[data->cmd_amount - 1]->type != CMD_BUILTIN) // check if last command is not built-in 
+	{
+		mother_close_pipes_all(data);
+		exit(127);
+	}
+	else if (!exec[i]->in_type && !exec[i]->out_type)
+		ft_run_commands(data, i);
+	else
+		ft_run_redirects(data, exec, i);
+}
+
+void	ft_exec_part(t_data *data, t_exec **exec, t_token *token)
+{
+	int	i;
+
+	i = -1;
+	while (exec[++i])
+	{
+		data->forks[i] = fork();
+		if (data->forks[i] == 0)
+			ft_run_pipes(data, exec, i, token);
+	}
+}
+
+
+void	ft_run_single_cmd(t_data *data, t_exec **exec, int i)
+{
+	int	fd1;
+	int	fd2;
+
+	// if (exec[0]->should_run && !exec[0]->is_here_doc)
+	// 	return ;
+	if (data->check > 0)
+	{
+		fd1 = dup(1);
+		fd2 = dup(0);
+		ft_run_builtin(data, i);
+		return(close_redir_fd(data, exec[0], fd1, fd2));
+	}
+	else
+		ft_execve(data, exec, i);
+	return ;
+}
+
+static int	ft_for_in_file(t_data *data ,t_exec *exec)
+{
+	if (!access(exec->in_file, F_OK) && access(exec->in_file, R_OK) == -1)
+	{
+		exec->should_run = 1;
+		if (!exec->is_here_doc)
+			ft_error(data, ERR_PERMISSION_DENIED);
+		return (126);
+	}
+	exec->should_run = 1;
+	if (exec->is_here_doc)
+		return (0);
+	// ft_set_exec_err(exec, ERR_NO_FILE_OR_DIR, exec->in_file);
+	return (ERR_NO_FILE_OR_DIR);
+}
+
+static int	ft_for_out_file(t_data *data, t_exec *exec)
+{
+	if (!access(exec->out_file, F_OK) && access(exec->out_file, W_OK) == -1)
+	{
+		exec->should_run = 1;
+		ft_error(data, ERR_PERMISSION_DENIED);
+		return (1);
+	}
+	exec->should_run = 1;
+	// ft_set_exec_err(exec, ERR_NO_FILE_OR_DIR, exec->out_file);
+	return (ERR_NO_FILE_OR_DIR);
+}
+
+int	ft_open_check_files(t_exec *exec, int status, t_data *data)
+{
+	if (exec->in_file || exec->is_here_doc)
+	{
+		if (exec->in_type == IN_RED && exec->should_run == 0)
+			exec->in_fd = open(exec->in_file, O_RDONLY);
+		else if (exec->in_type == HER_DOC)
+		{
+			exec->heredocs[exec->here_doc_idx] = ft_strdup(exec->in_file);
+			exec->here_doc_idx++;
+		}
+		if (exec->in_fd == -1 && exec->should_run == 0)
+			return (ft_for_in_file(data,exec));
+	}
+	if (exec->out_file && exec->should_run == 0)
+	{
+		if (exec->out_type == OUT_RED)
+			exec->out_fd = open(exec->out_file, \
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else if (exec->out_type == APP_RED)
+			exec->out_fd = open(exec->out_file, \
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (exec->out_fd == -1 && exec->should_run == 0)
+			return (ft_for_out_file(data, exec));
+	}
+	return (status);
+}
+
+int	ft_init_redirection(t_data *data, t_exec *exec, t_token *token)
+{
+	int		i;
+	int 	j;
+
+	i = 0;
+	j = 0;
+	exec->heredocs = malloc(sizeof(char *) * (exec->count_heredocs + 1));
+	exec->heredocs[exec->count_heredocs] = NULL;
+	while (token)
+	{
+		if (ft_is_redirection_single(token) && token->next)
+		{
+			if (token->type == IN_RED || token->type == HER_DOC)
+			{
+				exec->in_type = token->type;
+				exec->in_file = ft_strdup(token->next->value);
+			}
+			else if (token->type == OUT_RED || token->type == APP_RED)
+			{
+				exec->out_type = token->type;
+				exec->out_file = ft_strdup(token->next->value);
+			}
+			i = ft_open_check_files(exec, i, data);
+		}
+		token = token->next;
+	}
+	return (i);
+}
+
+static void	ft_wait_part(t_data *data)
+{
+	int	i;
+
+	i = data->cmd_amount - 1;
+	while (i >= 0)
+	{
+		if (i == data->cmd_amount - 1)
+		{
+			waitpid(data->forks[i], &data->status, 0);
+			data->status = WEXITSTATUS(data->status);
+		}
+		waitpid(data->forks[i], NULL, 0);
+		i--;
+	}
+}
+
+void	ft_start_exec(t_data *data, t_exec **exec, int i)
+{
+	t_token *token;
+	int 	j;
+	int 	err;
+	t_token *tmp;
+
+	j = 0;
+	err = 0;
+	token = data->tokens[i];
+	tmp = token;
+	ft_init_here_docs(data, exec, i);
+	while(tmp)
+	{
+		if (tmp->type == CMD)
+		{
+			if (!exec[j]->type)
+				exec[j]->type = ft_find_exec_type(exec, token, j);
+			j++;
+		}
+		tmp = tmp->next;
+	}
+	j = 0;
+	err = ft_init_redirection(data, exec[j++], token);
+	g_qsignal = 1;
+	if (data->cmd_amount > 1)
+	{
+		ft_exec_part(data, exec, token);
+		mother_close_pipes_all(data);
+		ft_wait_part(data);
+	}
+	else
+		ft_run_single_cmd(data, exec, i);
+	g_qsignal = 0;
 }
 
 void	ft_execute(t_data *data)
 {
 	t_exec	**exec;
+	t_token *token;
 	int		i;
 
 	i = 0;
 	data->cmd_amount = ft_count_cmds(data->tokens);
 	if (data->cmd_amount < 0)
-		return ;
-	data->check = ft_is_builtins(data->tokens[i]->value);
-	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
-	exec[data->cmd_amount] = NULL;
-	if (data->cmd_amount == 1)
-		ft_run_single_cmd(data, i);
-	else
-		ft_run_multiple_command(data);
+			return ;
+	
+	while (data->tokens[i])
+	{
+		token = data->tokens[i];
+		data->check = ft_is_builtins(token->value);
+		data->is_red = ft_is_redirection(token);
+		exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
+		exec[data->cmd_amount] = NULL;
+		ft_init_exec(data, exec, token);
+		ft_init_pipes(data);
+		ft_start_exec(data,exec, i);
+		i++;
+	}
 }

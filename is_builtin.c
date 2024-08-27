@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 00:00:31 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/22 23:55:19 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/27 13:32:46 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ int	ft_is_builtins(char *cmd)
 		return (6);
 	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (7);
-	return (-1);
+	return (0);
 }

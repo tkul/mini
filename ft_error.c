@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/16 00:32:30 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/27 02:17:44 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,3 +30,25 @@ void	ft_error(t_data *data, int error)
 		printf("exit: numeric argument required\n");
 	}
 }
+
+
+// void	ft_set_exec_err(t_exec *exec, int err, char *value)
+// {
+// 	if (exec->err_no)
+// 		return ;
+// 	exec->err_no = err;
+// 	exec->err_value = value;
+// }
+
+// void	ft_print_exec_errors(t_data *data, t_exec **exec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < data->cmd_amount)
+// 	{
+// 		if (exec[i]->err_no)
+// 			ft_error(exec[i]->err_no, exec[i]->err_value);
+// 		i++;
+// 	}
+// }
