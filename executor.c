@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 16:02:18 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/28 20:32:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	ft_dup_redictions(t_exec *exec, t_data *data)
 		&& exec->in_type != APP_RED)
 		return (close(exec->in_fd), 0);
 	if (exec->in_file && exec->in_type == IN_RED && !exec->is_here_doc)
+	{
 		dup2(exec->in_fd, 0);
+	}
 	else if (exec->in_file && !exec->is_here_doc)
 		dup2(exec->in_fd, 0);
 	if (exec->out_file)
@@ -63,10 +65,10 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 	(void)exec;
 	
 	if (data->control != 0)
-		ft_set_path(data, exec, token);
+		ft_set_path(data,token);
 	if (data->path == NULL)
 		return ;
-	ft_set_args(data, exec, token);
+	ft_set_args(data,token);
 	pid = fork();
 	if (!pid)
 	{
@@ -123,7 +125,6 @@ static void	ft_run_exec(t_data *data, int cmd_amount, int i)
 	if (execve(data->path, data->args, data->env) == -1)
 		exit(1);
 }
-
 void	ft_run_commands(t_data *data, int i)
 {
 	if (i == 0)
@@ -144,59 +145,51 @@ void	ft_run_commands(t_data *data, int i)
 	}
 }
 
-void	ft_run_redirects(t_data *data, t_exec **exec, int i)
+void	ft_run_redirects(t_data *data, t_exec *exec, int i)
 {
-	if (exec[i]->should_run && !exec[i]->is_here_doc)
+	if (exec->should_run && !exec->is_here_doc)
 		ft_run_commands(data, i);
-	ft_dup_redictions(exec[i], data);
-	ft_init_dupes(data, exec[i], i);
+	ft_dup_redictions(exec, data);
+	ft_init_dupes(data, exec, i);
 	if (data->check > 0)
 	{
 		ft_run_builtin(data, i);
 		exit(data->status);
 	}
-	close_redir_pipe_fd(data, exec[i], i);
-	if (exec[i]->should_run && exec[i]->is_here_doc)
+	close_redir_pipe_fd(data, exec, i);
+	if (exec->should_run && exec->is_here_doc)
 		ft_error(data,ERR_NO_FILE_OR_DIR);
 	execve(data->path,data->args, data->env);
 }
 
-static void	ft_run_pipes(t_data *data, t_exec **exec, int i, t_token *token)
+static void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token)
 {
-	ft_set_path(data, exec, token);
-	ft_set_args(data, exec, token);
-	if (exec[i]->type == CMD_WITHOUT_CMD)
+	ft_set_path(data, token);
+	ft_set_args(data, token);
+	if (exec->type == CMD_WITHOUT_CMD)
 	{
 		mother_close_pipes_all(data);
 		exit(0);
 	}
-	else if (exec[i]->should_run)
+	else if (exec->should_run)
 	{
 		mother_close_pipes_all(data);
 		exit(1);
 	}
-	else if (!data->path && exec[data->cmd_amount - 1]->type != CMD_BUILTIN) // check if last command is not built-in 
-	{
-		mother_close_pipes_all(data);
-		exit(127);
-	}
-	else if (!exec[i]->in_type && !exec[i]->out_type)
+	else if (!exec->in_type && !exec->out_type)
 		ft_run_commands(data, i);
 	else
 		ft_run_redirects(data, exec, i);
 }
 
-void	ft_exec_part(t_data *data, t_exec **exec, t_token *token)
+void	ft_exec_part(t_data *data, t_exec *exec, t_token *token)
 {
-	int	i;
-
-	i = -1;
-	while (exec[++i])
-	{
-		data->forks[i] = fork();
-		if (data->forks[i] == 0)
-			ft_run_pipes(data, exec, i, token);
-	}
+	pid_t	pid;
+	
+	pid = fork();
+	if (pid == 0)
+			ft_run_pipes(data, exec, data->index, token);
+	data->forks[data->index] = pid;
 }
 
 
@@ -323,39 +316,37 @@ static void	ft_wait_part(t_data *data)
 	}
 }
 
-void	ft_start_exec(t_data *data, t_exec **exec, int i)
+void	ft_start_exec(t_data *data, t_exec **exec,t_token *token, int i)
 {
-	t_token *token;
-	int 	j;
 	int 	err;
 	t_token *tmp;
 
-	j = 0;
 	err = 0;
-	token = data->tokens[i];
 	tmp = token;
 	ft_init_here_docs(data, exec, i);
+
 	while(tmp)
 	{
 		if (tmp->type == CMD)
 		{
-			if (!exec[j]->type)
-				exec[j]->type = ft_find_exec_type(exec, token, j);
-			j++;
+			if (!exec[i]->type)
+				exec[i]->type = ft_find_exec_type(exec, token, i);
 		}
 		tmp = tmp->next;
 	}
-	j = 0;
-	err = ft_init_redirection(data, exec[j++], token);
+	err = ft_init_redirection(data, exec[i], token);
 	g_qsignal = 1;
 	if (data->cmd_amount > 1)
 	{
-		ft_exec_part(data, exec, token);
-		mother_close_pipes_all(data);
-		ft_wait_part(data);
+		if (token->type == CMD || exec[i]->type == CMD_WITHOUT_CMD)
+		{
+			ft_exec_part(data, exec[data->index], token);
+		}
 	}
 	else
+	{
 		ft_run_single_cmd(data, exec, i);
+	}
 	g_qsignal = 0;
 }
 
@@ -366,20 +357,30 @@ void	ft_execute(t_data *data)
 	int		i;
 
 	i = 0;
+	data->index = 0;
 	data->cmd_amount = ft_count_cmds(data->tokens);
 	if (data->cmd_amount < 0)
 			return ;
-	
+	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
+	exec[data->cmd_amount] = NULL;
+	while (i < data->cmd_amount)
+	{
+		exec[i] = malloc(sizeof(t_exec));
+		ft_init_exec(data, exec[i], data->tokens[i]);
+		i++;
+	}
+	// ft_print_exec(exec);
+	ft_init_pipes(data);
+	i = 0;
 	while (data->tokens[i])
 	{
+		data->index = i;
 		token = data->tokens[i];
 		data->check = ft_is_builtins(token->value);
 		data->is_red = ft_is_redirection(token);
-		exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
-		exec[data->cmd_amount] = NULL;
-		ft_init_exec(data, exec, token);
-		ft_init_pipes(data);
-		ft_start_exec(data,exec, i);
+		ft_start_exec(data,exec,token,data->index);
 		i++;
 	}
+	mother_close_pipes_all(data);
+	ft_wait_part(data);
 }

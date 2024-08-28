@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 15:27:42 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/28 19:56:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,8 @@ typedef struct s_exec
 }					t_exec;
 typedef struct s_data
 {
+	char			**original;
+	int				flag;
 	char			*cmd;
 	char			**env;
 	char			**export;
@@ -141,6 +143,7 @@ typedef struct s_data
 	int 			*pipes;
 	char			**args;
 	int 			control;
+	int 			index;
 	t_exec			**exec;
 }					t_data;
 
@@ -216,19 +219,19 @@ void				ft_execve(t_data *data,t_exec **exec, int i);
 char				*find_in_path(char *path, char *cmd);
 int					ft_count_cmds(t_token **tokens);
 void				ft_run_builtin(t_data *data, int i);
-void    			ft_init_exec(t_data *data, t_exec **exec,t_token *token);
+void    			ft_init_exec(t_data *data, t_exec *exec,t_token *token);
 int					ft_is_redirection(t_token *token);
 void				ft_init_here_docs(t_data *data, t_exec **exec, int i);
 int					ft_count_heredocs(t_token *token);
 char	* ft_is_here_doc2(t_exec *exec,t_token *token);
 char	* ft_is_here_doc(t_token *token);
 int	ft_count_heredocs(t_token *token);
-int	isredwocmd(t_token *tokens, int cmd_amount, int j);
+int	isredwocmd(t_token *tokens);
 void	ft_run_heredoc_without_cmd(t_token *token,t_exec **exec, int i);
 int	ft_is_redirection_single(t_token *token);
-void    ft_set_args(t_data *data, t_exec **exec, t_token *token);
+void    ft_set_args(t_data *data, t_token *token);
 void	ft_init_pipes(t_data *data);
-void    ft_set_path(t_data *data, t_exec **exec, t_token *token);
+void    ft_set_path(t_data *data, t_token *token);
 void	ft_print_exec_errors(t_data *data, t_exec **exec);
 void	ft_set_exec_err(t_exec *exec, int err, char *value);
 void	ft_init_dupes(t_data *data, t_exec *exec, int i);
@@ -238,4 +241,7 @@ void	mother_close_pipes_all(t_data *data);
 void	close_pipes_all(int *pipes, int cmd_amount, int i);
 void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
+
+
+void	ft_print_exec(t_exec **exec);
 #endif

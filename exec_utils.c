@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 15:37:49 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/28 19:58:31 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,24 @@ int	ft_find_exec_type(t_exec **exec, t_token *token, int i)
 		return (CMD_ARG);
 	return (CMD_PATH);
 }
-void    ft_init_exec(t_data *data, t_exec **exec, t_token *token)
+void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)
 {
-    int i;
-
-    i = 0;
-    while (i < data->cmd_amount)
-    {
-        exec[i] = malloc(sizeof(t_exec));
-        if (!exec[i])
-            return ;
-        exec[i]->heredocs = NULL;
-        exec[i]->err_no = 0;
-        exec[i]->err_value = NULL;
-        exec[i]->is_without_cmd = isredwocmd(token, data->cmd_amount, i);
-        exec[i]->out_type = 0;
-        exec[i]->out_file = NULL;
-        exec[i]->in_file = NULL;
-		exec[i]->should_run = 0;
-        exec[i]->in_type = 0;
-		exec[i]->here_doc_idx = 0;
-		ft_is_without_cmd(exec[i], data);
-        exec[i]->is_here_doc = ft_is_here_doc(token);
-        exec[i]->in_fd = 0;
-        exec[i]->out_fd = 0;
-        exec[i]->count_heredocs = ft_count_heredocs(token);
-		exec[i]->type = 0;
-        data->exec = exec;
-        i++;
-    }
+	exec->heredocs = NULL;
+	exec->err_no = 0;
+	exec->err_value = NULL;
+	exec->is_without_cmd = isredwocmd(token);
+	exec->out_type = 0;
+	exec->out_file = NULL;
+	exec->in_file = NULL;
+	exec->should_run = 0;
+	exec->in_type = 0;
+	exec->here_doc_idx = 0;
+	ft_is_without_cmd(exec, data);
+	exec->is_here_doc = ft_is_here_doc(token);
+	exec->in_fd = 0;
+	exec->out_fd = 0;
+	exec->count_heredocs = ft_count_heredocs(token);
+	exec->type = 0;
 }
 
 void	ft_run_builtin(t_data *data, int i)
@@ -144,15 +133,13 @@ int	isredwocmd_helper(t_token *tokens, int i, t_token *tmp)
 	return (0);
 }
 
-int	isredwocmd(t_token *tokens, int cmd_amount, int j)
+int	isredwocmd(t_token *tokens)
 {
 	int		i;
 	t_token	*tmp;
 
 	i = 0;
 	tmp = tokens;
-	if (j >= cmd_amount)
-		return (0);
 	while (tmp)
 	{
 		if (tmp->type == CMD)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 04:18:43 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/28 18:23:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ int ft_find_absolute_path(char *cmd)
 	return (0);
 }
 
-void    ft_set_path(t_data *data, t_exec **exec, t_token *token)
+void    ft_set_path(t_data *data, t_token *token)
 {
-    (void)exec;
 	t_token *tmp;
 	
 	tmp = token;
@@ -54,9 +53,8 @@ void    ft_set_path(t_data *data, t_exec **exec, t_token *token)
 	}
 }
 
-void    ft_set_args(t_data *data, t_exec **exec, t_token *token)
+void    ft_set_args(t_data *data, t_token *token)
 {
-    (void)exec;
 	int		args_len;
     int j;
 	t_token *tmp;

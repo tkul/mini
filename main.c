@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 03:32:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/28 18:43:45 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	ft_init_data(t_data *data, char **env)
 	data->forks = NULL;
 	data->pipes = NULL;
 	data->path = NULL;
+	data->i = 0;
 	return (SUCCESS);
 }
 

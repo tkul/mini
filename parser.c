@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/26 23:57:01 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/27 18:33:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,27 @@ int	count_word(const char *str, char c)
 	return (count);
 }
 
+char	**ft_strdup_array(char **array)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	while (array[i])
+		i++;
+	new = malloc(sizeof(char *) * (i + 1));
+	if (!new)
+		return (NULL);
+	i = 0;
+	while (array[i])
+	{
+		new[i] = ft_strdup(array[i]);
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}
+
 int	ft_parser_init(t_data *data)
 {
 	data->i = -1;
@@ -64,6 +85,9 @@ int	ft_parser_init(t_data *data)
 	if (ft_init_redirections(data) == ERROR)
 		return (free(data->lexer), ERROR);
 	data->cmds = ft_split_by_quote(data->cmd, '|');
+	if (!data->cmds)
+		return (free(data->lexer), ERROR);
+	data->original = ft_strdup_array(data->cmds);
 	return (SUCCESS);
 }
 
@@ -87,8 +111,6 @@ int	ft_parser(t_data *data)
 	while (data->cmds[++data->i])
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
-		if (!data->new)
-			return (free(data->lexer), ERROR);
 		if (!data->new)
 			return (free(data->lexer), ERROR);
 		data->j = -1;

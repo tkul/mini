@@ -16,6 +16,9 @@ all: $(NAME)
 $(NAME): $(RL) $(OBJ)
 		$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(READLINE)
 
+run: all
+		./$(NAME)
+
 $(RL):
 		@echo "Downloading readline"
 		@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2-rc1.tar.gz
