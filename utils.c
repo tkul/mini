@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 04:39:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 08:54:50 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,16 @@ char	**ft_split_by_quote(const char *str, char c)
 int	my_isalpha(char *str)
 {
 	int i;
+	int quote;
 
 	i = 0;
+	quote = -1;
 	while (str[i])
 	{
-		if (!ft_isalpha(str[0]) && str[0] != '_')
+		ft_set_quote_type(&quote, str[i]);
+		if (quote == -1 && !ft_isalpha(str[0]) && str[0] != '_')
 			return (0);
-		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '=')
+		if (quote == -1 && !ft_isalnum(str[i]) && str[i] != '_' && str[i] != '=')
 			return (0);
 		i++;
 	}

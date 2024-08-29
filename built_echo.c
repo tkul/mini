@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:52:47 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 10:41:43 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 09:30:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,13 @@ void	ft_echo(t_data *data, int *index)
 		return ;
 	}
 	token = token->next;
+	// if (ft_check_access(token->value) == 1)
+	// {
+	// 	write(2, "⭐MINISHELL> ", 14);
+	// 	write(2, token->value, ft_strlen(token->value));
+	// 	write(2, ": Permission denied\n", 21);
+	// 	data->status = ERR_IS_DIR;
+	// 	return ;
+	// }
 	ft_echo_print_tokens(token);
 }

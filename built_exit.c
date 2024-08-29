@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:53:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 04:22:35 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 08:49:21 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	ft_exit(t_data *data, int *index)
 	{
 		write(2, "exit: too many arguments\n", 26);
 		exit_code = 1;
+		data->status = exit_code;
 		return ;
 	}
 	else if (token && token->next)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 05:30:38 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 09:32:19 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	close_pipes_all(int *pipes, int cmd_amount, int i)
 		}
 	}
 }
-
 
 void	mother_close_pipes_all(t_data *data)
 {

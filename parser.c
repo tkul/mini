@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 05:12:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 12:57:47 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,6 @@ int	count_word(const char *str, char c)
 	}
 	return (count);
 }
-
-char	**ft_strdup_array(char **array)
-{
-	char	**new;
-	int		i;
-
-	i = 0;
-	while (array[i])
-		i++;
-	new = malloc(sizeof(char *) * (i + 1));
-	if (!new)
-		return (NULL);
-	i = 0;
-	while (array[i])
-	{
-		new[i] = ft_strdup(array[i]);
-		i++;
-	}
-	new[i] = NULL;
-	return (new);
-}
-
 int	ft_parser_init(t_data *data)
 {
 	data->i = -1;
@@ -87,7 +65,6 @@ int	ft_parser_init(t_data *data)
 	data->cmds = ft_split_by_quote(data->cmd, '|');
 	if (!data->cmds)
 		return (free(data->lexer), ERROR);
-	data->original = ft_strdup_array(data->cmds);
 	return (SUCCESS);
 }
 

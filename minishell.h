@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 05:24:41 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 09:28:32 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	close_pipes_all(int *pipes, int cmd_amount, int i);
 void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
 int	ft_isalphaaa(int c);
-
+int ft_check_access(char *path);
 
 void	ft_print_exec(t_exec **exec);
 #endif
