@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 19:58:31 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 04:54:06 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ int	ft_find_exec_type(t_exec **exec, t_token *token, int i)
 		return (CMD_WITHOUT_CMD);
 	else if (ft_is_builtins(token->value))
 		return (CMD_BUILTIN);
-	else if (token->type == ARG)
-		return (CMD_ARG);
 	return (CMD_PATH);
 }
 void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)

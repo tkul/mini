@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 03:21:46 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 03:55:57 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 	int		index;
 
 	data->lexer->j = (*i) + 1;
-	while (ft_isalpha((*str)[data->lexer->j]))
+	while (ft_isalphaaa((*str)[data->lexer->j]))
 		data->lexer->j++;
 	data->lexer->key = ft_substr(*str, (*i) + 1, data->lexer->j - (*i) - 1);
 	if (!data->lexer->key)

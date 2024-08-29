@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 20:30:33 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 04:39:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,26 @@ char	**ft_split_by_quote(const char *str, char c)
 	return (tmp);
 }
 
-int	my_isalpha(int c)
+int	my_isalpha(char *str)
 {
-	if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isalpha(str[0]) && str[0] != '_')
+			return (0);
+		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '=')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_isalphaaa(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+		|| (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
 }

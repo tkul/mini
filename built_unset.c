@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 17:58:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 04:05:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_unset(t_data *data, int *index)
 	token = data->tokens[*index]->next;
 	while (token)
 	{
-		if (ft_strchr(token->value, '=') || !(my_isalpha(token->value[0])))
+		if (ft_strchr(token->value, '=') || !(my_isalpha(token->value)))
 		{
 			write(2, "⭐MINISHELL> unset: \'", 22);
 			write(2, token->value, strlen(token->value));
@@ -61,3 +61,4 @@ int	ft_unset(t_data *data, int *index)
 	}
 	return (SUCCESS);
 }
+

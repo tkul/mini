@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:53:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 17:36:32 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 04:22:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	validate_exit_value(const char *value)
 	int	i;
 
 	i = 0;
-	if (value[i] == '-')
+	if (value[i] == '-' || value[i] == '+')
 		i++;
 	while (value[i])
 	{

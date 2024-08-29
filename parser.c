@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 18:33:38 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 05:12:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,18 @@ int	ft_parser_free(t_data *data)
 	return (SUCCESS);
 }
 
+void	ft_again_set (t_data *data)
+{
+	int i;
+
+	i = -1;
+	while (data->tokens[++i])
+	{
+		if (data->tokens[0]->type == ARG)
+			data->tokens[0]->type = CMD;
+	}
+}
+
 int	ft_parser(t_data *data)
 {
 	if (ft_parser_init(data) == ERROR)
@@ -127,5 +139,6 @@ int	ft_parser(t_data *data)
 	ft_redirect_arrange(data->tokens);
 	if (ft_parser_free(data) == ERROR)
 		return (ERROR);
+	ft_again_set(data);
 	return (SUCCESS);
 }

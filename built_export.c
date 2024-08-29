@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/22 01:00:22 by tugcekul         ###   ########.fr       */
+/*   Updated: 2024/08/29 04:40:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_handle_export_error(char *value)
+void	ft_handle_export_error(t_data *data, char *value)
 {
 	write(2, "⭐MINISHELL> export: \'", 23);
 	write(2, value, strlen(value));
 	write(2, "\' not a valid identifier\n", 26);
+	data->status = 1;
 }
 
 void	ft_process_export_token(t_data *data, t_token *token)
@@ -52,9 +53,9 @@ void	ft_export(t_data *data, int *index)
 	}
 	while (token)
 	{
-		if (!(my_isalpha(token->value[0])))
+		if (!(my_isalpha(token->value)))
 		{
-			ft_handle_export_error(token->value);
+			ft_handle_export_error(data, token->value);
 			token = token->next;
 			break ;
 		}

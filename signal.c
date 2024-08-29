@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:27 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 21:01:49 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 04:48:24 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,26 @@ void	ctrl_c(int sig)
 		printf("\n");
 }
 
-void	tcsa(void)
-{
-	struct termios	term1;
+// void	tcsa(void)
+// {
+// 	struct termios	term1;
 
-	if (tcgetattr(STDIN_FILENO, &term1) != 0)
-		exit((perror("error"), -1));
-	else
-	{
-		term1.c_cc[VQUIT] = _POSIX_VDISABLE;
-		term1.c_lflag |= ECHOE | ICANON;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
-			exit((perror("error"), -1));
-		if (tcgetattr(STDIN_FILENO, &term1) != 0)
-			exit((perror("error"), -1));
-	}
-}
+// 	if (tcgetattr(STDIN_FILENO, &term1) != 0)
+// 		exit((perror("error"), -1));
+// 	else
+// 	{
+// 		term1.c_cc[VQUIT] = _POSIX_VDISABLE;
+// 		term1.c_lflag |= ECHOE | ICANON;
+// 		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
+// 			exit((perror("error"), -1));
+// 		if (tcgetattr(STDIN_FILENO, &term1) != 0)
+// 			exit((perror("error"), -1));
+// 	}
+// }
 
 void	ft_signals(void)
 {
-	tcsa();
+	// tcsa();
 	signal(SIGINT, ctrl_c);
 	signal(SIGQUIT, coix);
 	return ;

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 19:56:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 05:24:41 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ extern int			g_qsignal;
 # define ERR_PIPE_INIT 124
 # define ERR_PERMISSION_DENIED 1261
 # define ERR_NO_FILE_OR_DIR 1
+# define ERR_IS_DIR 126
 
 # define BHWHT "\e[1;97m"
 # define COLOR_RESET "\e[0m"
@@ -195,7 +196,7 @@ void				ft_setenv(t_data *data, char *key, char *value);
 void				ft_set_export(t_data *data, char *key, char *value);
 char				**ft_realloc(char **env, int size);
 int					ft_unset(t_data *data, int *index);
-int					my_isalpha(int c);
+int					my_isalpha(char *str);
 int					process_dollar_variable(t_data *data, char **str, int *i,
 						int quote);
 void				ft_print_token_buffer(t_token *token);
@@ -241,6 +242,7 @@ void	mother_close_pipes_all(t_data *data);
 void	close_pipes_all(int *pipes, int cmd_amount, int i);
 void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
+int	ft_isalphaaa(int c);
 
 
 void	ft_print_exec(t_exec **exec);

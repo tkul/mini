@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/24 00:27:17 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 03:56:49 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,14 @@ int	ft_remove_quotes(t_data *data, char **s)
 				*s = remove_by_index(*s, i, 1);
 				*s = ft_joinstr_index(*s, status, i);
 			}
-			else if ((*s)[i] == '$' && ft_isalpha((*s)[i + 1]))
+			else if ((*s)[i] == '$' && ft_isalphaaa((*s)[i + 1]))
 			{
 				if (process_dollar_variable(data, s, &i, quote) == ERROR)
 					return (ERROR);
 			}
-			else if ((*s)[i] == '$' && ((*s)[i + 1] == '"' || (*s)[i + 1] == '\''))
+			else if (quote == 0 && (*s)[i] == '$' && ((*s)[i + 1] == '"' || (*s)[i + 1] == '\''))
 			{
-				*s = remove_by_index(*s, i, i);
+				*s = remove_by_index(*s, i, i - 1);
 				i--;
 			}
 		}

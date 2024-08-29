@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 20:32:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/29 05:30:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 	token = data->tokens[i];
 	(void)exec;
 	
-	if (data->control != 0)
-		ft_set_path(data,token);
+	ft_set_path(data,token);
 	if (data->path == NULL)
 		return ;
 	ft_set_args(data,token);
@@ -198,8 +197,6 @@ void	ft_run_single_cmd(t_data *data, t_exec **exec, int i)
 	int	fd1;
 	int	fd2;
 
-	// if (exec[0]->should_run && !exec[0]->is_here_doc)
-	// 	return ;
 	if (data->check > 0)
 	{
 		fd1 = dup(1);
@@ -309,7 +306,8 @@ static void	ft_wait_part(t_data *data)
 		if (i == data->cmd_amount - 1)
 		{
 			waitpid(data->forks[i], &data->status, 0);
-			data->status = WEXITSTATUS(data->status);
+			if (data->path)
+				data->status = WEXITSTATUS(data->status);
 		}
 		waitpid(data->forks[i], NULL, 0);
 		i--;
@@ -339,14 +337,10 @@ void	ft_start_exec(t_data *data, t_exec **exec,t_token *token, int i)
 	if (data->cmd_amount > 1)
 	{
 		if (token->type == CMD || exec[i]->type == CMD_WITHOUT_CMD)
-		{
 			ft_exec_part(data, exec[data->index], token);
-		}
 	}
 	else
-	{
 		ft_run_single_cmd(data, exec, i);
-	}
 	g_qsignal = 0;
 }
 
@@ -369,7 +363,6 @@ void	ft_execute(t_data *data)
 		ft_init_exec(data, exec[i], data->tokens[i]);
 		i++;
 	}
-	// ft_print_exec(exec);
 	ft_init_pipes(data);
 	i = 0;
 	while (data->tokens[i])
@@ -381,6 +374,9 @@ void	ft_execute(t_data *data)
 		ft_start_exec(data,exec,token,data->index);
 		i++;
 	}
-	mother_close_pipes_all(data);
-	ft_wait_part(data);
+	if (!(data->check > 0 && data->cmd_amount == 1))
+	{
+		mother_close_pipes_all(data);
+		ft_wait_part(data);
+	}
 }
