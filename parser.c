@@ -6,14 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 12:57:47 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 17:43:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
 
 void	ft_set_quote_type(int *quote, char c)
 {
@@ -93,6 +90,28 @@ void	ft_again_set (t_data *data)
 	}
 }
 
+static char	**ft_strdup_array(char **array)
+{
+	char	**new;
+	int		i;
+
+	i = -1;
+	while (array[++i])
+		;
+	new = malloc(sizeof(char *) * (i + 1));
+	if (!new)
+		return (NULL);
+	i = -1;
+	while (array[++i])
+	{
+		new[i] = ft_strdup(array[i]);
+		if (!new[i])
+			ft_free_array(new);
+	}
+	new[i] = NULL;
+	return (new);
+}
+
 int	ft_parser(t_data *data)
 {
 	if (ft_parser_init(data) == ERROR)
@@ -102,6 +121,7 @@ int	ft_parser(t_data *data)
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
 		if (!data->new)
 			return (free(data->lexer), ERROR);
+		data->original = ft_strdup_array(data->new);
 		data->j = -1;
 		while (data->new[++data->j])
 		{

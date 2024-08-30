@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 09:28:32 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 22:33:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
+# include <errno.h>
 
 extern int			g_qsignal;
 
@@ -57,7 +58,6 @@ extern int			g_qsignal;
 # define ERROR 1
 # define EXIT_ERROR 255
 # define SYNTAX_ERROR 258
-# define ERR_NOT_VALID_IDFR 1
 # define ERR_PIPE_INIT 124
 # define ERR_PERMISSION_DENIED 1261
 # define ERR_NO_FILE_OR_DIR 1
@@ -232,9 +232,9 @@ void	ft_run_heredoc_without_cmd(t_token *token,t_exec **exec, int i);
 int	ft_is_redirection_single(t_token *token);
 void    ft_set_args(t_data *data, t_token *token);
 void	ft_init_pipes(t_data *data);
-void    ft_set_path(t_data *data, t_token *token);
-void	ft_print_exec_errors(t_data *data, t_exec **exec);
-void	ft_set_exec_err(t_exec *exec, int err, char *value);
+void    ft_set_path(t_data *data, t_token *token, t_exec *exec);
+void	ft_print_exec_errors(t_data *data, t_exec *exec);
+void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value);
 void	ft_init_dupes(t_data *data, t_exec *exec, int i);
 void	close_redir_fd(t_data *data, t_exec *exec, int fd1, int fd2);
 int	close_redir_pipe_fd(t_data *data, t_exec *exec, int i);
@@ -243,7 +243,7 @@ void	close_pipes_all(int *pipes, int cmd_amount, int i);
 void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
 int	ft_isalphaaa(int c);
-int ft_check_access(char *path);
+int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token);
 
 void	ft_print_exec(t_exec **exec);
 #endif

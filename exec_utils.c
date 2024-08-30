@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 04:54:06 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 17:26:04 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,6 @@ int	ft_is_redirection(t_token *token)
 			return (1);
 		token = token->next;
 	}
-	return (0);
-}
-
-int	ft_is_redirection_single(t_token *token)
-{
-	if (token->type == IN_RED || token->type == OUT_RED
-		|| token->type == APP_RED || token->type == HER_DOC)
-		return (1);
 	return (0);
 }
 

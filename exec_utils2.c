@@ -6,16 +6,25 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 12:17:50 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 23:13:20 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_find_absolute_path(char *cmd)
+int ft_find_absolute_path(t_data *data ,t_token *token, t_exec *exec)
 {
-	if (access(cmd, F_OK) == 0)
-		return (1);
+	struct stat	buf;
+
+	stat(token->value, &buf);
+	if (errno == EACCES)
+		return (ft_set_exec_err(data, exec, ERR_PERMISSION_DENIED, token->value),1);
+	if (S_ISDIR(buf.st_mode))
+		return (ft_set_exec_err(data, exec, ERR_IS_DIR, token->value),126);
+	if (access(token->value, F_OK))
+		return (ft_set_exec_err(data, exec, ERR_NO_FILE_OR_DIR, token->value),127);
+	if (access(token->value, X_OK))
+		return (ft_set_exec_err(data, exec, ERR_PERMISSION_DENIED, token->value), 126);
 	return (0);
 }
 
@@ -31,7 +40,7 @@ int ft_is_dir(char *path)
 	return (0);
 }
 
-void    ft_set_path(t_data *data, t_token *token)
+void    ft_set_path(t_data *data, t_token *token, t_exec *exec)
 {
 	t_token *tmp;
 	
@@ -44,15 +53,7 @@ void    ft_set_path(t_data *data, t_token *token)
 			tmp->value);
 			if (data->path == NULL)
 			{
-				if (ft_is_dir(tmp->value))
-				{
-					write(2, "⭐MINISHELL> ", 14);
-					write(2, tmp->value, ft_strlen(tmp->value));
-					write(2, ": is a directory\n", 18);
-					data->status = ERR_IS_DIR;
-					return ;
-				}
-				if (ft_find_absolute_path(tmp->value) && tmp->value[0] == '/')
+				if (!ft_find_absolute_path(data, tmp, exec) && tmp->value[0] == '/')
 				{
 					data->path = ft_strdup(tmp->value);
 					break ;

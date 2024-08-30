@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 09:32:19 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 22:34:43 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 	token = data->tokens[i];
 	(void)exec;
 	
-	ft_set_path(data,token);
+	ft_set_path(data,token, exec[i]);
 	if (data->path == NULL)
 		return ;
 	ft_set_args(data,token);
@@ -112,7 +112,7 @@ void	mother_close_pipes_all(t_data *data)
 		j++;
 	}
 }
-static void	ft_run_exec(t_data *data, int cmd_amount, int i)
+static void	ft_run_exec(t_data *data,t_token *token,int cmd_amount, int i, t_exec *exec)
 {
 	close_pipes_all(data->pipes, cmd_amount, i);
 	if (data->check > 0)
@@ -120,33 +120,37 @@ static void	ft_run_exec(t_data *data, int cmd_amount, int i)
 		ft_run_builtin(data, i);
 		exit(data->status);
 	}
+	ft_set_path(data, token, exec);
+	if (data->path == NULL)
+		exit(data->status);
+	ft_set_args(data, token);
 	if (execve(data->path, data->args, data->env) == -1)
 		exit(1);
 }
-void	ft_run_commands(t_data *data, int i)
+void	ft_run_commands(t_data *data, t_token *token, int i, t_exec *exec)
 {
 	if (i == 0)
 	{
 		dup2(data->pipes[i * 2 + 1], 1);
-		ft_run_exec(data,data->cmd_amount, i);
+		ft_run_exec(data,token, data->cmd_amount, i, exec);
 	}
 	else if (i == data->cmd_amount - 1)
 	{
 		dup2(data->pipes[(i - 1) * 2], 0);
-		ft_run_exec(data, data->cmd_amount, i);
+		ft_run_exec(data,token, data->cmd_amount, i, exec);
 	}
 	else
 	{
 		dup2(data->pipes[(i - 1) * 2], 0);
 		dup2(data->pipes[i * 2 + 1], 1);
-		ft_run_exec(data, data->cmd_amount, i);
+		ft_run_exec(data,token, data->cmd_amount, i, exec);
 	}
 }
 
-void	ft_run_redirects(t_data *data, t_exec *exec, int i)
+void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i)
 {
 	if (exec->should_run && !exec->is_here_doc)
-		ft_run_commands(data, i);
+		ft_run_commands(data,token,i, exec);
 	ft_dup_redictions(exec, data);
 	ft_init_dupes(data, exec, i);
 	if (data->check > 0)
@@ -157,13 +161,15 @@ void	ft_run_redirects(t_data *data, t_exec *exec, int i)
 	close_redir_pipe_fd(data, exec, i);
 	if (exec->should_run && exec->is_here_doc)
 		ft_error(data,ERR_NO_FILE_OR_DIR);
+	ft_set_path(data, token, exec);
+	if (data->path == NULL)
+		exit(data->status);
+	ft_set_args(data, token);
 	execve(data->path,data->args, data->env);
 }
 
 static void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token)
 {
-	ft_set_path(data, token);
-	ft_set_args(data, token);
 	if (exec->type == CMD_WITHOUT_CMD)
 	{
 		mother_close_pipes_all(data);
@@ -175,9 +181,9 @@ static void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token)
 		exit(1);
 	}
 	else if (!exec->in_type && !exec->out_type)
-		ft_run_commands(data, i);
+		ft_run_commands(data,token, i, exec);
 	else
-		ft_run_redirects(data, exec, i);
+		ft_run_redirects(data, token, exec, i);
 }
 
 void	ft_exec_part(t_data *data, t_exec *exec, t_token *token)
@@ -189,7 +195,6 @@ void	ft_exec_part(t_data *data, t_exec *exec, t_token *token)
 			ft_run_pipes(data, exec, data->index, token);
 	data->forks[data->index] = pid;
 }
-
 
 void	ft_run_single_cmd(t_data *data, t_exec **exec, int i)
 {
@@ -208,93 +213,6 @@ void	ft_run_single_cmd(t_data *data, t_exec **exec, int i)
 	return ;
 }
 
-static int	ft_for_in_file(t_data *data ,t_exec *exec)
-{
-	if (!access(exec->in_file, F_OK) && access(exec->in_file, R_OK) == -1)
-	{
-		exec->should_run = 1;
-		if (!exec->is_here_doc)
-			ft_error(data, ERR_PERMISSION_DENIED);
-		return (126);
-	}
-	exec->should_run = 1;
-	if (exec->is_here_doc)
-		return (0);
-	// ft_set_exec_err(exec, ERR_NO_FILE_OR_DIR, exec->in_file);
-	return (ERR_NO_FILE_OR_DIR);
-}
-
-static int	ft_for_out_file(t_data *data, t_exec *exec)
-{
-	if (!access(exec->out_file, F_OK) && access(exec->out_file, W_OK) == -1)
-	{
-		exec->should_run = 1;
-		ft_error(data, ERR_PERMISSION_DENIED);
-		return (1);
-	}
-	exec->should_run = 1;
-	// ft_set_exec_err(exec, ERR_NO_FILE_OR_DIR, exec->out_file);
-	return (ERR_NO_FILE_OR_DIR);
-}
-
-int	ft_open_check_files(t_exec *exec, int status, t_data *data)
-{
-	if (exec->in_file || exec->is_here_doc)
-	{
-		if (exec->in_type == IN_RED && exec->should_run == 0)
-			exec->in_fd = open(exec->in_file, O_RDONLY);
-		else if (exec->in_type == HER_DOC)
-		{
-			exec->heredocs[exec->here_doc_idx] = ft_strdup(exec->in_file);
-			exec->here_doc_idx++;
-		}
-		if (exec->in_fd == -1 && exec->should_run == 0)
-			return (ft_for_in_file(data,exec));
-	}
-	if (exec->out_file && exec->should_run == 0)
-	{
-		if (exec->out_type == OUT_RED)
-			exec->out_fd = open(exec->out_file, \
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		else if (exec->out_type == APP_RED)
-			exec->out_fd = open(exec->out_file, \
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (exec->out_fd == -1 && exec->should_run == 0)
-			return (ft_for_out_file(data, exec));
-	}
-	return (status);
-}
-
-int	ft_init_redirection(t_data *data, t_exec *exec, t_token *token)
-{
-	int		i;
-	int 	j;
-
-	i = 0;
-	j = 0;
-	exec->heredocs = malloc(sizeof(char *) * (exec->count_heredocs + 1));
-	exec->heredocs[exec->count_heredocs] = NULL;
-	while (token)
-	{
-		if (ft_is_redirection_single(token) && token->next)
-		{
-			if (token->type == IN_RED || token->type == HER_DOC)
-			{
-				exec->in_type = token->type;
-				exec->in_file = ft_strdup(token->next->value);
-			}
-			else if (token->type == OUT_RED || token->type == APP_RED)
-			{
-				exec->out_type = token->type;
-				exec->out_file = ft_strdup(token->next->value);
-			}
-			i = ft_open_check_files(exec, i, data);
-		}
-		token = token->next;
-	}
-	return (i);
-}
-
 static void	ft_wait_part(t_data *data)
 {
 	int	i;
@@ -305,7 +223,7 @@ static void	ft_wait_part(t_data *data)
 		if (i == data->cmd_amount - 1)
 		{
 			waitpid(data->forks[i], &data->status, 0);
-			if (data->path)
+			if (WIFEXITED(data->status))
 				data->status = WEXITSTATUS(data->status);
 		}
 		waitpid(data->forks[i], NULL, 0);
@@ -321,7 +239,6 @@ void	ft_start_exec(t_data *data, t_exec **exec,t_token *token, int i)
 	err = 0;
 	tmp = token;
 	ft_init_here_docs(data, exec, i);
-
 	while(tmp)
 	{
 		if (tmp->type == CMD)
@@ -331,7 +248,12 @@ void	ft_start_exec(t_data *data, t_exec **exec,t_token *token, int i)
 		}
 		tmp = tmp->next;
 	}
-	err = ft_init_redirection(data, exec[i], token);
+	err = ft_exec_init_redirection(data, exec[i], token);
+	if (err)
+	{
+		ft_set_exec_err(data,exec[i], err, token->value);
+		return ;
+	}
 	g_qsignal = 1;
 	if (data->cmd_amount > 1)
 	{
@@ -378,4 +300,5 @@ void	ft_execute(t_data *data)
 		mother_close_pipes_all(data);
 		ft_wait_part(data);
 	}
+	//ft_print_exec(exec);
 }

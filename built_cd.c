@@ -6,25 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 12:14:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/30 20:27:05 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int ft_check_access(char *path)
-{
-	if (access(path, F_OK) == 0)
-	{
-		if (access(path, R_OK) == -1)
-			return (1);
-		else if (access(path, X_OK) == -1)
-			return (1);
-		else if (access(path, W_OK) == -1)
-			return (1);
-	}
-	return (0);
-}
 
 void	ft_setenv(t_data *data, char *key, char *value)
 {
@@ -118,14 +104,6 @@ void	ft_cd(t_data *data, int *index)
 	}
 	else
 		data->path = token->next->value;
-	if (ft_check_access(data->path) == 1)
-	{
-		write(2, "⭐MINISHELL> ", 14);
-		write(2, data->path, ft_strlen(data->path));
-		write(2, ": Permission denied\n", 21);
-		data->status = ERR_IS_DIR;
-		return ;
-	}
 	if (!ft_check_directory(data))
 		return ;
 	ft_cd_change_directory(data);
