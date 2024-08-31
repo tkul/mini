@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:28:53 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 14:50:50 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 16:46:05 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	ft_execve(t_data *data, t_exec **exec, int i)
 {
-	int		status;
-	pid_t	pid;
 	t_token	*token;
 	
 	token = data->tokens[i];
@@ -25,21 +23,15 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 	if (data->path == NULL)
 		return ;
 	ft_set_args(data,token);
-	pid = fork();
-	if (!pid)
+	data->forks[0] = fork();
+	if (!data->forks[0])
 	{
 		if (exec[i]->is_without_cmd)
 			mother_close_pipes_all(data);
 		ft_dup_redictions(exec[i], data);
 		execve(data->path, data->args, data->env);
-		exit(0);
+		exit(data->status);
 	}
-	else
-	{
-		if (WIFEXITED(status))
-			data->status = WEXITSTATUS(status);
-	}
-	waitpid(pid, &status, 0);
 }
 
 void	ft_run_single_cmd(t_data *data, t_exec **exec, int i, t_token *token)

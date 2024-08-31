@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:48:35 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 16:56:47 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_error(t_data *data, int error)
 	if (error == EXIT_ERROR)
 	{
 		data->status = EXIT_ERROR;
-		printf("exit: numeric argument required\n");
+		write(2,"exit: numeric argument required\n", 33);
 	}
 }
 

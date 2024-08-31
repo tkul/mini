@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:51:23 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 16:48:30 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int ft_find_absolute_path(t_data *data ,t_token *token, t_exec *exec)
 void    ft_set_path(t_data *data, t_token *token, t_exec *exec)
 {
 	t_token *tmp;
-	
+	int		status;
 	tmp = token;
     while (tmp)
 	{
@@ -68,12 +68,17 @@ void    ft_set_path(t_data *data, t_token *token, t_exec *exec)
 			tmp->value);
 			if (data->path)
 			{
-				if (!ft_find_absolute_path(data, tmp, exec))
+				status = ft_find_absolute_path(data, tmp, exec);
+				if (status)
+				{
+					data->status = status;
 					break ;
+				}
 			}
 			else
 			{
 				ft_set_exec_err(data, exec,CMD_NOT_FOUND, token->value);
+				data->status = 127;
 				break ;
 			}
 		}

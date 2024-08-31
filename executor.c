@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:08:06 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 16:54:05 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,9 @@ void	ft_execute(t_data *data)
 		token = data->tokens[i];
 		data->check = ft_is_builtins(token->value);
 		ft_start_exec(data,exec,token,data->index);
-		ft_print_exec_errors(data, exec);
 		i++;
 	}
+	ft_print_exec_errors(data, exec);
 	if (!(data->check > 0 && data->cmd_amount == 1))
 	{
 		mother_close_pipes_all(data);
