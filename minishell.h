@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/30 22:33:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 03:50:00 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ void				ft_export(t_data *data, int *index);
 void				ft_setenv(t_data *data, char *key, char *value);
 void				ft_set_export(t_data *data, char *key, char *value);
 char				**ft_realloc(char **env, int size);
-int					ft_unset(t_data *data, int *index);
+void					ft_unset(t_data *data, int *index);
 int					my_isalpha(char *str);
 int					process_dollar_variable(t_data *data, char **str, int *i,
 						int quote);
@@ -233,7 +233,6 @@ int	ft_is_redirection_single(t_token *token);
 void    ft_set_args(t_data *data, t_token *token);
 void	ft_init_pipes(t_data *data);
 void    ft_set_path(t_data *data, t_token *token, t_exec *exec);
-void	ft_print_exec_errors(t_data *data, t_exec *exec);
 void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value);
 void	ft_init_dupes(t_data *data, t_exec *exec, int i);
 void	close_redir_fd(t_data *data, t_exec *exec, int fd1, int fd2);
@@ -244,6 +243,7 @@ void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
 int	ft_isalphaaa(int c);
 int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token);
+void	ft_print_exec_errors(t_data *data, t_exec **exec);
 
 void	ft_print_exec(t_exec **exec);
 #endif

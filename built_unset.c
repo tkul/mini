@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 04:05:39 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 03:21:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_unset_unsetter(t_data *data, char *key)
 	remove_entry(data->export, key);
 }
 
-int	ft_unset(t_data *data, int *index)
+void	ft_unset(t_data *data, int *index)
 {
 	t_token	*token;
 
@@ -59,6 +59,6 @@ int	ft_unset(t_data *data, int *index)
 		ft_unset_unsetter(data, token->value);
 		token = token->next;
 	}
-	return (SUCCESS);
+	data->status = SUCCESS;
 }
 

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:55:15 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 22:27:10 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 03:20:32 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_pwd(t_data *data)
 {
 	printf("%s\n", data->cwd);
+	data->status = SUCCESS;
 }
 
 void	ft_env(t_data *data)
@@ -27,4 +28,5 @@ void	ft_env(t_data *data)
 		printf("%s\n", data->env[i]);
 		i++;
 	}
+	data->status = SUCCESS;
 }

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/30 23:13:20 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 03:55:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int ft_find_absolute_path(t_data *data ,t_token *token, t_exec *exec)
 	struct stat	buf;
 
 	stat(token->value, &buf);
+	data->path = NULL;
 	if (errno == EACCES)
 		return (ft_set_exec_err(data, exec, ERR_PERMISSION_DENIED, token->value),1);
 	if (S_ISDIR(buf.st_mode))
