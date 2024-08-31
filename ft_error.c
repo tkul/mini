@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 16:56:47 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 01:10:07 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	ft_exec_error(t_data *data,t_exec *exec, int err, char *value)
 		data->status = 126;
 		exec->should_run = 1;
 		ft_err_output(value, EISDIR);
-		// printf("minishell: %s: is a directory\n", value);
 	}
 	if (err == ERR_NO_FILE_OR_DIR)
 	{
