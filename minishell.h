@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 03:50:00 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 15:48:18 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <termios.h>
 # include <unistd.h>
 # include <errno.h>
+#	include <dirent.h>
 
 extern int			g_qsignal;
 
@@ -60,6 +61,8 @@ extern int			g_qsignal;
 # define SYNTAX_ERROR 258
 # define ERR_PIPE_INIT 124
 # define ERR_PERMISSION_DENIED 1261
+# define ERR_PERMISSION_DENIED2 1262
+# define ERR_NO_SUCH_FILE 1271
 # define ERR_NO_FILE_OR_DIR 1
 # define ERR_IS_DIR 126
 
@@ -219,7 +222,7 @@ int					close_fd(t_data *data);
 void				ft_execve(t_data *data,t_exec **exec, int i);
 char				*find_in_path(char *path, char *cmd);
 int					ft_count_cmds(t_token **tokens);
-void				ft_run_builtin(t_data *data, int i);
+void				ft_run_builtin(t_data *data, int i, t_token *token, t_exec *exec);
 void    			ft_init_exec(t_data *data, t_exec *exec,t_token *token);
 int					ft_is_redirection(t_token *token);
 void				ft_init_here_docs(t_data *data, t_exec **exec, int i);
@@ -233,7 +236,6 @@ int	ft_is_redirection_single(t_token *token);
 void    ft_set_args(t_data *data, t_token *token);
 void	ft_init_pipes(t_data *data);
 void    ft_set_path(t_data *data, t_token *token, t_exec *exec);
-void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value);
 void	ft_init_dupes(t_data *data, t_exec *exec, int i);
 void	close_redir_fd(t_data *data, t_exec *exec, int fd1, int fd2);
 int	close_redir_pipe_fd(t_data *data, t_exec *exec, int i);
@@ -243,7 +245,19 @@ void	ft_is_without_cmd(t_exec *exec, t_data *data);
 int	ft_find_exec_type(t_exec **exec, t_token *token, int i);
 int	ft_isalphaaa(int c);
 int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token);
-void	ft_print_exec_errors(t_data *data, t_exec **exec);
 
+void	ft_print_exec_errors(t_data *data, t_exec **exec);
+int	ft_dup_redictions(t_exec *exec, t_data *data);
 void	ft_print_exec(t_exec **exec);
+int	ft_open_check_files(t_exec *exec, int status, t_data *data);
+void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i);
+void	ft_run_commands(t_data *data, t_token *token, int i, t_exec *exec);
+void	ft_run_single_cmd(t_data *data, t_exec **exec, int i, t_token *token);
+void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token);
+void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value);
+void	ft_exec_error(t_data *data,t_exec *exec,int err, char *value);
+void	arg_type(t_data *data , char *arg);
+
+
+
 #endif

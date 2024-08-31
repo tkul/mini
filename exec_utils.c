@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/30 17:26:04 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 09:05:17 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,23 @@ void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)
 	exec->type = 0;
 }
 
-void	ft_run_builtin(t_data *data, int i)
-{ 
-	if (ft_strcmp(data->tokens[i]->value, "echo") == 0)
+void	ft_run_builtin(t_data *data, int i, t_token *token, t_exec *exec)
+{
+	if (data->cmd_amount == 1 && ft_dup_redictions(exec, data))
+		return ;
+	if (ft_strcmp(token->value, "echo") == 0)
 		ft_echo(data, &i);
-	else if (ft_strcmp(data->tokens[i]->value, "pwd") == 0)
+	else if (ft_strcmp(token->value, "pwd") == 0)
 		ft_pwd(data);
-	else if (ft_strcmp(data->tokens[i]->value, "env") == 0)
+	else if (ft_strcmp(token->value, "env") == 0)
 		ft_env(data);
-	else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
+	else if (ft_strcmp(token->value, "cd") == 0)
 		ft_cd(data, &i);
-	else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
+	else if (ft_strcmp(token->value, "export") == 0)
 		ft_export(data, &i);
-	else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
+	else if (ft_strcmp(token->value, "unset") == 0)
 		ft_unset(data, &i);
-	else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
+	else if (ft_strcmp(token->value, "exit") == 0)
 		ft_exit(data, &i);
 }
 

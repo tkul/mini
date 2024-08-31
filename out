@@ -1,0 +1,28 @@
+[0m[0;33mTest  50: ❌[38;5;244m exit hello 
+[0;33mTest  57: ❌[38;5;244m grep hi <./test_files/infile 
+[0;33mTest  58: ❌[38;5;244m grep hi "<infile" <         ./test_files/infile 
+[0m[0;33mTest  60: ❌[38;5;244m grep hi <./test_files/infile_big <./test_files/infile 
+[0m[0;33mTest  62: ❌[38;5;244m cat <"./test_files/file name with spaces" 
+[0;33mTest  63: ❌[38;5;244m cat <./test_files/infile_big ./test_files/infile 
+[0m[0;33mTest  67: ❌[38;5;244m cat <"./test_files/infile" 
+[0;33mTest  81: ❌[38;5;244m ls >./outfiles/outfile01 
+[0;33mTest  82: ❌[38;5;244m ls >         ./outfiles/outfile01 
+[0;33mTest  83: ❌[38;5;244m echo hi >         ./outfiles/outfile01 bye 
+[0;33mTest  84: ❌[38;5;244m ls >./outfiles/outfile01 >./outfiles/outfile02 
+[0m[0;33mTest  86: ❌[38;5;244m ls >"./outfiles/outfile with spaces" 
+[0;33mTest  87: ❌[38;5;244m ls >"./outfiles/outfile""1""2""3""4""5" 
+[0m[0;33mTest  90: ❌[38;5;244m cat <"./test_files/infile" >"./outfiles/outfile01" 
+[0;33mTest  91: ❌[38;5;244m echo hi >./outfiles/outfile01 | echo bye 
+[0;33mTest  92: ❌[38;5;244m echo hi >./outfiles/outfile01 >./outfiles/outfile02 | echo bye 
+[0m[0;33mTest  94: ❌[38;5;244m echo hi | echo bye >./outfiles/outfile01 >./outfiles/outfile02 
+[0;33mTest  95: ❌[38;5;244m echo hi >./outfiles/outfile01 | echo bye >./outfiles/outfile02 
+[0m[0;33mTest 109: ❌[38;5;244m ls >>./outfiles/outfile01 
+[0;33mTest 110: ❌[38;5;244m ls >>      ./outfiles/outfile01 
+[0;33mTest 111: ❌[38;5;244m ls >>./outfiles/outfile01 >./outfiles/outfile01 
+[0;33mTest 112: ❌[38;5;244m ls >./outfiles/outfile01 >>./outfiles/outfile01 
+[0;33mTest 113: ❌[38;5;244m ls >./outfiles/outfile01 >>./outfiles/outfile01 >./outfiles/outfile02 
+[0;33mTest 114: ❌[38;5;244m ls >>./outfiles/outfile01 >>./outfiles/outfile02 
+[0m[0;33mTest 121: ❌[38;5;244m echo hi >>./outfiles/outfile01 | echo bye 
+[0;33mTest 122: ❌[38;5;244m echo hi >>./outfiles/outfile01 >>./outfiles/outfile02 | echo bye 
+[0m[0;33mTest 124: ❌[38;5;244m echo hi | echo bye >>./outfiles/outfile01 >>./outfiles/outfile02 
+[0;33mTest 125: ❌[38;5;244m echo hi >>./outfiles/outfile01 | echo bye >>./outfiles/outfile02 

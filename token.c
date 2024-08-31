@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 12:56:51 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 11:13:32 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 
 	is_created_token_is_null = 1;
 	last = NULL;
+	// red = is_redirection(data->original[i]);
 	red = is_redirection(str);
 	if (str && *str)
 	{
