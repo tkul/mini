@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:53:14 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 11:14:51 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 22:47:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**ft_realloc(char **env, int size)
 		i++;
 	}
 	new[i] = NULL;
-	free(env);
+	ft_free_array(env);
 	return (new);
 }
 

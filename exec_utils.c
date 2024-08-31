@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 09:05:17 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 23:13:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	* ft_is_here_doc(t_token *token)
 	while (token)
 	{
 		if (token->type == DELIMETER)
-			return (token->value);
+			return (ft_strdup(token->value));
 		token = token->next;
 	}
 	return (NULL);
@@ -104,7 +104,7 @@ char	* ft_is_here_doc2(t_exec *exec,t_token *token)
 		if (!(ft_strcmp(token->value, exec->is_here_doc)))
 			token = token->next;
 		while (token->type == DELIMETER)
-			return (token->value);
+			return (ft_strdup(token->value));
 		token = token->next;
 	}
 	return (NULL);

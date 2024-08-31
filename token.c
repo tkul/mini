@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 11:13:32 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 00:19:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_redirect_arrange(t_token **tokens)
 				break ;
 			if (ft_is_redirection_single(tmp2) && tmp2->next && tmp2->next->next
 				&& !ft_is_redirection_single(tmp2->next->next))
-					tmp2->next->next->type = CMD;
+				tmp2->next->next->type = CMD;
 			tmp2 = tmp2->next;
 		}
 	}
@@ -148,11 +148,12 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 	t_token	*new;
 	t_token	*last;
 	int		red;
+	int		red_extra;
 	int		is_created_token_is_null;
 
 	is_created_token_is_null = 1;
 	last = NULL;
-	// red = is_redirection(data->original[i]);
+	red_extra = is_redirection(data->original[j]);
 	red = is_redirection(str);
 	if (str && *str)
 	{
@@ -169,13 +170,13 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 			else
 				new = new_token(ft_strdup(str), FILE, -1);
 		}
-		else if (red == 4)
+		else if (red == 4 && red_extra == 4)
 			new = new_token(ft_strdup(str), HER_DOC, -1);
-		else if (red == 3)
+		else if (red == 3 && red_extra == 3)
 			new = new_token(ft_strdup(str), APP_RED, -1);
-		else if (red == 2)
+		else if (red == 2 && red_extra == 2)
 			new = new_token(ft_strdup(str), OUT_RED, -1);
-		else if (red == 1)
+		else if (red == 1 && red_extra == 1)
 			new = new_token(ft_strdup(str), IN_RED, -1);
 		else if (j == 0)
 			new = new_token(ft_strdup(str), CMD, -1);

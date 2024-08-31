@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 02:51:27 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 00:11:45 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	ft_run(t_data *data)
 		if (ft_init_tokens(data) == ERROR)
 			return (free(data->tokens), ERROR);
 		if (ft_parser(data) == ERROR)
-			return (free(data->tokens), ERROR);
+			return (ft_free_tokens(data->tokens), free(data->tokens), ERROR);
 		// ft_print_tokens(data->tokens);
 		ft_execute(data);
 		ft_free_tokens(data->tokens);
@@ -111,5 +111,8 @@ int	ft_start_shell(t_data *data)
 		if (ft_run(data) == SUCCESS)
 			continue ;
 	}
+	// ft_free_array(data->env);
+	// free(data->old_pwd);
+	// free(data->cmd);
 	return (SUCCESS);
 }

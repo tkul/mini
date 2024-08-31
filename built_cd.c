@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:27:36 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 23:24:06 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	ft_cd(t_data *data, int *index)
 		}
 	}
 	else
-		data->path = token->next->value;
+		data->path = ft_strdup(token->next->value);
 	if (!ft_check_directory(data))
 		return ;
 	ft_cd_change_directory(data);

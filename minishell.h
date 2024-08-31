@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:48:18 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 22:38:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ typedef struct s_split
 
 typedef struct s_exec
 {
-	char	**cmd_args;
 	char	**heredocs;
 	int		err_no;
 	char	*err_value;
@@ -115,11 +114,9 @@ typedef struct s_exec
 	int		out_fd;
 	int		count_heredocs;
 	int		type;
-	char	*path;
-	int	    **std_fd;
-	char	*cmd_path;
 	int		here_doc_idx;
 }					t_exec;
+
 typedef struct s_data
 {
 	char			**original;
@@ -257,6 +254,7 @@ void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token);
 void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value);
 void	ft_exec_error(t_data *data,t_exec *exec,int err, char *value);
 void	arg_type(t_data *data , char *arg);
+void	free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
 
 
 

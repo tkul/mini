@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:45:08 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/27 12:25:08 by tkul             ###   ########.fr       */
+/*   Updated: 2024/08/31 23:10:08 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff, int pipe_fd[2])
 	i = 0;
 	while (buff)
 	{
+		if (buff)
+			free(buff);
 		buff = readline("> ");
 		if (exec->count_heredocs > 1)
 		{
@@ -68,7 +70,7 @@ void	ft_heredoc(t_token *token, t_exec **exec , int j)
 	int		pipe_fd[2];
 	char	*buff;
 
-	buff = "init_value";
+	buff = ft_strdup("init_value");
 	if (pipe(pipe_fd) == -1)
 		return ;
 	ft_heredoc_loop(token, exec[j], buff, pipe_fd);
