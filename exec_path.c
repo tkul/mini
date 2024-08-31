@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 01:32:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 01:55:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*find_in_path(char *path, char *cmd)
 	return (NULL);
 }
 
-int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec)
+int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec, char *path)
 {
 	struct stat	buf;
 
@@ -52,10 +52,10 @@ int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec)
 				token->value), 1);
 	if (S_ISDIR(buf.st_mode))
 		return (ft_set_exec_err(data, exec, ERR_IS_DIR, token->value), 126);
-	if (access(data->path, F_OK) == -1)
+	if (access(path, F_OK) == -1)
 		return (ft_set_exec_err(data, exec, ERR_NO_SUCH_FILE, token->value),
 			127);
-	if (access(data->path, X_OK) == -1)
+	if (access(path, X_OK) == -1)
 		return (ft_set_exec_err(data, exec, ERR_PERMISSION_DENIED2,
 				token->value), 126);
 	return (0);
@@ -81,8 +81,7 @@ void	ft_set_path(t_data *data, t_token *token, t_exec *exec)
 			free(tmp2);
 			if (ft_strchr(tmp->value, '/'))
 			{
-				data->path = ft_strdup(path);
-				status = ft_find_absolute_path(data, tmp, exec);
+				status = ft_find_absolute_path(data, tmp, exec, path);
 				if (status)
 				{
 					data->status = status;
