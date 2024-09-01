@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 01:55:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:52:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	*find_in_path(char *path, char *cmd)
 	return (NULL);
 }
 
-int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec, char *path)
+int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec,
+		char *path)
 {
 	struct stat	buf;
 

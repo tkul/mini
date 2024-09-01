@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 01:10:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:53:00 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ void	ft_error(t_data *data, int error)
 	if (error == EXIT_ERROR)
 	{
 		data->status = EXIT_ERROR;
-		write(2,"exit: numeric argument required\n", 33);
+		write(2, "exit: numeric argument required\n", 33);
 	}
 }
-
 
 void	ft_set_exec_err(t_data *data, t_exec *exec, int err, char *value)
 {
@@ -46,7 +45,7 @@ void	ft_err_output(char *value, int err)
 	write(2, "\n", 1);
 }
 
-void	ft_exec_error(t_data *data,t_exec *exec, int err, char *value)
+void	ft_exec_error(t_data *data, t_exec *exec, int err, char *value)
 {
 	if (err == ERR_NO_SUCH_FILE)
 	{
@@ -79,7 +78,7 @@ void	ft_exec_error(t_data *data,t_exec *exec, int err, char *value)
 		data->status = 1;
 		exec->should_run = 1;
 		ft_err_output(value, EACCES);
-	}	
+	}
 	if (err == ERR_PERMISSION_DENIED2)
 	{
 		data->status = 126;
@@ -88,10 +87,9 @@ void	ft_exec_error(t_data *data,t_exec *exec, int err, char *value)
 	}
 }
 
-
 void	ft_print_exec_errors(t_data *data, t_exec **exec)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < data->cmd_amount)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:37:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:08:24 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 21:27:41 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i)
 {
 	if (exec->should_run && !exec->is_here_doc)
-		ft_run_commands(data,token,i, exec);
+		ft_run_commands(data, token, i, exec);
 	ft_dup_redictions(exec, data);
 	ft_init_dupes(data, exec, i);
 	if (data->check > 0)
@@ -25,18 +25,18 @@ void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i)
 	}
 	close_redir_pipe_fd(data, exec, i);
 	if (exec->should_run && exec->is_here_doc)
-		ft_error(data,ERR_NO_FILE_OR_DIR);
+		ft_error(data, ERR_NO_FILE_OR_DIR);
 	ft_set_path(data, token, exec);
 	if (data->path == NULL)
 		exit(data->status);
 	ft_set_args(data, token);
-	execve(data->path,data->args, data->env);
+	execve(data->path, data->args, data->env);
 }
 
 int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 {
-	int		i;
-	int 	j;
+	int i;
+	int j;
 
 	i = 0;
 	j = 0;
@@ -44,7 +44,7 @@ int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 	{
 		if (ft_is_redirection_single(token) && token->next)
 		{
-			if (token->type == IN_RED || token->type == HER_DOC)
+			if (token->type == IN_RED)
 			{
 				exec->in_type = token->type;
 				exec->in_file = ft_strdup(token->next->value);

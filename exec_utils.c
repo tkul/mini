@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:09:01 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 21:19:36 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_find_exec_type(t_exec **exec, t_token *token, int i)
 		return (CMD_BUILTIN);
 	return (CMD_PATH);
 }
-void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)
+void	 ft_init_exec(t_data *data, t_exec *exec, t_token *token)
 {
 	exec->err_no = 0;
 	exec->err_value = NULL;
@@ -84,7 +84,7 @@ int	ft_is_redirection(t_token *token)
 	return (0);
 }
 
-char	* ft_is_here_doc(t_token *token)
+char	*ft_is_here_doc(t_token *token)
 {
 	while (token)
 	{
@@ -95,14 +95,18 @@ char	* ft_is_here_doc(t_token *token)
 	return (NULL);
 }
 
-char	* ft_is_here_doc2(t_exec *exec,t_token *token)
+char	*ft_is_here_doc2(t_exec *exec, t_token *token)
 {
 	while (token)
 	{
 		if (!(ft_strcmp(token->value, exec->is_here_doc)))
 			token = token->next;
-		while (token->type == DELIMETER)
+		if (token->type == DELIMETER)
+		{
+			if (exec->is_here_doc)
+				free(exec->is_here_doc);
 			return (ft_strdup(token->value));
+		}
 		token = token->next;
 	}
 	return (NULL);

@@ -6,13 +6,14 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:30:41 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:02:24 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 21:29:13 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_run_exec(t_data *data,t_token *token,int cmd_amount, int i, t_exec *exec)
+static void	ft_run_exec(t_data *data, t_token *token, int cmd_amount, int i,
+		t_exec *exec)
 {
 	close_pipes_all(data->pipes, cmd_amount, i);
 	if (data->check > 0)
@@ -32,18 +33,18 @@ void	ft_run_commands(t_data *data, t_token *token, int i, t_exec *exec)
 	if (i == 0)
 	{
 		dup2(data->pipes[i * 2 + 1], 1);
-		ft_run_exec(data,token, data->cmd_amount, i, exec);
+		ft_run_exec(data, token, data->cmd_amount, i, exec);
 	}
 	else if (i == data->cmd_amount - 1)
 	{
 		dup2(data->pipes[(i - 1) * 2], 0);
-		ft_run_exec(data,token, data->cmd_amount, i, exec);
+		ft_run_exec(data, token, data->cmd_amount, i, exec);
 	}
 	else
 	{
 		dup2(data->pipes[(i - 1) * 2], 0);
 		dup2(data->pipes[i * 2 + 1], 1);
-		ft_run_exec(data,token, data->cmd_amount, i, exec);
+		ft_run_exec(data, token, data->cmd_amount, i, exec);
 	}
 }
 
@@ -59,8 +60,8 @@ void	ft_run_pipes(t_data *data, t_exec *exec, int i, t_token *token)
 		mother_close_pipes_all(data);
 		exit(1);
 	}
-	else if (!exec->in_type && !exec->out_type)
-		ft_run_commands(data,token, i, exec);
+	else if (!exec->in_type && !exec->out_type && !exec->is_here_doc)
+		ft_run_commands(data, token, i, exec);
 	else
 		ft_run_redirects(data, token, exec, i);
 }

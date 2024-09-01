@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 02:19:18 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 17:11:57 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +155,6 @@ int	ft_create_token(t_data *data, char *str, int i, int j)
 	last = NULL;
 	red_extra = is_redirection(data->original[j]);
 	red = is_redirection(str);
-	// "" | "" olduğunda cmd olarak alınacak 
-	// data->original[j] = "" 
-	// data->original[j] = "" 
-	if (ft_strcmp(data->original[j], """") == 0)
-	{
-		new = new_token(ft_strdup(str), CMD, -1);
-		token_add_back(&(data->tokens[i]), new);
-	}
 	if (str && *str)
 	{
 		is_created_token_is_null = 0;

@@ -6,19 +6,19 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 11:16:25 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:52:51 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    ft_set_args(t_data *data, t_token *token)
+void	ft_set_args(t_data *data, t_token *token)
 {
 	int		args_len;
-    int j;
-	t_token *tmp;
-    
-    args_len = 0;
+	int		j;
+	t_token	*tmp;
+
+	args_len = 0;
 	tmp = token;
 	while (tmp)
 	{
@@ -45,7 +45,7 @@ int	ft_is_redirect_without_cmd(t_token **tokens)
 {
 	int		i;
 	int		red_count;
-	t_token *tmp;
+	t_token	*tmp;
 
 	i = 0;
 	red_count = 0;
@@ -69,9 +69,9 @@ int	ft_count_cmds(t_token **tokens)
 {
 	int		amount;
 	int		i;
-	t_token *tmp;
-	int red_count;
-	int flag;
+	t_token	*tmp;
+	int		red_count;
+	int		flag;
 
 	i = -1;
 	amount = 0;

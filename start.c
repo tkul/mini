@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 00:11:45 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:28:33 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,5 @@ int	ft_start_shell(t_data *data)
 		if (ft_run(data) == SUCCESS)
 			continue ;
 	}
-	// ft_free_array(data->env);
-	// free(data->old_pwd);
-	// free(data->cmd);
 	return (SUCCESS);
 }

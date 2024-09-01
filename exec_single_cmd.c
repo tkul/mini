@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:28:53 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 16:46:05 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 20:31:04 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 void	ft_execve(t_data *data, t_exec **exec, int i)
 {
 	t_token	*token;
-	
+
 	token = data->tokens[i];
 	(void)exec;
-	
-	ft_set_path(data,token, exec[i]);
+	ft_set_path(data, token, exec[i]);
 	if (data->path == NULL)
 		return ;
-	ft_set_args(data,token);
+	ft_set_args(data, token);
 	data->forks[0] = fork();
 	if (!data->forks[0])
 	{
@@ -36,15 +35,15 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 
 void	ft_run_single_cmd(t_data *data, t_exec **exec, int i, t_token *token)
 {
-	int	fd1;
-	int	fd2;
+	int fd1;
+	int fd2;
 
 	if (data->check > 0)
 	{
 		fd1 = dup(1);
 		fd2 = dup(0);
 		ft_run_builtin(data, i, token, exec[i]);
-		return(close_redir_fd(data, exec[0], fd1, fd2));
+		return (close_redir_fd(data, exec[0], fd1, fd2));
 	}
 	else
 		ft_execve(data, exec, i);
