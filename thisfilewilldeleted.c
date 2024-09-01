@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 21:44:54 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/28 20:30:30 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:08:56 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	ft_print_exec(t_exec **exec)
 		printf("exec[%d]->out_file: %s\n", i, exec[i]->out_file);
 		printf("exec[%d]->err_no: %d\n", i, exec[i]->err_no);
 		printf("exec[%d]->err_value: %s\n", i, exec[i]->err_value);
-		printf("exec[%d]->here_doc_idx: %d\n", i, exec[i]->here_doc_idx);
 		i++;
 	}
 }

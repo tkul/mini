@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 22:38:09 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:08:59 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ typedef struct s_split
 
 typedef struct s_exec
 {
-	char	**heredocs;
 	int		err_no;
 	char	*err_value;
 	int		is_without_cmd;
@@ -114,7 +113,6 @@ typedef struct s_exec
 	int		out_fd;
 	int		count_heredocs;
 	int		type;
-	int		here_doc_idx;
 }					t_exec;
 
 typedef struct s_data
@@ -222,7 +220,7 @@ int					ft_count_cmds(t_token **tokens);
 void				ft_run_builtin(t_data *data, int i, t_token *token, t_exec *exec);
 void    			ft_init_exec(t_data *data, t_exec *exec,t_token *token);
 int					ft_is_redirection(t_token *token);
-void				ft_init_here_docs(t_data *data, t_exec **exec, int i);
+void				ft_init_here_docs(t_data *data, t_exec **exec, int i, t_token *token);
 int					ft_count_heredocs(t_token *token);
 char	* ft_is_here_doc2(t_exec *exec,t_token *token);
 char	* ft_is_here_doc(t_token *token);

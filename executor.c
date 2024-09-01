@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 00:19:36 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:12:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 
 	err = 0;
 	tmp = token;
-	ft_init_here_docs(data, exec, i);
+	ft_init_here_docs(data, exec, i, token);
 	while (tmp)
 	{
 		if (tmp->type == CMD)
@@ -59,10 +59,7 @@ void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 	}
 	err = ft_exec_init_redirection(data, exec[i], token);
 	if (err)
-	{
-		ft_set_exec_err(data, exec[i], err, token->value);
-		return ;
-	}
+		return(ft_set_exec_err(data, exec[i], err, token->value));
 	g_qsignal = 1;
 	if (data->cmd_amount > 1)
 	{
@@ -95,11 +92,6 @@ void	free_exec_data(t_data *data, t_exec **exec, int cmd_amount)
 		{
 			free(exec[i]->in_file);
 			exec[i]->in_file = NULL;
-		}
-		if (exec[i]->heredocs)
-		{
-			ft_free_array(exec[i]->heredocs);
-			exec[i]->heredocs = NULL;
 		}
 		free(exec[i]);
 		exec[i] = NULL;
@@ -164,5 +156,4 @@ void	ft_execute(t_data *data)
 	}
 	free_exec_data(data, exec, data->cmd_amount);
 	free(exec);
-	// ft_print_exec(exec);
 }

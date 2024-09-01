@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 23:54:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 23:13:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:09:01 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	ft_find_exec_type(t_exec **exec, t_token *token, int i)
 }
 void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)
 {
-	exec->heredocs = NULL;
 	exec->err_no = 0;
 	exec->err_value = NULL;
 	exec->is_without_cmd = isredwocmd(token);
@@ -45,7 +44,6 @@ void    ft_init_exec(t_data *data, t_exec *exec, t_token *token)
 	exec->in_file = NULL;
 	exec->should_run = 0;
 	exec->in_type = 0;
-	exec->here_doc_idx = 0;
 	ft_is_without_cmd(exec, data);
 	exec->is_here_doc = ft_is_here_doc(token);
 	exec->in_fd = 0;

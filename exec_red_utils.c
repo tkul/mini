@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:50:33 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 14:51:45 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:08:32 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ int	ft_open_check_files(t_exec *exec, int status, t_data *data)
 	{
 		if (exec->in_type == IN_RED && exec->should_run == 0)
 			exec->in_fd = open(exec->in_file, O_RDONLY);
-		else if (exec->in_type == HER_DOC)
-		{
-			exec->heredocs[exec->here_doc_idx] = ft_strdup(exec->in_file);
-			exec->here_doc_idx++;
-		}
 		if (exec->in_fd == -1 && exec->should_run == 0)
 			return (ft_for_in_file(data,exec));
 	}

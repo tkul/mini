@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:37:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 15:02:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 14:08:24 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 
 	i = 0;
 	j = 0;
-	exec->heredocs = malloc(sizeof(char *) * (exec->count_heredocs + 1));
-	exec->heredocs[exec->count_heredocs] = NULL;
 	while (token)
 	{
 		if (ft_is_redirection_single(token) && token->next)

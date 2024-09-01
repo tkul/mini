@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:45:08 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 23:10:08 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/01 13:52:46 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff, int pipe_fd[2])
 	i = 0;
 	while (buff)
 	{
-		if (buff)
-			free(buff);
 		buff = readline("> ");
 		if (exec->count_heredocs > 1)
 		{
@@ -61,6 +59,7 @@ void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff, int pipe_fd[2])
 		}
 		if (i == exec->count_heredocs - 1)
 			ft_heredoc_writer(pipe_fd, buff);
+		free(buff);
 	}
 }
 
@@ -92,13 +91,11 @@ void	ft_run_heredoc_without_cmd(t_token *token,t_exec **exec, int i)
 	exec[i]->in_fd = pipe_fd[0];
 }
 
-void	ft_init_here_docs(t_data *data, t_exec **exec, int i)
+void	ft_init_here_docs(t_data *data, t_exec **exec, int i, t_token *token)
 {
 	int	j;
-	t_token *token;
 
 	j = -1;
-	token = data->tokens[i];
 	if (data->cmd_amount == 0)
 		ft_run_heredoc_without_cmd(token, exec, i);
 	while (++j < data->cmd_amount)
