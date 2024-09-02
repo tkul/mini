@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:17 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:53:06 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 18:53:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,24 @@ void	add_by_index(char **str, char c, int start)
 	*str = new_str;
 }
 
+static void	ft_init_redirections_case(t_data *data, int *i, int quote)
+{
+	if (quote == -1 && (data->cmd)[*i] == '>' && (data->cmd)[*i + 1] == '>')
+	{
+		add_by_index(&(data->cmd), ' ', *i);
+		add_by_index(&(data->cmd), ' ', *i + 3);
+		*i += 3;
+	}
+	else if (quote == -1 && (data->cmd)[*i] == '>')
+	{
+		add_by_index(&(data->cmd), ' ', *i);
+		add_by_index(&(data->cmd), ' ', *i + 2);
+		*i += 2;
+	}
+	else
+		(*i)++;
+}
+
 int	ft_init_redirections(t_data *data)
 {
 	int	i;
@@ -61,21 +79,8 @@ int	ft_init_redirections(t_data *data)
 			add_by_index(&(data->cmd), ' ', i + 2);
 			i += 2;
 		}
-		else if (quote == -1 && (data->cmd)[i] == '>' && (data->cmd)[i
-			+ 1] == '>')
-		{
-			add_by_index(&(data->cmd), ' ', i);
-			add_by_index(&(data->cmd), ' ', i + 3);
-			i += 3;
-		}
-		else if (quote == -1 && (data->cmd)[i] == '>')
-		{
-			add_by_index(&(data->cmd), ' ', i);
-			add_by_index(&(data->cmd), ' ', i + 2);
-			i += 2;
-		}
 		else
-			i++;
+			ft_init_redirections_case(data, &i, quote);
 	}
 	return (SUCCESS);
 }

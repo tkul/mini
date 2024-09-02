@@ -6,12 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 12:31:41 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 19:12:26 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	ft_control_quotes(char *s)
 {
@@ -34,7 +33,10 @@ int	ft_control_quotes(char *s)
 			quote2 = 0;
 	}
 	if (quote != 0 || quote2 != 0)
-		return (printf("Error: unclosed quotes\n"), ERROR);
+	{
+		write(2, "⭐MINISHELL> unclosed quotes\n", 30);
+		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -65,19 +67,16 @@ static void	remove_index(char **s, int index)
 	*s = new_str;
 }
 
-
 int	ft_remove_quotes(t_data *data, char **s)
 {
 	int		i;
 	int		quote;
-	int		rm1;
-	int		rm2;
 	char	*status;
 
 	i = 0;
 	quote = 0;
-	rm1 = -1;
-	rm2 = -1;
+	data->rm1 = -1;
+	data->rm2 = -1;
 	if (ft_control_quotes(*s) == ERROR)
 		return (ERROR);
 	while ((*s)[i])
@@ -85,12 +84,12 @@ int	ft_remove_quotes(t_data *data, char **s)
 		if (quote == 0 && ((*s)[i] == '\"' || (*s)[i] == '\''))
 		{
 			quote = (*s)[i];
-			rm1 = i;
+			data->rm1 = i;
 		}
 		else if ((*s)[i] == quote)
 		{
 			quote = 0;
-			rm2 = i;
+			data->rm2 = i;
 		}
 		if (quote != '\'' && (*s)[i] == '$')
 		{
@@ -105,18 +104,19 @@ int	ft_remove_quotes(t_data *data, char **s)
 				if (process_dollar_variable(data, s, &i, quote) == ERROR)
 					return (ERROR);
 			}
-			else if (quote == 0 && (*s)[i] == '$' && ((*s)[i + 1] == '"' || (*s)[i + 1] == '\''))
+			else if (quote == 0 && (*s)[i] == '$' && ((*s)[i + 1] == '"'
+					|| (*s)[i + 1] == '\''))
 			{
 				*s = remove_by_index(*s, i, i - 1);
 				i--;
 			}
 		}
-		if (rm1 != -1 && rm2 != -1)
+		if (data->rm1 != -1 && data->rm2 != -1)
 		{
-			remove_index(s, rm1);
-			remove_index(s, rm2 - 1);
-			rm1 = -1;
-			rm2 = -1;
+			remove_index(s, data->rm1);
+			remove_index(s, data->rm2 - 1);
+			data->rm1 = -1;
+			data->rm2 = -1;
 			i = i - 2;
 		}
 		i++;

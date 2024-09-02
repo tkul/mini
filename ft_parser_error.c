@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   ft_parser_error.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/26 23:18:43 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 18:44:19 by tkul             ###   ########.fr       */
+/*   Created: 2024/09/02 18:36:49 by tkul              #+#    #+#             */
+/*   Updated: 2024/09/02 18:37:07 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_init_pipes(t_data *data)
+void	ft_error(t_data *data, int error)
 {
-	int	i;
-
-	i = 0;
-	data->pipes = malloc(sizeof(int) * (data->cmd_amount * 2));
-	data->forks = malloc(sizeof(int) * (data->cmd_amount));
-	if (!data->pipes || !data->forks)
+	if (error == SYNTAX_ERROR)
 	{
-		data->status = 1;
-		return ;
+		data->status = SYNTAX_ERROR;
+		write(2, "Error: syntax error near unexpected token\n", 42);
 	}
-	while (i < data->cmd_amount)
+	if (error == EXIT_ERROR)
 	{
-		if (pipe(data->pipes + i * 2) < 0)
-		{
-			data->status = ERR_PIPE_INIT;
-			return ;
-		}
-		i++;
+		data->status = EXIT_ERROR;
+		write(2, "exit: numeric argument required\n", 33);
 	}
 }

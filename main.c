@@ -6,11 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 22:40:11 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 19:39:10 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		g_qsignal = 0;
 
 char	*ft_getenv_by_key(char *key, char **env)
 {
@@ -60,7 +62,7 @@ char	**ft_getenv(char **env)
 	return (result);
 }
 
-int	ft_init_data(t_data *data, char **env)
+void	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
 	data->status = 0;
@@ -77,7 +79,12 @@ int	ft_init_data(t_data *data, char **env)
 	data->path = NULL;
 	data->args = NULL;
 	data->i = 0;
-	return (SUCCESS);
+	data->j = 0;
+	data->ret = 0;
+	data->old_pwd = NULL;
+	data->is_red = 0;
+	data->new = NULL;
+	data->last = NULL;
 }
 
 int	main(int ac, char **av, char **env)
@@ -91,8 +98,7 @@ int	main(int ac, char **av, char **env)
 	if (!data)
 		return (0);
 	ft_signals();
-	if (ft_init_data(data, env))
-		return (free(data), 0);
+	ft_init_data(data, env);
 	ft_start_shell(data);
 	exit_status = data->status;
 	free(data);

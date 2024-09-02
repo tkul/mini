@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 17:46:02 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 19:40:20 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct s_lexer
 	int				token_count;
 	int				i;
 	int				j;
-	int				quote;
 	char			*key;
 	char			*value;
 }					t_lexer;
@@ -96,6 +95,7 @@ typedef struct s_split
 	int				i;
 	int				j;
 	int				k;
+	char			**tmp;
 }					t_split;
 
 typedef struct s_exec
@@ -143,6 +143,13 @@ typedef struct s_data
 	int				control;
 	int				index;
 	int				flag;
+	int				rm1;
+	int				rm2;
+	int				red;
+	int				red_extra;
+	int				is_created_token_is_null;
+	t_token			*new_token;
+	t_token			*last;
 	t_exec			**exec;
 }					t_data;
 
@@ -151,7 +158,6 @@ char				*ft_strdup(const char *s1);
 char				**ft_getenv(char **env);
 char				*ft_getenv_by_key(char *key, char **env);
 int					ft_start_shell(t_data *data);
-int					ft_init_data(t_data *data, char **env);
 void				ft_signals(void);
 void				tcsa(void);
 void				ctrl_c(int sig);
@@ -183,7 +189,7 @@ int					ft_is_builtins(char *cmd);
 void				ft_pwd(t_data *data);
 void				ft_echo(t_data *data, int *index);
 void				ft_env(t_data *data);
-void				ft_execute(t_data *data);
+void				ft_start_execute(t_data *data);
 void				ft_free_array(char **array);
 void				ft_exit(t_data *data, int *index);
 void				ft_redirect_arrange(t_token **tokens);
@@ -213,7 +219,7 @@ int					check_direct(t_data *mini, t_token **tokens);
 int					close_fd(t_data *data);
 void				ft_execve(t_data *data, t_exec **exec, int i);
 char				*find_in_path(char *path, char *cmd);
-int					ft_count_cmds(t_data *data,t_token **tokens);
+int					ft_count_cmds(t_data *data, t_token **tokens);
 void				ft_run_builtin(t_data *data, int i, t_token *token,
 						t_exec *exec);
 void				ft_init_exec(t_data *data, t_exec *exec, t_token *token);
@@ -264,5 +270,8 @@ void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
 void				ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
 						int pipe_fd[2]);
 void				ft_heredoc_writer(int pipe_fd[2], char *buff);
+void				ft_wait_part(t_data *data);
+void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
+int					ft_parser_free(t_data *data);
 
 #endif

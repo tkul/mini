@@ -6,37 +6,22 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 17:46:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 18:29:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_exec_part(t_data *data, t_exec *exec, t_token *token)
+static void	ft_find_helper(t_token *tmp, t_exec **exec, int i, t_token *token)
 {
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-		ft_run_pipes(data, exec, data->index, token);
-	data->forks[data->index] = pid;
-}
-
-static void	ft_wait_part(t_data *data)
-{
-	int	i;
-
-	i = data->cmd_amount - 1;
-	while (i >= 0)
+	while (tmp)
 	{
-		if (i == data->cmd_amount - 1)
+		if (tmp->type == CMD)
 		{
-			waitpid(data->forks[i], &data->status, 0);
-			if (WIFEXITED(data->status))
-				data->status = WEXITSTATUS(data->status);
+			if (!exec[i]->type)
+				exec[i]->type = ft_find_exec_type(exec, token, i);
 		}
-		waitpid(data->forks[i], NULL, 0);
-		i--;
+		tmp = tmp->next;
 	}
 }
 
@@ -47,20 +32,12 @@ void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 
 	err = 0;
 	tmp = token;
+	g_qsignal = 1;
 	ft_init_here_docs(data, exec, i, token);
-	while (tmp)
-	{
-		if (tmp->type == CMD)
-		{
-			if (!exec[i]->type)
-				exec[i]->type = ft_find_exec_type(exec, token, i);
-		}
-		tmp = tmp->next;
-	}
+	ft_find_helper(tmp, exec, i, token);
 	err = ft_exec_init_redirection(data, exec[i], token);
 	if (err)
 		return (ft_set_exec_err(data, exec[i], err, token->value));
-	g_qsignal = 1;
 	if (data->cmd_amount > 1)
 	{
 		if (token->type == CMD || exec[i]->type == CMD_WITHOUT_CMD)
@@ -71,26 +48,11 @@ void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 	g_qsignal = 0;
 }
 
-void	ft_execute(t_data *data)
+static void	ft_execute(t_data *data, t_exec **exec)
 {
-	t_exec	**exec;
-	t_token	*token;
 	int		i;
+	t_token	*token;
 
-	i = 0;
-	data->index = 0;
-	data->cmd_amount = ft_count_cmds(data, data->tokens);
-	if (data->cmd_amount < 0)
-		return ;
-	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
-	exec[data->cmd_amount] = NULL;
-	while (i < data->cmd_amount)
-	{
-		exec[i] = malloc(sizeof(t_exec));
-		ft_init_exec(data, exec[i], data->tokens[i]);
-		i++;
-	}
-	ft_init_pipes(data);
 	i = 0;
 	while (data->tokens[i])
 	{
@@ -108,4 +70,26 @@ void	ft_execute(t_data *data)
 	}
 	free_exec_data(data, exec, data->cmd_amount);
 	free(exec);
+}
+
+void	ft_start_execute(t_data *data)
+{
+	int		i;
+	t_exec	**exec;
+
+	i = 0;
+	data->index = 0;
+	data->cmd_amount = ft_count_cmds(data, data->tokens);
+	if (data->cmd_amount < 0)
+		return ;
+	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
+	exec[data->cmd_amount] = NULL;
+	while (i < data->cmd_amount)
+	{
+		exec[i] = malloc(sizeof(t_exec));
+		ft_init_exec(data, exec[i], data->tokens[i]);
+		i++;
+	}
+	ft_init_pipes(data);
+	ft_execute(data, exec);
 }

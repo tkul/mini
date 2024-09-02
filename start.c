@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:28:33 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 19:14:34 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,16 @@ int	ft_run(t_data *data)
 			return (free(data->tokens), ERROR);
 		if (ft_parser(data) == ERROR)
 			return (ft_free_tokens(data->tokens), free(data->tokens), ERROR);
-		// ft_print_tokens(data->tokens);
-		ft_execute(data);
+		ft_start_execute(data);
 		ft_free_tokens(data->tokens);
 		free(data->tokens);
 	}
 	return (SUCCESS);
 }
 
-int is_full_space(char *str)
+int	is_full_space(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])

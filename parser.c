@@ -6,44 +6,12 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 15:05:10 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 18:42:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_set_quote_type(int *quote, char c)
-{
-	if (*quote == -1 && (c == '\'' || c == '\"'))
-		*quote = (int)c;
-	else if (*quote == (int)(c))
-		*quote = -1;
-}
-
-int	count_word(const char *str, char c)
-{
-	int	i;
-	int	count;
-	int	quote;
-	int	toggle;
-
-	i = -1;
-	count = 0;
-	quote = -1;
-	toggle = 0;
-	while (str[++i])
-	{
-		ft_set_quote_type(&quote, str[i]);
-		if (quote == -1 && str[i] == c)
-			toggle = 0;
-		else if (quote == -1 && toggle == 0)
-		{
-			toggle = 1;
-			count++;
-		}
-	}
-	return (count);
-}
 int	ft_parser_init(t_data *data)
 {
 	data->i = -1;
@@ -65,22 +33,9 @@ int	ft_parser_init(t_data *data)
 	return (SUCCESS);
 }
 
-int	ft_parser_free(t_data *data)
+void	ft_again_set(t_data *data)
 {
-	ft_free_array(data->cmds);
-	if (data->lexer->value)
-		free(data->lexer->value);
-	if (data->lexer->key)
-		free(data->lexer->key);
-	if (ft_control_token(data, data->tokens) == ERROR)
-		return (free(data->lexer), ERROR);
-	free(data->lexer);
-	return (SUCCESS);
-}
-
-void	ft_again_set (t_data *data)
-{
-	int i;
+	int	i;
 
 	i = -1;
 	while (data->tokens[++i])

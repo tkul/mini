@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 20:28:52 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 19:20:06 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,16 @@ static void	init_split(t_split **s, const char *str, char c)
 		return ;
 }
 
+static void	ft_helper(t_split *s)
+{
+	s->cmds[s->j] = NULL;
+	s->tmp = s->cmds;
+	free(s);
+}
+
 char	**ft_split_by_quote(const char *str, char c)
 {
 	t_split	*s;
-	char	**tmp;
 
 	init_split(&s, str, c);
 	if (!s)
@@ -62,19 +68,17 @@ char	**ft_split_by_quote(const char *str, char c)
 		if (str[s->i] != '\0')
 			s->i++;
 	}
-	s->cmds[s->j] = NULL;
-	tmp = s->cmds;
-	free(s);
-	return (tmp);
+	ft_helper(s);
+	return (s->tmp);
 }
 
 int	my_isalpha(char *str)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!ft_isalpha(str[0]) && str[0] != '_')
-			return (0);
+		return (0);
 	if (ft_strchr(str, '='))
 	{
 		while (str[i] != '=')
@@ -94,12 +98,4 @@ int	my_isalpha(char *str)
 		}
 	}
 	return (1);
-}
-
-int	ft_isalphaaa(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
-		|| (c >= '0' && c <= '9'))
-		return (1);
-	return (0);
 }
