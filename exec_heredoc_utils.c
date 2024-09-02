@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:00:46 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 17:39:50 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 00:18:45 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_heredoc_writer(int pipe_fd[2], char *buff)
 void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
 		int pipe_fd[2])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (buff && exec->count_heredocs > 0)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 19:40:20 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 02:04:36 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,9 @@ typedef struct s_data
 	int				red;
 	int				red_extra;
 	int				is_created_token_is_null;
-	t_token			*new_token;
 	t_token			*last;
+	t_token			*new_token;
+	int				offset;
 	t_exec			**exec;
 }					t_data;
 
@@ -273,5 +274,6 @@ void				ft_heredoc_writer(int pipe_fd[2], char *buff);
 void				ft_wait_part(t_data *data);
 void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
 int					ft_parser_free(t_data *data);
+void				ft_tokenclear(t_token **token, void (*del)(void *));
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 19:39:10 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 01:56:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ void	ft_init_data(t_data *data, char **env)
 	data->ret = 0;
 	data->old_pwd = NULL;
 	data->is_red = 0;
-	data->new = NULL;
 	data->last = NULL;
+	data->new_token = NULL;
 }
 
 int	main(int ac, char **av, char **env)

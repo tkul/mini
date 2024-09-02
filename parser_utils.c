@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:40:58 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 19:19:29 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 00:54:32 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,32 @@ int	ft_isalphaaa(int c)
 		|| (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
+}
+
+int	ft_control_quotes(char *s)
+{
+	int	i;
+	int	quote;
+	int	quote2;
+
+	i = -1;
+	quote = 0;
+	quote2 = 0;
+	while (s[++i])
+	{
+		if (quote == 0 && (s[i] == '\"' || s[i] == '\''))
+			quote = s[i];
+		else if (s[i] == quote)
+			quote = 0;
+		if (quote2 == 0 && (s[i] == '\"' || s[i] == '\''))
+			quote2 = s[i];
+		else if (s[i] == quote2)
+			quote2 = 0;
+	}
+	if (quote != 0 || quote2 != 0)
+	{
+		write(2, "⭐MINISHELL> unclosed quotes\n", 30);
+		return (ERROR);
+	}
+	return (SUCCESS);
 }
