@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:53:14 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 22:47:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:57:07 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_create_export_entry(const char *key, const char *value)
 	return (entry);
 }
 
-void	ft_update_or_add_export_entry(t_data *data, char *key, char *value)
+void	ft_update_export_entry(t_data *data, char *key, char *value)
 {
 	char	*new_entry;
 	int		i;
@@ -72,9 +72,4 @@ void	ft_update_or_add_export_entry(t_data *data, char *key, char *value)
 	new_entry = ft_create_export_entry(key, value);
 	data->export[i] = new_entry;
 	data->export[i + 1] = NULL;
-}
-
-void	ft_update_export_entry(t_data *data, char *key, char *value)
-{
-	ft_update_or_add_export_entry(data, key, value);
 }

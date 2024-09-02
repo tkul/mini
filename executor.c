@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 21:30:00 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 17:46:58 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_execute(t_data *data)
 
 	i = 0;
 	data->index = 0;
-	data->cmd_amount = ft_count_cmds(data->tokens);
+	data->cmd_amount = ft_count_cmds(data, data->tokens);
 	if (data->cmd_amount < 0)
 		return ;
 	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));

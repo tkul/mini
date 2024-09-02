@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:51:56 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 17:46:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "./lib/libft.h"
+# include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -30,7 +31,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-# include <dirent.h>
 
 extern int			g_qsignal;
 
@@ -118,7 +118,6 @@ typedef struct s_exec
 typedef struct s_data
 {
 	char			**original;
-	int				flag;
 	char			*cmd;
 	char			**env;
 	char			**export;
@@ -143,6 +142,7 @@ typedef struct s_data
 	char			**args;
 	int				control;
 	int				index;
+	int				flag;
 	t_exec			**exec;
 }					t_data;
 
@@ -200,8 +200,6 @@ void				ft_print_token_buffer(t_token *token);
 
 void				ft_update_export_entry(t_data *data, char *key,
 						char *value);
-void				ft_update_or_add_export_entry(t_data *data, char *key,
-						char *value);
 char				*ft_create_export_entry(const char *key, const char *value);
 void				t_run_single_cmd(t_data *data, int i);
 int					ft_remove_quotes(t_data *data, char **s);
@@ -215,7 +213,7 @@ int					check_direct(t_data *mini, t_token **tokens);
 int					close_fd(t_data *data);
 void				ft_execve(t_data *data, t_exec **exec, int i);
 char				*find_in_path(char *path, char *cmd);
-int					ft_count_cmds(t_token **tokens);
+int					ft_count_cmds(t_data *data,t_token **tokens);
 void				ft_run_builtin(t_data *data, int i, t_token *token,
 						t_exec *exec);
 void				ft_init_exec(t_data *data, t_exec *exec, t_token *token);
@@ -225,7 +223,6 @@ void				ft_init_here_docs(t_data *data, t_exec **exec, int i,
 int					ft_count_heredocs(t_token *token);
 char				*ft_is_here_doc2(t_exec *exec, t_token *token);
 char				*ft_is_here_doc(t_token *token);
-int					ft_count_heredocs(t_token *token);
 int					isredwocmd(t_token *tokens);
 void				ft_run_heredoc_without_cmd(t_token *token, t_exec **exec,
 						int i);
@@ -264,5 +261,8 @@ void				ft_exec_error(t_data *data, t_exec *exec, int err,
 void				arg_type(t_data *data, char *arg);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
+void				ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
+						int pipe_fd[2]);
+void				ft_heredoc_writer(int pipe_fd[2], char *buff);
 
 #endif

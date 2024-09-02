@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 20:23:34 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:56:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ void	ft_cd_change_directory(t_data *data)
 		free(data->cwd);
 	data->cwd = getcwd(NULL, 0);
 	ft_setenv(data, "PWD", data->cwd);
-	ft_update_or_add_export_entry(data, "PWD", data->cwd);
+	ft_update_export_entry(data, "PWD", data->cwd);
 	data->status = SUCCESS;
 }
 
 void	ft_cd(t_data *data, int *index)
 {
 	t_token	*token;
-	
+
 	if (data->old_pwd)
 		free(data->old_pwd);
 	data->old_pwd = getcwd(NULL, 0);

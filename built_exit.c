@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:53:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/30 19:35:28 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:52:30 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void	process_exit_code(const char *value, int *exit_code)
 		*exit_code = 256 + (*exit_code % 256);
 }
 
+int	ft_check_arg(t_data *data, int *exit_code, t_token *token)
+{
+	if (token && token->next && token->next->next)
+	{
+		write(2, "⭐MINISHELL> : too many arguments\n", 35);
+		*exit_code = 1;
+		data->status = *exit_code;
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_exit(t_data *data, int *index)
 {
 	t_token	*token;
@@ -44,13 +56,8 @@ void	ft_exit(t_data *data, int *index)
 	exit_code = 0;
 	token = data->tokens[*index];
 	printf("exit\n");
-	if (token && token->next && token->next->next)
-	{
-		write(2, "exit: too many arguments\n", 26);
-		exit_code = 1;
-		data->status = exit_code;
+	if (ft_check_arg(data, &exit_code, token))
 		return ;
-	}
 	else if (token && token->next)
 	{
 		validation_code = validate_exit_value(token->next->value);

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:53:00 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:44:54 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_error(t_data *data, int error)
 	if (error == SYNTAX_ERROR)
 	{
 		data->status = SYNTAX_ERROR;
-		printf("Error: syntax error near unexpected token\n");
+		write(2, "Error: syntax error near unexpected token\n", 42);
 	}
 	if (error == EXIT_ERROR)
 	{

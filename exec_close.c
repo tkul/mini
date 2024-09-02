@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:19:44 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:52:20 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:59:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	close_pipes_all(int *pipes, int cmd_amount, int i)
 
 void	mother_close_pipes_all(t_data *data)
 {
-	int j;
+	int	j;
 
 	j = 0;
 	while (j < data->cmd_amount * 2)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:40 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/29 03:55:57 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:58:52 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int	handle_dollar_variable_not_found(t_data *data, char **str, int *i)
 	return (SUCCESS);
 }
 
-int	handle_existing_dollar_variable(t_data *data, char **str, int *i,
-		int index)
+int	handle_existing_dollar_variable(t_data *data, char **str, int *i, int index)
 {
 	char	*tmp;
 
@@ -92,7 +91,7 @@ int	handle_existing_dollar_variable(t_data *data, char **str, int *i,
 
 int	process_dollar_variable(t_data *data, char **str, int *i, int quote)
 {
-	int		index;
+	int	index;
 
 	data->lexer->j = (*i) + 1;
 	while (ft_isalphaaa((*str)[data->lexer->j]))

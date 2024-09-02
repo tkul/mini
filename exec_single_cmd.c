@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:28:53 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 20:31:04 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 17:38:08 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 
 void	ft_run_single_cmd(t_data *data, t_exec **exec, int i, t_token *token)
 {
-	int fd1;
-	int fd2;
+	int	fd1;
+	int	fd2;
 
 	if (data->check > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/01 14:52:35 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 16:06:03 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ char	*find_in_path(char *path, char *cmd)
 	char	*tmp2;
 	int		i;
 
-	i = 0;
+	i = -1;
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	dirs = ft_split(path, ':');
 	if (!dirs)
 		return (NULL);
-	while (dirs[i])
+	while (dirs[++i])
 	{
 		tmp2 = ft_strjoin(dirs[i], "/");
 		tmp = ft_strjoin(tmp2, cmd);
@@ -36,7 +36,6 @@ char	*find_in_path(char *path, char *cmd)
 			return (tmp);
 		}
 		free(tmp);
-		i++;
 	}
 	ft_free_array(dirs);
 	return (NULL);
@@ -64,10 +63,10 @@ int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec,
 
 void	ft_set_path(t_data *data, t_token *token, t_exec *exec)
 {
-	t_token *tmp;
-	int status;
-	char *path;
-	char *tmp2;
+	t_token	*tmp;
+	int		status;
+	char	*path;
+	char	*tmp2;
 
 	tmp = token;
 	path = NULL;
