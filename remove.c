@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 20:26:21 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 23:30:37 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 {
 	char	*status;
 	char	*tmp;
+	char	*tmp2;
 
 	if (quote != '\'' && (*s)[*i] == '$')
 	{
@@ -64,9 +65,11 @@ int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 		if ((*s)[*i] == '$' && (*s)[*i + 1] == '?')
 		{
 			status = ft_itoa(data->status);
+			tmp2 = *s;
 			tmp = remove_by_index(*s, *i, 1);
 			*s = ft_joinstr_index(tmp, status, *i);
 			free(tmp);
+			free(tmp2);
 			free(status);
 		}
 		else if ((*s)[*i] == '$' && ft_isalphaaa((*s)[*i + 1]))
@@ -77,7 +80,9 @@ int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 		else if (quote == 0 && (*s)[*i] == '$' && ((*s)[*i + 1] == '"'
 				|| (*s)[*i + 1] == '\''))
 		{
-			*s = remove_by_index(*s, *i, 0);
+			tmp = *s;
+			*s = remove_by_index(tmp, *i, 0);
+			free(tmp);
 			*i = *i - 1;
 		}
 	}

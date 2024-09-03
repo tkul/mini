@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 13:30:57 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 23:03:08 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ int	ft_absolute_path(t_data *data, t_token *token, t_exec *exec, char *path)
 
 	status = ft_find_absolute_path(data, token, exec, path);
 	if (status)
-	{
 		data->status = status;
-	}
 	return (status);
 }
 

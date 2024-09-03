@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 19:26:44 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 00:19:37 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,11 @@ int	ft_is_redirect_without_cmd(t_token **tokens)
 
 int	ft_count_amount(t_token *tmp, t_data *data, int amount)
 {
+	(void)data;
 	while (tmp)
 	{
 		if (tmp->type == CMD)
-		{
-			data->flag = 1;
 			amount++;
-		}
 		tmp = tmp->next;
 	}
 	return (amount);
@@ -83,22 +81,23 @@ int	ft_count_cmds(t_data *data, t_token **tokens)
 {
 	int		amount;
 	int		i;
+	int		j;
 	t_token	*tmp;
 	int		red_count;
 
 	i = -1;
+	j = 0;
 	amount = 0;
-	data->flag = 0;
 	red_count = ft_is_redirect_without_cmd(tokens);
 	while (tokens[++i])
 	{
 		tmp = tokens[i];
 		amount = ft_count_amount(tmp, data, amount);
 	}
-	if (red_count > 0 && data->flag == 0)
+	if (red_count > 0 && data->pipe_count == 0)
 		return (1);
-	else if (red_count > 0 && data->flag == 1)
-		return (1 + amount);
+	else if (red_count > 0 && data->pipe_count > 0)
+		return (1 + data->pipe_count);
 	return (amount);
 }
 
