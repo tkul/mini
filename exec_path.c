@@ -6,40 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 12:16:42 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 13:30:57 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*find_in_path(char *path, char *cmd)
-{
-	char	**dirs;
-	char	*tmp;
-	char	*tmp2;
-	int		i;
-
-	i = -1;
-	if (ft_strchr(cmd, '/'))
-		return (ft_strdup(cmd));
-	dirs = ft_split(path, ':');
-	if (!dirs)
-		return (NULL);
-	while (dirs[++i])
-	{
-		tmp2 = ft_strjoin(dirs[i], "/");
-		tmp = ft_strjoin(tmp2, cmd);
-		free(tmp2);
-		if (access(tmp, F_OK) == 0)
-		{
-			ft_free_array(dirs);
-			return (tmp);
-		}
-		free(tmp);
-	}
-	ft_free_array(dirs);
-	return (NULL);
-}
 
 int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec,
 		char *path)
@@ -61,41 +32,60 @@ int	ft_find_absolute_path(t_data *data, t_token *token, t_exec *exec,
 	return (0);
 }
 
-void	ft_set_path(t_data *data, t_token *token, t_exec *exec)
+char	*ft_get_command_path(t_data *data, t_token *token)
 {
-	t_token	*tmp;
-	int		status;
 	char	*path;
 	char	*tmp2;
 
+	tmp2 = ft_getenv_by_key("PATH", data->env);
+	path = find_in_path(tmp2, token->value);
+	free(tmp2);
+	return (path);
+}
+
+int	ft_absolute_path(t_data *data, t_token *token, t_exec *exec, char *path)
+{
+	int	status;
+
+	status = ft_find_absolute_path(data, token, exec, path);
+	if (status)
+	{
+		data->status = status;
+	}
+	return (status);
+}
+
+void	ft_relative_path(t_data *data, t_exec *exec, t_token *token)
+{
+	ft_set_exec_err(data, exec, CMD_NOT_FOUND, token->value);
+	data->status = 127;
+}
+
+void	ft_set_path(t_data *data, t_token *token, t_exec *exec)
+{
+	t_token	*tmp;
+
 	tmp = token;
-	path = NULL;
 	while (tmp)
 	{
 		if (tmp->type == CMD)
 		{
-			if (path)
-				free(path);
-			tmp2 = ft_getenv_by_key("PATH", data->env);
-			path = find_in_path(tmp2, tmp->value);
-			free(tmp2);
+			if (data->t_path)
+				free(data->t_path);
+			data->t_path = ft_get_command_path(data, tmp);
 			if (ft_strchr(tmp->value, '/'))
 			{
-				status = ft_find_absolute_path(data, tmp, exec, path);
-				if (status)
-				{
-					data->status = status;
+				data->status = ft_absolute_path(data, tmp, exec, data->t_path);
+				if (data->t_status)
 					break ;
-				}
 			}
-			else if (!path)
+			else if (!data->t_path)
 			{
-				ft_set_exec_err(data, exec, CMD_NOT_FOUND, token->value);
-				data->status = 127;
+				ft_relative_path(data, exec, tmp);
 				break ;
 			}
 		}
 		tmp = tmp->next;
 	}
-	data->path = path;
+	data->path = data->t_path;
 }

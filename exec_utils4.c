@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:28:43 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 12:18:20 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 13:31:37 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,33 @@ void	ft_wait_part(t_data *data)
 		waitpid(data->forks[i], NULL, 0);
 		i--;
 	}
+}
+
+char	*find_in_path(char *path, char *cmd)
+{
+	char	**dirs;
+	char	*tmp;
+	char	*tmp2;
+	int		i;
+
+	i = -1;
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);
+	while (dirs[++i])
+	{
+		tmp2 = ft_strjoin(dirs[i], "/");
+		tmp = ft_strjoin(tmp2, cmd);
+		free(tmp2);
+		if (access(tmp, F_OK) == 0)
+		{
+			ft_free_array(dirs);
+			return (tmp);
+		}
+		free(tmp);
+	}
+	ft_free_array(dirs);
+	return (NULL);
 }

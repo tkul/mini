@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:45:29 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 13:20:15 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,19 +88,6 @@ int	ft_find_type(t_data *data, char *str, int j)
 	else
 		data->new_token = new_token(ft_strdup(str), ARG, -1);
 	return (SUCCESS);
-}
-
-int	ft_toknssize(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		i++;
-		token = token->next;
-	}
-	return (i);
 }
 
 int	ft_helper_create_token(t_data *data, char *str, int i, int j)

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 18:40:58 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 00:54:32 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 13:20:14 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,17 @@ int	ft_control_quotes(char *s)
 		return (ERROR);
 	}
 	return (SUCCESS);
+}
+
+int	ft_toknssize(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
 }

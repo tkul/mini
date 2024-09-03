@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 12:04:41 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 13:30:31 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ typedef struct s_data
 	int				offset;
 	t_exec			**exec;
 	int				is_really_env;
-	t_token			*path_use_tmp;
+	char			*t_path;
+	int				t_status;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -278,5 +279,6 @@ void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
 int					ft_parser_free(t_data *data);
 void				ft_tokenclear(t_token **token, void (*del)(void *));
 void				ft_print_exec_error(t_data *data, t_exec *exec);
+int					ft_toknssize(t_token *token);
 
 #endif
