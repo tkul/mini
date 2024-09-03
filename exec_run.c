@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:30:41 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:39:11 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 12:17:57 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ static void	ft_run_exec(t_data *data, t_token *token, int i, t_exec *exec)
 		ft_run_builtin(data, i, token, exec);
 		exit(data->status);
 	}
-	ft_set_path(data, token, exec);
-	if (data->path == NULL)
-		exit(data->status);
 	ft_set_args(data, token);
 	if (execve(data->path, data->args, data->env) == -1)
 		exit(1);
@@ -30,6 +27,10 @@ static void	ft_run_exec(t_data *data, t_token *token, int i, t_exec *exec)
 
 void	ft_run_commands(t_data *data, t_token *token, int i, t_exec *exec)
 {
+	ft_set_path(data, token, exec);
+	ft_print_exec_error(data, exec);
+	if (data->path == NULL)
+		exit(data->status);
 	if (i == 0)
 	{
 		dup2(data->pipes[i * 2 + 1], 1);

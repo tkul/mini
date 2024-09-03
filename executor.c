@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 18:29:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 12:28:42 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 	ft_find_helper(tmp, exec, i, token);
 	err = ft_exec_init_redirection(data, exec[i], token);
 	if (err)
-		return (ft_set_exec_err(data, exec[i], err, token->value));
+	{
+		ft_set_exec_err(data, exec[i], err, token->value);
+		return (ft_print_exec_error(data, exec[i]));
+	}
 	if (data->cmd_amount > 1)
 	{
 		if (token->type == CMD || exec[i]->type == CMD_WITHOUT_CMD)
@@ -62,7 +65,6 @@ static void	ft_execute(t_data *data, t_exec **exec)
 		ft_start_exec(data, exec, token, data->index);
 		i++;
 	}
-	ft_print_exec_errors(data, exec);
 	if (!(data->check > 0 && data->cmd_amount == 1))
 	{
 		mother_close_pipes_all(data);

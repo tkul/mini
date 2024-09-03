@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:41:31 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 17:46:41 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 11:49:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_is_without_cmd(t_exec *exec, t_data *data)
 	if (exec->is_without_cmd)
 	{
 		exec->type = CMD_WITHOUT_CMD;
-		data->path = "is_without_cmd";
+		data->path = ft_strdup("is_without_cmd");
 		data->control = 0;
 	}
 }

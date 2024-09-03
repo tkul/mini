@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:28:53 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 01:07:55 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 12:05:45 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_execve(t_data *data, t_exec **exec, int i)
 	token = data->tokens[i];
 	(void)exec;
 	ft_set_path(data, token, exec[i]);
+	ft_print_exec_error(data, exec[i]);
 	if (data->path == NULL)
 		return ;
 	ft_set_args(data, token);

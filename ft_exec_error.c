@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 11:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:30:02 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 12:06:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,3 +90,10 @@ void	ft_print_exec_errors(t_data *data, t_exec **exec)
 		i++;
 	}
 }
+
+void ft_print_exec_error(t_data *data, t_exec *exec)
+{
+	if (exec->err_no)
+		ft_exec_error(data, exec, exec->err_no, exec->err_value);
+}
+

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:56:35 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 12:04:41 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,5 +277,6 @@ void				ft_wait_part(t_data *data);
 void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
 int					ft_parser_free(t_data *data);
 void				ft_tokenclear(t_token **token, void (*del)(void *));
+void				ft_print_exec_error(t_data *data, t_exec *exec);
 
 #endif
