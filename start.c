@@ -6,13 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:47:36 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 15:34:36 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_count_pipes(t_data *data, char *str)
+int	ft_count_pipes(t_data *data, char *str, int can_thow_err)
 {
 	int	quote;
 	int	i;
@@ -26,7 +26,7 @@ int	ft_count_pipes(t_data *data, char *str)
 		ft_set_quote_type(&quote, str[i]);
 		if (quote == -1 && str[i] == '|')
 		{
-			if (is_valid(str) == ERROR)
+			if (can_thow_err && is_valid(str) == ERROR)
 				return (ft_error(data, SYNTAX_ERROR), -1);
 			result++;
 		}
@@ -36,11 +36,14 @@ int	ft_count_pipes(t_data *data, char *str)
 
 int	ft_init_tokens(t_data *data)
 {
-	data->pipe_count = ft_count_pipes(data, data->cmd);
+	data->pipe_count = ft_count_pipes(data, data->cmd, 0);
 	if (data->pipe_count == -1)
 		return (ERROR);
 	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count
 				+ 2));
+	data->pipe_count = ft_count_pipes(data, data->cmd, 1);
+	if (data->pipe_count == -1)
+		return (ERROR);
 	if (!data->tokens)
 		return (ft_error(data, EXIT_ERROR), ERROR);
 	data->tokens[data->pipe_count + 1] = NULL;

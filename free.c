@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 15:28:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 11:48:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 15:21:40 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_free_data(t_data *data)
 	{
 		free(data->path);
 		data->path = NULL;
+		data->t_path = NULL;
 	}
 	if (data->args)
 	{

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:47:55 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 15:35:29 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	ft_parser_init(t_data *data)
 		return (ERROR);
 	data->lexer->key = NULL;
 	data->lexer->value = NULL;
-	data->pipe_count = ft_count_pipes(data, data->cmd);
-	if (ft_count_pipes(data, data->cmd) == -1)
+	data->pipe_count = ft_count_pipes(data, data->cmd, 1);
+	if (ft_count_pipes(data, data->cmd, 1) == -1)
 		return (free(data->lexer), ERROR);
 	if (ft_control_quotes(data->cmd) == ERROR)
 		return (free(data->lexer), ERROR);

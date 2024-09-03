@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 17:46:16 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 15:20:01 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	ft_count_cmds(t_data *data, t_token **tokens)
 		}
 	}
 	if (red_count > 0 && data->flag == 0)
-		return (1);
-	return (amount);
+		return (red_count + amount);
+	return (red_count + amount);
 }
 
 int	ft_count_heredocs(t_token *token)

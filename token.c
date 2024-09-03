@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 13:20:15 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 15:26:48 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ int	ft_helper_create_token(t_data *data, char *str, int i, int j)
 	{
 		tmp = ft_strdup("a");
 		tmp[0] = 1;
-		token_add_back(&(data->tokens[i]), new_token(tmp, CMD, -1));
+		if (get_last_token(data->tokens[i]) == NULL)
+			token_add_back(&(data->tokens[i]), new_token(tmp, CMD, -1));
+		else
+			token_add_back(&(data->tokens[i]), new_token(tmp, ARG, -1));
 	}
 	return (SUCCESS);
 }
