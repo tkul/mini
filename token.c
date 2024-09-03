@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:39 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 02:17:19 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 03:45:29 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,23 @@ int	ft_find_type(t_data *data, char *str, int j)
 	return (SUCCESS);
 }
 
+int	ft_toknssize(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 int	ft_helper_create_token(t_data *data, char *str, int i, int j)
 {
+	char	*tmp;
+
 	if (str && *str)
 	{
 		data->is_created_token_is_null = 0;
@@ -100,6 +115,12 @@ int	ft_helper_create_token(t_data *data, char *str, int i, int j)
 		if (ft_find_type(data, str, j) == ERROR)
 			return (ERROR);
 		token_add_back(&(data->tokens[i]), data->new_token);
+	}
+	else if (ft_toknssize(data->token_buffer) == 0 && data->is_really_env == 0)
+	{
+		tmp = ft_strdup("a");
+		tmp[0] = 1;
+		token_add_back(&(data->tokens[i]), new_token(tmp, CMD, -1));
 	}
 	return (SUCCESS);
 }

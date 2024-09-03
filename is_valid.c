@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 14:14:09 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/31 09:31:58 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 03:04:17 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,23 @@ int	is_valid(char *str)
 int	ft_control_token(t_data *data, t_token **token)
 {
 	t_token	*current;
+	int		i;
 
-	current = *token;
-	while (current)
+	i = 0;
+	while (token[i])
 	{
-		if (current->type == IN_RED || current->type == OUT_RED
-			|| current->type == APP_RED || current->type == HER_DOC)
+		current = token[i];
+		while (current)
 		{
-			if (current->next == NULL)
-				return (ft_error(data, SYNTAX_ERROR), ERROR);
+			if (current->type == IN_RED || current->type == OUT_RED
+				|| current->type == APP_RED || current->type == HER_DOC)
+			{
+				if (current->next == NULL)
+					return (ft_error(data, SYNTAX_ERROR), ERROR);
+			}
+			current = current->next;
 		}
-		current = current->next;
+		i++;
 	}
 	return (SUCCESS);
 }

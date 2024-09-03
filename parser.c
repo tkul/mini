@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:48:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 01:02:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 03:47:55 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ static char	**ft_strdup_array(char **array)
 	return (new);
 }
 
+void	ft_free_on_error(t_data *data)
+{
+	free(data->lexer);
+	ft_free_array(data->cmds);
+	ft_free_array(data->new);
+	ft_free_array(data->original);
+}
+
 int	ft_parser(t_data *data)
 {
 	if (ft_parser_init(data) == ERROR)
@@ -75,16 +83,16 @@ int	ft_parser(t_data *data)
 	{
 		data->new = ft_split_by_quote(data->cmds[data->i], ' ');
 		if (!data->new)
-			return (free(data->lexer), ERROR);
+			return (free(data->lexer), ft_free_array(data->cmds), ERROR);
 		data->original = ft_strdup_array(data->new);
 		data->j = -1;
 		while (data->new[++data->j])
 		{
 			if (ft_remove_quotes(data, &(data->new[data->j])) == ERROR)
-				return (free(data->lexer), ERROR);
+				return (ft_free_on_error(data), ERROR);
 			if (ft_create_token(data, data->new[data->j], data->i,
 					data->j) == ERROR)
-				return (free(data->lexer), ERROR);
+				return (ft_free_on_error(data), ERROR);
 		}
 		ft_free_array(data->original);
 		ft_free_array(data->new);

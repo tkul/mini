@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 00:53:59 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 03:48:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 
 	if (quote != '\'' && (*s)[*i] == '$')
 	{
+		data->is_really_env = 1;
 		if ((*s)[*i] == '$' && (*s)[*i + 1] == '?')
 		{
 			status = ft_itoa(data->status);
@@ -97,6 +98,7 @@ int	ft_remove_quotes(t_data *data, char **s)
 	int	i;
 	int	quote;
 
+	data->is_really_env = 0;
 	i = 0;
 	quote = 0;
 	data->rm1 = -1;

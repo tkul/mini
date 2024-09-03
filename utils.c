@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 19:20:06 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 03:37:52 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ static void	init_split(t_split **s, const char *str, char c)
 		return ;
 }
 
-static void	ft_helper(t_split *s)
+static char	**ft_helper(t_split *s)
 {
+	char	**tmp;
+
 	s->cmds[s->j] = NULL;
-	s->tmp = s->cmds;
+	tmp = ft_realloc(s->cmds, s->j + 1);
 	free(s);
+	return (tmp);
 }
 
 char	**ft_split_by_quote(const char *str, char c)
@@ -68,8 +71,7 @@ char	**ft_split_by_quote(const char *str, char c)
 		if (str[s->i] != '\0')
 			s->i++;
 	}
-	ft_helper(s);
-	return (s->tmp);
+	return (ft_helper(s));
 }
 
 int	my_isalpha(char *str)
