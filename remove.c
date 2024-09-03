@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 14:03:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 20:26:21 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	ft_quote(t_data *data, char *s, int *quote, int i)
 int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 {
 	char	*status;
+	char	*tmp;
 
 	if (quote != '\'' && (*s)[*i] == '$')
 	{
@@ -63,8 +64,10 @@ int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
 		if ((*s)[*i] == '$' && (*s)[*i + 1] == '?')
 		{
 			status = ft_itoa(data->status);
-			*s = remove_by_index(*s, *i, 1);
-			*s = ft_joinstr_index(*s, status, *i);
+			tmp = remove_by_index(*s, *i, 1);
+			*s = ft_joinstr_index(tmp, status, *i);
+			free(tmp);
+			free(status);
 		}
 		else if ((*s)[*i] == '$' && ft_isalphaaa((*s)[*i + 1]))
 		{

@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 15:20:01 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 19:26:44 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,20 @@ int	ft_is_redirect_without_cmd(t_token **tokens)
 	return (red_count);
 }
 
+int	ft_count_amount(t_token *tmp, t_data *data, int amount)
+{
+	while (tmp)
+	{
+		if (tmp->type == CMD)
+		{
+			data->flag = 1;
+			amount++;
+		}
+		tmp = tmp->next;
+	}
+	return (amount);
+}
+
 int	ft_count_cmds(t_data *data, t_token **tokens)
 {
 	int		amount;
@@ -79,19 +93,13 @@ int	ft_count_cmds(t_data *data, t_token **tokens)
 	while (tokens[++i])
 	{
 		tmp = tokens[i];
-		while (tmp)
-		{
-			if (tmp->type == CMD)
-			{
-				data->flag = 1;
-				amount++;
-			}
-			tmp = tmp->next;
-		}
+		amount = ft_count_amount(tmp, data, amount);
 	}
 	if (red_count > 0 && data->flag == 0)
-		return (red_count + amount);
-	return (red_count + amount);
+		return (1);
+	else if (red_count > 0 && data->flag == 1)
+		return (1 + amount);
+	return (amount);
 }
 
 int	ft_count_heredocs(t_token *token)
