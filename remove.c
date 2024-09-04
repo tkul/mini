@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 23:30:37 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 05:23:17 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,33 @@ void	ft_quote(t_data *data, char *s, int *quote, int i)
 	}
 }
 
-int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
+void	ft_dolllar_handle_helper(t_data *data, char **s, int *i, char *tmp)
 {
 	char	*status;
-	char	*tmp;
 	char	*tmp2;
 
+	if ((*s)[*i] == '$' && (*s)[*i + 1] == '?')
+	{
+		status = ft_itoa(data->status);
+		tmp2 = *s;
+		tmp = remove_by_index(*s, *i, 1);
+		*s = ft_joinstr_index(tmp, status, *i);
+		free(tmp);
+		free(tmp2);
+		free(status);
+	}
+}
+
+int	ft_dollar_handle(t_data *data, char **s, int *i, int quote)
+{
+	char	*tmp;
+
+	tmp = NULL;
 	if (quote != '\'' && (*s)[*i] == '$')
 	{
 		data->is_really_env = 1;
-		if ((*s)[*i] == '$' && (*s)[*i + 1] == '?')
-		{
-			status = ft_itoa(data->status);
-			tmp2 = *s;
-			tmp = remove_by_index(*s, *i, 1);
-			*s = ft_joinstr_index(tmp, status, *i);
-			free(tmp);
-			free(tmp2);
-			free(status);
-		}
-		else if ((*s)[*i] == '$' && ft_isalphaaa((*s)[*i + 1]))
+		ft_dolllar_handle_helper(data, s, i, tmp);
+		if ((*s)[*i] == '$' && ft_isalphaaa((*s)[*i + 1]))
 		{
 			if (process_dollar_variable(data, s, i, quote) == ERROR)
 				return (ERROR);

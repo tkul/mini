@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:00:46 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 03:42:42 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 05:17:10 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_heredoc_writer(int pipe_fd[2], char *buff)
 	write(pipe_fd[1], "\n", 1);
 }
 
-int	ft_heredoc_helper(t_token *token, t_exec *exec, char *buff, int *i)
+int	ft_heredoc_helper(t_token *token, t_exec *exec, char *buff)
 {
 	if (exec->count_heredocs > 1)
 	{
@@ -33,7 +33,6 @@ int	ft_heredoc_helper(t_token *token, t_exec *exec, char *buff, int *i)
 			}
 			exec->is_here_doc = ft_is_here_doc2(exec, token);
 			exec->count_heredocs--;
-			*i = 0;
 			return (1);
 		}
 	}
@@ -49,7 +48,7 @@ void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
 	while (buff && exec->count_heredocs > 0)
 	{
 		buff = readline("> ");
-		if (ft_heredoc_helper(token, exec, buff, &i))
+		if (ft_heredoc_helper(token, exec, buff))
 			continue ;
 		if (buff == NULL || !ft_strcmp(buff, exec->is_here_doc))
 		{

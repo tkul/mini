@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 18:07:25 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 05:12:37 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@ extern int			g_qsignal;
 # define FILE 7
 # define DELIMETER 8
 
-# define IN_HEREDOC 2
-# define AFTER_HEREDOC 3
-# define IN_CMD 4
-# define AFTER_CMD 5
-
-# define CMD_ARG 18
 # define CMD_PATH 19
 # define CMD_BUILTIN 20
 # define CMD_WITHOUT_CMD 21
@@ -188,7 +182,6 @@ void				token_add_back(t_token **token, t_token *new);
 void				ft_error(t_data *data, int error);
 int					is_valid(char *str);
 int					ft_control_token(t_data *data, t_token **token);
-char				*remove_space(char *str);
 int					ft_is_builtins(char *cmd);
 void				ft_pwd(t_data *data);
 void				ft_echo(t_data *data, int *index);
@@ -200,7 +193,6 @@ void				ft_redirect_arrange(t_token **tokens);
 void				ft_cd(t_data *data, int *index);
 void				ft_export(t_data *data, int *index);
 void				ft_setenv(t_data *data, char *key, char *value);
-void				ft_set_export(t_data *data, char *key, char *value);
 char				**ft_realloc(char **env, int size);
 void				ft_unset(t_data *data, int *index);
 int					my_isalpha(char *str);
@@ -280,5 +272,6 @@ int					ft_parser_free(t_data *data);
 void				ft_tokenclear(t_token **token, void (*del)(void *));
 void				ft_print_exec_error(t_data *data, t_exec *exec);
 int					ft_toknssize(t_token *token);
+int					ft_dollar_handle(t_data *data, char **s, int *i, int quote);
 
 #endif
