@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 05:12:37 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 10:03:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,7 @@ int					ft_count_heredocs(t_token *token);
 char				*ft_is_here_doc2(t_exec *exec, t_token *token);
 char				*ft_is_here_doc(t_token *token);
 int					isredwocmd(t_token *tokens);
-void				ft_run_heredoc_without_cmd(t_token *token, t_exec **exec,
+void				ft_run_heredoc_without_cmd(t_data *data,t_token *token, t_exec **exec,
 						int i);
 int					ft_is_redirection_single(t_token *token);
 void				ft_set_args(t_data *data, t_token *token);
@@ -263,9 +263,9 @@ void				ft_exec_error(t_data *data, t_exec *exec, int err,
 void				arg_type(t_data *data, char *arg);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
-void				ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
+void				ft_heredoc_loop(t_data* data,t_token *token, t_exec *exec,
 						int pipe_fd[2]);
-void				ft_heredoc_writer(int pipe_fd[2], char *buff);
+void				ft_heredoc_writer(t_data *data, int pipe_fd[2], char *buff);
 void				ft_wait_part(t_data *data);
 void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
 int					ft_parser_free(t_data *data);
@@ -273,5 +273,6 @@ void				ft_tokenclear(t_token **token, void (*del)(void *));
 void				ft_print_exec_error(t_data *data, t_exec *exec);
 int					ft_toknssize(t_token *token);
 int					ft_dollar_handle(t_data *data, char **s, int *i, int quote);
+void				remove_index(char **s, int index);
 
 #endif

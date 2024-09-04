@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:37:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 03:32:33 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 09:35:31 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i)
 int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	while (token)
 	{
 		if (ft_is_redirection_single(token) && token->next)

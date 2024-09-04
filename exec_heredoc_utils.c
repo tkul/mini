@@ -6,14 +6,72 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:00:46 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 05:17:10 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 13:43:28 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_heredoc_writer(int pipe_fd[2], char *buff)
+char	*get_heredoc_key(char *s)
 {
+	int		j;
+	int		i;
+	char	*key;
+
+	i = 0;
+	j = 0;
+	while (s[i] && ft_isalphaaa(s[i]) == 1)
+		i++;
+	key = (char *)malloc(i + 1);
+	i = 0;
+	while (s[i] && ft_isalphaaa(s[i]) == 1)
+	{
+		key[j] = s[i];
+		i++;
+		j++;
+	}
+	key[j] = '\0';
+	return (key);
+}
+void	ft_heredoc_writer(t_data *data, int pipe_fd[2], char *buff)
+{
+	int		i;
+	char	*tmp_buff;
+	char	*key;
+	char	*value;
+
+	i = 0;
+	key = NULL;
+	value = NULL;
+	tmp_buff = NULL;
+	if (ft_strchr(buff, '$'))
+	{
+		while (buff[i])
+		{
+			if (buff[i] == '$' && buff[i + 1] == '?')
+			{
+				tmp_buff = buff;
+				tmp_buff = remove_by_index(buff, i, 1);
+				buff = ft_joinstr_index(tmp_buff, ft_itoa(data->status), i);
+				free(tmp_buff);
+			}
+			else if (buff[i] == '$' && ft_isalphaaa(buff[i + 1]))
+			{
+				if (key)
+					free(key);
+				key = get_heredoc_key(&buff[i + 1]);
+				value = ft_getenv_by_key(key, data->env);
+				if (!value)
+					value = "";
+				tmp_buff = buff;
+				tmp_buff = remove_by_index(buff, i, ft_strlen(key));
+				buff = ft_joinstr_index(tmp_buff, value, i);
+				printf("buff: %s\n", buff);
+				free(tmp_buff);
+			}
+			i++;
+		}
+	}
 	write(pipe_fd[1], buff, ft_strlen(buff));
 	write(pipe_fd[1], "\n", 1);
 }
@@ -39,12 +97,14 @@ int	ft_heredoc_helper(t_token *token, t_exec *exec, char *buff)
 	return (0);
 }
 
-void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
+void	ft_heredoc_loop(t_data *data, t_token *token, t_exec *exec,
 		int pipe_fd[2])
 {
-	int	i;
+	int		i;
+	char	*buff;
 
 	i = 0;
+	buff = "init_value";
 	while (buff && exec->count_heredocs > 0)
 	{
 		buff = readline("> ");
@@ -64,7 +124,7 @@ void	ft_heredoc_loop(t_token *token, t_exec *exec, char *buff,
 			continue ;
 		}
 		if (i == exec->count_heredocs - 1)
-			ft_heredoc_writer(pipe_fd, buff);
+			ft_heredoc_writer(data, pipe_fd, buff);
 		free(buff);
 	}
 }

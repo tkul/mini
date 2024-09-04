@@ -6,38 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:23 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 05:23:17 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 09:42:09 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	remove_index(char **s, int index)
-{
-	char	*new_str;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	new_str = malloc(sizeof(char) * (ft_strlen(*s)));
-	if (!new_str)
-		return ;
-	while ((*s)[i])
-	{
-		if (i == index)
-		{
-			i++;
-			continue ;
-		}
-		new_str[j] = (*s)[i];
-		i++;
-		j++;
-	}
-	new_str[j] = '\0';
-	free(*s);
-	*s = new_str;
-}
 
 void	ft_quote(t_data *data, char *s, int *quote, int i)
 {
