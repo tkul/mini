@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:50:33 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 12:27:03 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 18:12:10 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,12 @@ int	ft_open_check_files(t_exec *exec, int status, t_data *data)
 	if (exec->out_file && exec->should_run == 0)
 	{
 		if (exec->out_type == OUT_RED)
+		{
+			if (exec->out_file == NULL)
+				return (1);
 			exec->out_fd = open(exec->out_file, O_WRONLY | O_CREAT | O_TRUNC,
 					0644);
+		}
 		else if (exec->out_type == APP_RED)
 			exec->out_fd = open(exec->out_file, O_WRONLY | O_CREAT | O_APPEND,
 					0644);

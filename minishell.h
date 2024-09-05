@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/05 14:57:12 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 16:09:24 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ typedef struct s_data
 	int				t_status;
 	int				h_flag;
 	int				red_i;
+	int				cmd_flag;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -191,7 +192,7 @@ void				ft_env(t_data *data);
 void				ft_start_execute(t_data *data);
 void				ft_free_array(char **array);
 void				ft_exit(t_data *data, int *index);
-void				ft_redirect_arrange(t_token **tokens);
+void				ft_redirect_arrange(t_data *data,t_token **tokens);
 void				ft_cd(t_data *data, int *index);
 void				ft_export(t_data *data, int *index);
 void				ft_setenv(t_data *data, char *key, char *value);

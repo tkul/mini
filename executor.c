@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/05 13:41:49 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 18:17:20 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	ft_start_execute(t_data *data)
 		ft_init_exec(data, exec[i], data->tokens[i]);
 		i++;
 	}
+	i = 0;
 	ft_init_pipes(data);
 	ft_execute(data, exec);
 }

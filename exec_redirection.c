@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:37:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/05 14:57:49 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 18:42:19 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 				exec->out_type = token->type;
 				if (exec->out_file)
 					free(exec->out_file);
+				if (token->next->value[0] == 1)
+					return (ERR_NO_FILE_OR_DIR);
 				exec->out_file = ft_strdup(token->next->value);
 			}
 			data->red_i = ft_open_check_files(exec, data->red_i, data);

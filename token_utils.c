@@ -6,19 +6,20 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 02:01:36 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 02:03:43 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 16:54:52 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_redirect_arrange(t_token **tokens)
+void	ft_redirect_arrange(t_data *data, t_token **tokens)
 {
 	t_token	**tmp1;
 	t_token	*tmp2;
 	int		i;
 
 	i = -1;
+	data->cmd_flag = 0;
 	tmp1 = tokens;
 	while (tmp1[++i])
 	{
