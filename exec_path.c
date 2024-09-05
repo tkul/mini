@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 11:15:02 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/03 23:03:08 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 12:35:27 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_absolute_path(t_data *data, t_token *token, t_exec *exec, char *path)
 	return (status);
 }
 
-void	ft_relative_path(t_data *data, t_exec *exec, t_token *token)
+void	ft_not_find_cmd(t_data *data, t_exec *exec, t_token *token)
 {
 	ft_set_exec_err(data, exec, CMD_NOT_FOUND, token->value);
 	data->status = 127;
@@ -79,7 +79,7 @@ void	ft_set_path(t_data *data, t_token *token, t_exec *exec)
 			}
 			else if (!data->t_path)
 			{
-				ft_relative_path(data, exec, tmp);
+				ft_not_find_cmd(data, exec, tmp);
 				break ;
 			}
 		}

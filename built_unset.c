@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/18 22:49:55 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 15:58:14 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 13:54:25 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_unset(t_data *data, int *index)
 			write(2, "\' not a valid identifier\n", 26);
 			data->status = 1;
 			token = token->next;
-			break ;
+			continue ;
 		}
 		ft_unset_unsetter(data, token->value);
 		token = token->next;

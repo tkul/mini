@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/05 02:52:24 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 14:57:12 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ typedef struct s_data
 	int				is_really_env;
 	char			*t_path;
 	int				t_status;
+	int				h_flag;
+	int				red_i;
 }					t_data;
 
 size_t				ft_strlen(const char *str);
@@ -217,8 +219,6 @@ int					ft_count_heredocs(t_token *token);
 char				*ft_is_here_doc2(t_exec *exec, t_token *token);
 char				*ft_is_here_doc(t_token *token);
 int					isredwocmd(t_token *tokens);
-void				ft_run_heredoc_without_cmd(t_data *data, t_token *token,
-						t_exec **exec, int i);
 int					ft_is_redirection_single(t_token *token);
 void				ft_set_args(t_data *data, t_token *token);
 void				ft_init_pipes(t_data *data);
@@ -264,5 +264,8 @@ int					ft_toknssize(t_token *token);
 int					ft_dollar_handle(t_data *data, char **s, int *i, int quote);
 void				remove_index(char **s, int index);
 void				sort_env_by_first_letter(char **env, int size);
+void				ft_heredoc_writer(t_data *data, int pipe_fd[2],
+						char **buff);
+void				rl_replace_line(const char *text, int clear_undo);
 
 #endif

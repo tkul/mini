@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 16:37:42 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 09:35:31 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 14:57:49 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ void	ft_run_redirects(t_data *data, t_token *token, t_exec *exec, int i)
 
 int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 {
-	int	i;
-
-	i = 0;
+	data->red_i = 0;
 	while (token)
 	{
 		if (ft_is_redirection_single(token) && token->next)
@@ -45,16 +43,20 @@ int	ft_exec_init_redirection(t_data *data, t_exec *exec, t_token *token)
 			if (token->type == IN_RED)
 			{
 				exec->in_type = token->type;
+				if (exec->in_file)
+					free(exec->in_file);
 				exec->in_file = ft_strdup(token->next->value);
 			}
 			else if (token->type == OUT_RED || token->type == APP_RED)
 			{
 				exec->out_type = token->type;
+				if (exec->out_file)
+					free(exec->out_file);
 				exec->out_file = ft_strdup(token->next->value);
 			}
-			i = ft_open_check_files(exec, i, data);
+			data->red_i = ft_open_check_files(exec, data->red_i, data);
 		}
 		token = token->next;
 	}
-	return (i);
+	return (data->red_i);
 }
