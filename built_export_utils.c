@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:53:14 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 15:57:07 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 02:04:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ void	ft_update_export_entry(t_data *data, char *key, char *value)
 	i = 0;
 	while (data->export[i])
 	{
-		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0)
+		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0
+			&& data->export[i][ft_strlen(key)] == '=')
 		{
 			free(data->export[i]);
 			new_entry = ft_create_export_entry(key, value);

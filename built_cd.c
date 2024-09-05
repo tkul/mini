@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/02 15:56:38 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 01:25:26 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_setenv(t_data *data, char *key, char *value)
 	i = 0;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0)
+		if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0
+			&& data->env[i][ft_strlen(key)] == '=')
 		{
 			free(data->env[i]);
 			tmp = ft_strjoin(key, "=");

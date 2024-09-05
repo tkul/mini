@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 23:25:11 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 05:24:46 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 02:11:14 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,8 @@ void	ft_process_export_token(t_data *data, t_token *token)
 		ft_update_export_entry(data, token->value, "");
 }
 
-void	ft_export(t_data *data, int *index)
+void	ft_help_export(t_data *data, t_token *token)
 {
-	t_token	*token;
-	int		i;
-
-	i = 0;
-	token = data->tokens[*index]->next;
-	if (!token)
-	{
-		while (data->export[i])
-			printf("declare -x %s\n", data->export[i++]);
-		return ;
-	}
 	while (token)
 	{
 		if (!(my_isalpha(token->value)))
@@ -62,4 +51,25 @@ void	ft_export(t_data *data, int *index)
 		ft_process_export_token(data, token);
 		token = token->next;
 	}
+}
+
+void	ft_export(t_data *data, int *index)
+{
+	t_token	*token;
+	int		i;
+	int		size;
+
+	i = 0;
+	size = 0;
+	token = data->tokens[*index]->next;
+	if (!token)
+	{
+		while (data->export[size] != NULL)
+			size++;
+		sort_env_by_first_letter(data->export, size);
+		while (data->export[i])
+			printf("declare -x %s\n", data->export[i++]);
+		return ;
+	}
+	ft_help_export(data, token);
 }

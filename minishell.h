@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 12:13:50 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 10:03:38 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 02:52:24 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,16 +203,7 @@ void				ft_print_token_buffer(t_token *token);
 void				ft_update_export_entry(t_data *data, char *key,
 						char *value);
 char				*ft_create_export_entry(const char *key, const char *value);
-void				t_run_single_cmd(t_data *data, int i);
 int					ft_remove_quotes(t_data *data, char **s);
-void				ft_run_multiple_command(t_data *data);
-char				*clear_quotes(char *cmd);
-int					ft_pipe(t_data *data, t_token **tokens);
-int					ft_create_pipe(t_data *data);
-void				pipe_fork(t_data *data, int i, t_token **tokens);
-void				handle_pipe_dup(t_data *data, int i);
-int					check_direct(t_data *mini, t_token **tokens);
-int					close_fd(t_data *data);
 void				ft_execve(t_data *data, t_exec **exec, int i);
 char				*find_in_path(char *path, char *cmd);
 int					ft_count_cmds(t_data *data, t_token **tokens);
@@ -226,8 +217,8 @@ int					ft_count_heredocs(t_token *token);
 char				*ft_is_here_doc2(t_exec *exec, t_token *token);
 char				*ft_is_here_doc(t_token *token);
 int					isredwocmd(t_token *tokens);
-void				ft_run_heredoc_without_cmd(t_data *data,t_token *token, t_exec **exec,
-						int i);
+void				ft_run_heredoc_without_cmd(t_data *data, t_token *token,
+						t_exec **exec, int i);
 int					ft_is_redirection_single(t_token *token);
 void				ft_set_args(t_data *data, t_token *token);
 void				ft_init_pipes(t_data *data);
@@ -243,8 +234,6 @@ int					ft_find_exec_type(t_exec **exec, t_token *token, int i);
 int					ft_isalphaaa(int c);
 int					ft_exec_init_redirection(t_data *data, t_exec *exec,
 						t_token *token);
-
-void				ft_print_exec_errors(t_data *data, t_exec **exec);
 int					ft_dup_redictions(t_exec *exec, t_data *data);
 void				ft_print_exec(t_exec **exec);
 int					ft_open_check_files(t_exec *exec, int status, t_data *data);
@@ -260,12 +249,12 @@ void				ft_set_exec_err(t_data *data, t_exec *exec, int err,
 						char *value);
 void				ft_exec_error(t_data *data, t_exec *exec, int err,
 						char *value);
-void				arg_type(t_data *data, char *arg);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
 void				free_exec_data(t_data *data, t_exec **exec, int cmd_amount);
-void				ft_heredoc_loop(t_data* data,t_token *token, t_exec *exec,
+void				ft_heredoc_loop(t_data *data, t_token *token, t_exec *exec,
 						int pipe_fd[2]);
-void				ft_heredoc_writer(t_data *data, int pipe_fd[2], char *buff);
+void				ft_heredoc_writer(t_data *data, int pipe_fd[2],
+						char **buff);
 void				ft_wait_part(t_data *data);
 void				ft_exec_part(t_data *data, t_exec *exec, t_token *token);
 int					ft_parser_free(t_data *data);
@@ -274,5 +263,6 @@ void				ft_print_exec_error(t_data *data, t_exec *exec);
 int					ft_toknssize(t_token *token);
 int					ft_dollar_handle(t_data *data, char **s, int *i, int quote);
 void				remove_index(char **s, int index);
+void				sort_env_by_first_letter(char **env, int size);
 
 #endif

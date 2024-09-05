@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:00:46 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 13:43:28 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 03:10:35 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,46 +33,52 @@ char	*get_heredoc_key(char *s)
 	key[j] = '\0';
 	return (key);
 }
-void	ft_heredoc_writer(t_data *data, int pipe_fd[2], char *buff)
+
+void	ft_heredoc_writer(t_data *data, int pipe_fd[2], char **buff)
 {
 	int		i;
 	char	*tmp_buff;
 	char	*key;
 	char	*value;
+	char	*status;
 
 	i = 0;
 	key = NULL;
 	value = NULL;
 	tmp_buff = NULL;
-	if (ft_strchr(buff, '$'))
+	status = NULL;
+	if (ft_strchr(*buff, '$'))
 	{
-		while (buff[i])
+		while ((*buff)[i])
 		{
-			if (buff[i] == '$' && buff[i + 1] == '?')
+			if ((*buff)[i] == '$' && (*buff)[i + 1] == '?')
 			{
-				tmp_buff = buff;
-				tmp_buff = remove_by_index(buff, i, 1);
-				buff = ft_joinstr_index(tmp_buff, ft_itoa(data->status), i);
+				tmp_buff = remove_by_index(*buff, i, 1);
+				free(*buff);
+				status = ft_itoa(data->status);
+				*buff = ft_joinstr_index(tmp_buff, status, i);
+				free(status);
 				free(tmp_buff);
 			}
-			else if (buff[i] == '$' && ft_isalphaaa(buff[i + 1]))
+			else if ((*buff)[i] == '$' && ft_isalphaaa((*buff)[i + 1]))
 			{
-				if (key)
-					free(key);
-				key = get_heredoc_key(&buff[i + 1]);
+				key = get_heredoc_key(&((*buff)[i + 1]));
 				value = ft_getenv_by_key(key, data->env);
 				if (!value)
-					value = "";
-				tmp_buff = buff;
-				tmp_buff = remove_by_index(buff, i, ft_strlen(key));
-				buff = ft_joinstr_index(tmp_buff, value, i);
-				printf("buff: %s\n", buff);
+					value = ft_strdup("");
+				tmp_buff = remove_by_index(*buff, i, ft_strlen(key));
+				free(*buff);
+				*buff = ft_joinstr_index(tmp_buff, value, i);
 				free(tmp_buff);
+				if (value)
+					free(value);
+				if (key)
+					free(key);
 			}
 			i++;
 		}
 	}
-	write(pipe_fd[1], buff, ft_strlen(buff));
+	write(pipe_fd[1], *buff, ft_strlen(*buff));
 	write(pipe_fd[1], "\n", 1);
 }
 
@@ -124,7 +130,8 @@ void	ft_heredoc_loop(t_data *data, t_token *token, t_exec *exec,
 			continue ;
 		}
 		if (i == exec->count_heredocs - 1)
-			ft_heredoc_writer(data, pipe_fd, buff);
-		free(buff);
+			ft_heredoc_writer(data, pipe_fd, &buff);
+		if (buff)
+			free(buff);
 	}
 }
