@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tugcekul <tugcekul@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 21:26:10 by tkul              #+#    #+#             */
-/*   Updated: 2024/09/04 00:19:37 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/08 20:58:58 by tugcekul         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,10 @@ int	ft_count_cmds(t_data *data, t_token **tokens)
 {
 	int		amount;
 	int		i;
-	int		j;
 	t_token	*tmp;
 	int		red_count;
 
 	i = -1;
-	j = 0;
 	amount = 0;
 	red_count = ft_is_redirect_without_cmd(tokens);
 	while (tokens[++i])
