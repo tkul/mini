@@ -6,13 +6,11 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:27 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/09 21:01:49 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 18:43:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		g_qsignal = 0;
 
 void	coix(int sig)
 {
@@ -29,6 +27,7 @@ void	ctrl_c(int sig)
 	if (!g_qsignal)
 	{
 		printf("\n");
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}

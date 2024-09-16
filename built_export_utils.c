@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 10:53:14 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 11:14:51 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 14:31:51 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**ft_realloc(char **env, int size)
 		i++;
 	}
 	new[i] = NULL;
-	free(env);
+	ft_free_array(env);
 	return (new);
 }
 
@@ -51,7 +51,7 @@ char	*ft_create_export_entry(const char *key, const char *value)
 	return (entry);
 }
 
-void	ft_update_or_add_export_entry(t_data *data, char *key, char *value)
+void	ft_update_export_entry(t_data *data, char *key, char *value)
 {
 	char	*new_entry;
 	int		i;
@@ -59,7 +59,8 @@ void	ft_update_or_add_export_entry(t_data *data, char *key, char *value)
 	i = 0;
 	while (data->export[i])
 	{
-		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0)
+		if (ft_strncmp(data->export[i], key, ft_strlen(key)) == 0
+			&& data->export[i][ft_strlen(key)] == '=')
 		{
 			free(data->export[i]);
 			new_entry = ft_create_export_entry(key, value);
@@ -72,9 +73,4 @@ void	ft_update_or_add_export_entry(t_data *data, char *key, char *value)
 	new_entry = ft_create_export_entry(key, value);
 	data->export[i] = new_entry;
 	data->export[i + 1] = NULL;
-}
-
-void	ft_update_export_entry(t_data *data, char *key, char *value)
-{
-	ft_update_or_add_export_entry(data, key, value);
 }

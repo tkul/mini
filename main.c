@@ -6,11 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:03 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 02:57:25 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 18:42:38 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int		g_qsignal = 0;
 
 char	*ft_getenv_by_key(char *key, char **env)
 {
@@ -60,7 +62,7 @@ char	**ft_getenv(char **env)
 	return (result);
 }
 
-int	ft_init_data(t_data *data, char **env)
+void	ft_init_data(t_data *data, char **env)
 {
 	data->cmd = NULL;
 	data->status = 0;
@@ -70,7 +72,22 @@ int	ft_init_data(t_data *data, char **env)
 	data->cwd = getcwd(NULL, 0);
 	data->pipe_count = 0;
 	data->token_buffer = NULL;
-	return (SUCCESS);
+	data->cmd_amount = 0;
+	data->check = 0;
+	data->forks = NULL;
+	data->pipes = NULL;
+	data->path = NULL;
+	data->args = NULL;
+	data->i = 0;
+	data->j = 0;
+	data->ret = 0;
+	data->old_pwd = NULL;
+	data->is_red = 0;
+	data->last = NULL;
+	data->new_token = NULL;
+	data->is_really_env = 0;
+	data->t_path = NULL;
+	data->t_status = 0;
 }
 
 int	main(int ac, char **av, char **env)
@@ -84,8 +101,7 @@ int	main(int ac, char **av, char **env)
 	if (!data)
 		return (0);
 	ft_signals();
-	if (ft_init_data(data, env))
-		return (free(data), 0);
+	ft_init_data(data, env);
 	ft_start_shell(data);
 	exit_status = data->status;
 	free(data);

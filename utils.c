@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:45 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 03:08:20 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/03 23:14:02 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,19 @@ static void	init_split(t_split **s, const char *str, char c)
 		return ;
 }
 
+static char	**ft_helper(t_split *s)
+{
+	char	**tmp;
+
+	s->cmds[s->j] = NULL;
+	tmp = ft_realloc(s->cmds, s->j + 1);
+	free(s);
+	return (tmp);
+}
+
 char	**ft_split_by_quote(const char *str, char c)
 {
 	t_split	*s;
-	char	**tmp;
 
 	init_split(&s, str, c);
 	if (!s)
@@ -62,15 +71,33 @@ char	**ft_split_by_quote(const char *str, char c)
 		if (str[s->i] != '\0')
 			s->i++;
 	}
-	s->cmds[s->j] = NULL;
-	tmp = s->cmds;
-	free(s);
-	return (tmp);
+	return (ft_helper(s));
 }
 
-int	my_isalpha(int c)
+int	my_isalpha(char *str)
 {
-	if (c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	int	i;
+
+	i = 1;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	if (ft_strchr(str, '='))
+	{
+		while (str[i] != '=')
+		{
+			if (!ft_isalphaaa(str[i]))
+				return (0);
+			i++;
+		}
+	}
+	else
+	{
+		while (str[i])
+		{
+			if (!ft_isalphaaa(str[i]))
+				return (0);
+			i++;
+		}
+	}
+	return (1);
 }

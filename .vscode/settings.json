@@ -31,7 +31,8 @@
         "string": "c",
         "array": "c",
         "string_view": "c",
-        "*.tcc": "c"
+        "*.tcc": "c",
+        "file": "c"
     },
     "editor.fontSize": 12,
     "files.exclude": {

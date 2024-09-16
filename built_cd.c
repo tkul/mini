@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:54:12 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 22:27:06 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/05 01:25:26 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_setenv(t_data *data, char *key, char *value)
 	i = 0;
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0)
+		if (ft_strncmp(data->env[i], key, ft_strlen(key)) == 0
+			&& data->env[i][ft_strlen(key)] == '=')
 		{
 			free(data->env[i]);
 			tmp = ft_strjoin(key, "=");
@@ -80,9 +81,11 @@ void	ft_cd_change_directory(t_data *data)
 		return ;
 	}
 	ft_setenv(data, "OLDPWD", data->old_pwd);
+	if (data->cwd)
+		free(data->cwd);
 	data->cwd = getcwd(NULL, 0);
 	ft_setenv(data, "PWD", data->cwd);
-	ft_update_or_add_export_entry(data, "PWD", data->cwd);
+	ft_update_export_entry(data, "PWD", data->cwd);
 	data->status = SUCCESS;
 }
 
@@ -90,6 +93,8 @@ void	ft_cd(t_data *data, int *index)
 {
 	t_token	*token;
 
+	if (data->old_pwd)
+		free(data->old_pwd);
 	data->old_pwd = getcwd(NULL, 0);
 	token = data->tokens[*index];
 	if (!token->next)
@@ -103,7 +108,7 @@ void	ft_cd(t_data *data, int *index)
 		}
 	}
 	else
-		data->path = token->next->value;
+		data->path = ft_strdup(token->next->value);
 	if (!ft_check_directory(data))
 		return ;
 	ft_cd_change_directory(data);

@@ -3,152 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/22 23:46:21 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/24 01:11:24 by ayirmili         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:17:20 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_count_cmds(t_token **tokens)
+static void	ft_find_helper(t_token *tmp, t_exec **exec, int i, t_token *token)
 {
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (tokens[i])
+	while (tmp)
 	{
-		if (tokens[i]->type == CMD)
-			count++;
-		i++;
+		if (tmp->type == CMD)
+		{
+			if (!exec[i]->type)
+				exec[i]->type = ft_find_exec_type(exec, token, i);
+		}
+		tmp = tmp->next;
 	}
-	return (count);
 }
 
-char	*find_in_path(char *path, char *cmd)
+void	ft_start_exec(t_data *data, t_exec **exec, t_token *token, int i)
 {
-	char	**dirs;
-	char	*tmp;
-	int		i;
+	int		err;
+	t_token	*tmp;
 
-	i = 0;
-	dirs = ft_split(path, ':');
-	while (dirs[i])
+	err = 0;
+	tmp = token;
+	g_qsignal = 1;
+	ft_init_here_docs(data, exec, i, token);
+	ft_find_helper(tmp, exec, i, token);
+	err = ft_exec_init_redirection(data, exec[i], token);
+	if (err)
 	{
-		tmp = ft_strjoin(dirs[i], "/");
-		tmp = ft_strjoin(tmp, cmd);
-		if (access(tmp, F_OK) == 0)
-		{
-			ft_free_array(dirs);
-			return (tmp);
-		}
-		i++;
+		ft_set_exec_err(data, exec[i], err, token->value);
+		return (ft_print_exec_error(data, exec[i]));
 	}
-	ft_free_array(dirs);
-	return (NULL);
-}
-
-void	ft_execve(t_data *data, int i)
-{
-	char	*path;
-	char	**args;
-	int		status;
-	pid_t	pid;
-	int		args_len;
-	int		j;
-	t_token	*tokens;
-
-	path = find_in_path(ft_getenv_by_key("PATH", data->env),
-			data->tokens[i]->value);
-	if (path == NULL)
+	if (data->cmd_amount > 1)
 	{
-		write(2, "⭐MINISHELL> ", 13);
-		write(2, data->tokens[i]->value, ft_strlen(data->tokens[i]->value));
-		write(2, ": command not found\n", 21);
-		data->status = CMD_NOT_FOUND;
-		return ;
-	}
-	tokens = data->tokens[i];
-	args_len = 0;
-	while (tokens)
-	{
-		if (tokens->type == ARG)
-			args_len++;
-		tokens = tokens->next;
-	}
-	args = malloc(sizeof(char *) * (args_len + 2));
-	args[args_len + 1] = NULL;
-	j = 1;
-	args[0] = ft_strdup(path);
-	tokens = data->tokens[i];
-	while (tokens)
-	{
-		if (tokens->type == ARG)
-		{
-			args[j] = ft_strdup(tokens->value);
-			j++;
-		}
-		tokens = tokens->next;
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(path, args, data->env);
-		exit(0);
+		if (token->type == CMD || exec[i]->type == CMD_WITHOUT_CMD)
+			ft_exec_part(data, exec[data->index], token);
 	}
 	else
-	{
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			data->status = WEXITSTATUS(status);
-	}
+		ft_run_single_cmd(data, exec, i, token);
+	g_qsignal = 0;
 }
 
-void	ft_run_single_cmd(t_data *data, int i)
+static void	ft_execute(t_data *data, t_exec **exec)
 {
+	int		i;
+	t_token	*token;
+
+	i = 0;
 	while (data->tokens[i])
 	{
-		if (data->check > 0 && data->cmd_amount == 1)
-		{
-			if (ft_strcmp(data->tokens[i]->value, "pwd") == 0)
-				ft_pwd(data);
-			else if (ft_strcmp(data->tokens[i]->value, "echo") == 0)
-				ft_echo(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "env") == 0)
-				ft_env(data);
-			else if (ft_strcmp(data->tokens[i]->value, "exit") == 0)
-				ft_exit(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "cd") == 0)
-				ft_cd(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "export") == 0)
-				ft_export(data, &i);
-			else if (ft_strcmp(data->tokens[i]->value, "unset") == 0)
-				ft_unset(data, &i);
-		}
-		else
-			ft_execve(data, i);
+		data->index = i;
+		token = data->tokens[i];
+		data->check = ft_is_builtins(token->value);
+		ft_start_exec(data, exec, token, data->index);
 		i++;
 	}
-	
+	if (!(data->check > 0 && data->cmd_amount == 1))
+	{
+		mother_close_pipes_all(data);
+		ft_wait_part(data);
+	}
+	free_exec_data(data, exec, data->cmd_amount);
+	free(exec);
 }
 
-void	ft_execute(t_data *data)
+void	ft_start_execute(t_data *data)
 {
-	t_exec	**exec;
 	int		i;
+	t_exec	**exec;
 
 	i = 0;
-	data->cmd_amount = ft_count_cmds(data->tokens);
+	data->index = 0;
+	data->cmd_amount = ft_count_cmds(data, data->tokens);
 	if (data->cmd_amount < 0)
 		return ;
-	data->check = ft_is_builtins(data->tokens[i]->value);
 	exec = malloc(sizeof(t_exec *) * (data->cmd_amount + 1));
 	exec[data->cmd_amount] = NULL;
-	if (data->cmd_amount == 1)
-		ft_run_single_cmd(data, i);
-	else
-		ft_run_multiple_command(data);
+	while (i < data->cmd_amount)
+	{
+		exec[i] = malloc(sizeof(t_exec));
+		ft_init_exec(data, exec[i], data->tokens[i]);
+		i++;
+	}
+	i = 0;
+	ft_init_pipes(data);
+	ft_execute(data, exec);
 }

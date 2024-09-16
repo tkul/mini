@@ -3,84 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayirmili <ayirmili@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/23 19:43:39 by ayirmili          #+#    #+#             */
-/*   Updated: 2024/08/24 01:26:43 by ayirmili         ###   ########.fr       */
+/*   Created: 2024/08/26 23:18:43 by tkul              #+#    #+#             */
+/*   Updated: 2024/09/02 18:44:19 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-static void	fork_exec(t_data *data, t_token **tokens, int i)
+void	ft_init_pipes(t_data *data)
 {
-    // printf("tokens[i] %s\n", tokens[i]->value);
+	int	i;
 
-    (void)i;
-    (void)tokens;
-    (void)data;
-	// data->path = find_path(data, tokens[i]);
-	
-}
-
-void	pipe_fork(t_data *data, int i, t_token **tokens)
-{
-    handle_pipe_dup(data, i);
-    if (check_direct(data, tokens))
-		exit(1);
-    // if (check_builtin(data &i) == 1)
-		
-    fork_exec(data, tokens, i);
-}
-
-int ft_create_pipe(t_data *data)
-{    
-    int i;
-    
-    i = -1;
-    data->pipe_fd = malloc(sizeof(int) * (data->pipe_count * 2));
-    data->pid = malloc(sizeof(int) * (data->cmd_amount));
-    if (! data->pipe_fd)
-		return (perror("Minishell: malloc error"), ERROR);
-
-    while(++i < data->pipe_count)
-    {
-        if (pipe(data->pipe_fd + i * 2) == -1)
-			return (perror("Minishell: pipe error"), ERROR);
-    }
-
-    return (SUCCESS);
-}
-
-int ft_pipe(t_data *data, t_token **tokens)
-{
-    int	i;
-
-	i = -1;
-	if (ft_create_pipe(data) == ERROR)
-		return (ERROR);
-    while (++i < data->cmd_amount)
+	i = 0;
+	data->pipes = malloc(sizeof(int) * (data->cmd_amount * 2));
+	data->forks = malloc(sizeof(int) * (data->cmd_amount));
+	if (!data->pipes || !data->forks)
 	{
-		data->pid[i] = fork();
-		if (data->pid[i] == -1)
-			return (ERROR);
-		else if (data->pid[i] == 0)
-			pipe_fork(data, i, tokens);
+		data->status = 1;
+		return ;
 	}
-
-    return (close_fd(data));
-}
-
-
-void    ft_run_multiple_command(t_data *data)
-{
-    t_token **tokens;
-
-    printf("pipe_count %d\n", data->pipe_count);
-
-    tokens = data->tokens;
-    data->cleaned_cmd = clear_quotes(data->cmd);
-    
-    ft_pipe(data, tokens);
+	while (i < data->cmd_amount)
+	{
+		if (pipe(data->pipes + i * 2) < 0)
+		{
+			data->status = ERR_PIPE_INIT;
+			return ;
+		}
+		i++;
+	}
 }

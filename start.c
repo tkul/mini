@@ -6,13 +6,13 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:49:32 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/23 19:15:55 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/04 05:23:39 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_count_pipes(t_data *data, char *str)
+int	ft_count_pipes(t_data *data, char *str, int can_thow_err)
 {
 	int	quote;
 	int	i;
@@ -26,7 +26,7 @@ int	ft_count_pipes(t_data *data, char *str)
 		ft_set_quote_type(&quote, str[i]);
 		if (quote == -1 && str[i] == '|')
 		{
-			if (is_valid(str) == ERROR)
+			if (can_thow_err && is_valid(str) == ERROR)
 				return (ft_error(data, SYNTAX_ERROR), -1);
 			result++;
 		}
@@ -36,11 +36,14 @@ int	ft_count_pipes(t_data *data, char *str)
 
 int	ft_init_tokens(t_data *data)
 {
-	data->pipe_count = ft_count_pipes(data, data->cmd);
+	data->pipe_count = ft_count_pipes(data, data->cmd, 0);
 	if (data->pipe_count == -1)
 		return (ERROR);
 	data->tokens = (t_token **)malloc(sizeof(t_token *) * (data->pipe_count
 				+ 2));
+	data->pipe_count = ft_count_pipes(data, data->cmd, 1);
+	if (data->pipe_count == -1)
+		return (ERROR);
 	if (!data->tokens)
 		return (ft_error(data, EXIT_ERROR), ERROR);
 	data->tokens[data->pipe_count + 1] = NULL;
@@ -67,13 +70,26 @@ int	ft_run(t_data *data)
 		if (ft_init_tokens(data) == ERROR)
 			return (free(data->tokens), ERROR);
 		if (ft_parser(data) == ERROR)
-			return (free(data->tokens), ERROR);
-		ft_print_tokens(data->tokens);
-		ft_execute(data);
+			return (ft_free_tokens(data->tokens), free(data->tokens), ERROR);
+		ft_start_execute(data);
 		ft_free_tokens(data->tokens);
 		free(data->tokens);
 	}
 	return (SUCCESS);
+}
+
+int	is_full_space(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	ft_start_shell(t_data *data)
@@ -87,6 +103,12 @@ int	ft_start_shell(t_data *data)
 		{
 			write(1, "exit\n", 5);
 			break ;
+		}
+		if (is_full_space(data->cmd))
+		{
+			free(data->cmd);
+			data->cmd = NULL;
+			continue ;
 		}
 		if (ft_run(data) == SUCCESS)
 			continue ;

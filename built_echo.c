@@ -6,7 +6,7 @@
 /*   By: tkul <tkul@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:52:47 by tkul              #+#    #+#             */
-/*   Updated: 2024/08/21 10:41:43 by tkul             ###   ########.fr       */
+/*   Updated: 2024/09/02 15:42:49 by tkul             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ void	ft_echo(t_data *data, int *index)
 	if (!token->next)
 	{
 		printf("\n");
+		data->status = 0;
 		return ;
 	}
 	token = token->next;
 	ft_echo_print_tokens(token);
+	data->status = 0;
 }
